@@ -1,0 +1,56 @@
+{
+  "stage": 5,
+  "num_samples": 500,
+  "wer_group_summary": [
+    {
+      "wer_group": "0%",
+      "num_samples": 2,
+      "mean_wer": 0.0,
+      "reference_entities": 3,
+      "asr_entities": 3,
+      "matched_entities": 3,
+      "reference_only": 0,
+      "asr_only": 0,
+      "retention": 1.0
+    },
+    {
+      "wer_group": "0–10%",
+      "num_samples": 34,
+      "mean_wer": 0.075291,
+      "reference_entities": 82,
+      "asr_entities": 85,
+      "matched_entities": 66,
+      "reference_only": 16,
+      "asr_only": 19,
+      "retention": 0.804878
+    },
+    {
+      "wer_group": "10–30%",
+      "num_samples": 317,
+      "mean_wer": 0.209297,
+      "reference_entities": 974,
+      "asr_entities": 883,
+      "matched_entities": 581,
+      "reference_only": 393,
+      "asr_only": 302,
+      "retention": 0.596509
+    },
+    {
+      "wer_group": ">30%",
+      "num_samples": 147,
+      "mean_wer": 0.419554,
+      "reference_entities": 428,
+      "asr_entities": 303,
+      "matched_entities": 150,
+      "reference_only": 278,
+      "asr_only": 153,
+      "retention": 0.350467
+    }
+  ],
+  "case_study_count": 10,
+  "interpretation": {
+    "reference_only": "Entity model dự đoán trên transcript chuẩn nhưng không dự đoán trên transcript ASR.",
+    "asr_only": "Entity model dự đoán trên transcript ASR nhưng không dự đoán trên transcript chuẩn.",
+    "warning": "Đây là phân tích tác động ASR, không phải gold NER evaluation."
+  }
+}

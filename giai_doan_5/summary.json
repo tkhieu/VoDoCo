@@ -1,0 +1,29 @@
+{
+  "num_results": 500,
+  "num_errors": 0,
+  "mean_wer": 0.261163,
+  "median_wer": 0.25,
+  "zero_wer_count": 2,
+  "total_entities": 1274,
+  "entity_label_counts": {
+    "DISEASESYMTOM": 226,
+    "DATETIME": 114,
+    "AGE": 30,
+    "SURGERY": 40,
+    "GENDER": 113,
+    "OCCUPATION": 113,
+    "LOCATION": 58,
+    "PREVENTIVEMED": 51,
+    "UNITCALIBRATOR": 65,
+    "ORGAN": 175,
+    "MEDDEVICETECHNIQUE": 43,
+    "TREATMENT": 76,
+    "PERSONALCARE": 47,
+    "DRUGCHEMICAL": 41,
+    "DIAGNOSTICS": 67,
+    "ORGANIZATION": 9,
+    "FOODDRINK": 6
+  },
+  "asr_model": "leduckhai/MultiMed-ST/asr/whisper-small-vietnamese/checkpoint-5000",
+  "ner_model": "leduckhai/VietMed-NER/xlm-roberta-base-VietMed-NER"
+}

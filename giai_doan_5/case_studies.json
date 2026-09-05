@@ -1,0 +1,502 @@
+[
+  {
+    "index": 443,
+    "wer": 0.888889,
+    "reference_only": [
+      {
+        "text": "mụn",
+        "label": "DISEASESYMTOM",
+        "count": 1
+      },
+      {
+        "text": "tác dụng phụ",
+        "label": "DISEASESYMTOM",
+        "count": 1
+      }
+    ],
+    "asr_only": [],
+    "reference_entities": [
+      {
+        "text": "mụn",
+        "label": "DISEASESYMTOM",
+        "score": 0.994616,
+        "start": 0,
+        "end": 3
+      },
+      {
+        "text": "tác dụng phụ",
+        "label": "DISEASESYMTOM",
+        "score": 0.998911,
+        "start": 34,
+        "end": 46
+      }
+    ],
+    "asr_entities": []
+  },
+  {
+    "index": 459,
+    "wer": 0.777778,
+    "reference_only": [
+      {
+        "text": "đặt vòng",
+        "label": "UNITCALIBRATOR",
+        "count": 1
+      },
+      {
+        "text": "một nửa",
+        "label": "UNITCALIBRATOR",
+        "count": 1
+      },
+      {
+        "text": "que tránh",
+        "label": "MEDDEVICETECHNIQUE",
+        "count": 1
+      },
+      {
+        "text": "thai",
+        "label": "DRUGCHEMICAL",
+        "count": 1
+      }
+    ],
+    "asr_only": [],
+    "reference_entities": [
+      {
+        "text": "đặt vòng",
+        "label": "UNITCALIBRATOR",
+        "score": 0.87798,
+        "start": 26,
+        "end": 34
+      },
+      {
+        "text": "một nửa",
+        "label": "UNITCALIBRATOR",
+        "score": 0.775731,
+        "start": 35,
+        "end": 42
+      },
+      {
+        "text": "que tránh",
+        "label": "MEDDEVICETECHNIQUE",
+        "score": 0.536036,
+        "start": 63,
+        "end": 72
+      },
+      {
+        "text": "thai",
+        "label": "DRUGCHEMICAL",
+        "score": 0.649448,
+        "start": 73,
+        "end": 77
+      }
+    ],
+    "asr_entities": []
+  },
+  {
+    "index": 145,
+    "wer": 0.736842,
+    "reference_only": [
+      {
+        "text": "que",
+        "label": "DRUGCHEMICAL",
+        "count": 1
+      }
+    ],
+    "asr_only": [],
+    "reference_entities": [
+      {
+        "text": "que",
+        "label": "DRUGCHEMICAL",
+        "score": 0.891465,
+        "start": 8,
+        "end": 11
+      }
+    ],
+    "asr_entities": []
+  },
+  {
+    "index": 342,
+    "wer": 0.666667,
+    "reference_only": [
+      {
+        "text": "uống thuốc tránh thai",
+        "label": "TREATMENT",
+        "count": 1
+      },
+      {
+        "text": "thuốc tránh thai",
+        "label": "DRUGCHEMICAL",
+        "count": 1
+      }
+    ],
+    "asr_only": [
+      {
+        "text": "uống uống",
+        "label": "PERSONALCARE",
+        "count": 1
+      }
+    ],
+    "reference_entities": [
+      {
+        "text": "uống thuốc tránh thai",
+        "label": "TREATMENT",
+        "score": 0.937076,
+        "start": 8,
+        "end": 29
+      },
+      {
+        "text": "thuốc tránh thai",
+        "label": "DRUGCHEMICAL",
+        "score": 0.993026,
+        "start": 30,
+        "end": 46
+      }
+    ],
+    "asr_entities": [
+      {
+        "text": "uống uống",
+        "label": "PERSONALCARE",
+        "score": 0.627221,
+        "start": 4,
+        "end": 13
+      }
+    ]
+  },
+  {
+    "index": 368,
+    "wer": 0.666667,
+    "reference_only": [
+      {
+        "text": "phương",
+        "label": "PREVENTIVEMED",
+        "count": 1
+      },
+      {
+        "text": "pháp",
+        "label": "TREATMENT",
+        "count": 1
+      },
+      {
+        "text": "tránh",
+        "label": "PREVENTIVEMED",
+        "count": 1
+      },
+      {
+        "text": "thai",
+        "label": "TREATMENT",
+        "count": 1
+      }
+    ],
+    "asr_only": [
+      {
+        "text": "gừng",
+        "label": "FOODDRINK",
+        "count": 1
+      }
+    ],
+    "reference_entities": [
+      {
+        "text": "phương",
+        "label": "PREVENTIVEMED",
+        "score": 0.296798,
+        "start": 64,
+        "end": 70
+      },
+      {
+        "text": "pháp",
+        "label": "TREATMENT",
+        "score": 0.272085,
+        "start": 71,
+        "end": 75
+      },
+      {
+        "text": "tránh",
+        "label": "PREVENTIVEMED",
+        "score": 0.507594,
+        "start": 76,
+        "end": 81
+      },
+      {
+        "text": "thai",
+        "label": "TREATMENT",
+        "score": 0.818522,
+        "start": 82,
+        "end": 86
+      }
+    ],
+    "asr_entities": [
+      {
+        "text": "gừng",
+        "label": "FOODDRINK",
+        "score": 0.800316,
+        "start": 63,
+        "end": 67
+      }
+    ]
+  },
+  {
+    "index": 235,
+    "wer": 0.642857,
+    "reference_only": [
+      {
+        "text": "que tránh thai",
+        "label": "MEDDEVICETECHNIQUE",
+        "count": 1
+      },
+      {
+        "text": "kinh nguyệt",
+        "label": "DISEASESYMTOM",
+        "count": 1
+      }
+    ],
+    "asr_only": [],
+    "reference_entities": [
+      {
+        "text": "que tránh thai",
+        "label": "MEDDEVICETECHNIQUE",
+        "score": 0.836511,
+        "start": 8,
+        "end": 22
+      },
+      {
+        "text": "kinh nguyệt",
+        "label": "DISEASESYMTOM",
+        "score": 0.98982,
+        "start": 54,
+        "end": 65
+      }
+    ],
+    "asr_entities": []
+  },
+  {
+    "index": 58,
+    "wer": 0.625,
+    "reference_only": [
+      {
+        "text": "thu",
+        "label": "DISEASESYMTOM",
+        "count": 1
+      },
+      {
+        "text": "yên tắc phổi",
+        "label": "DISEASESYMTOM",
+        "count": 1
+      },
+      {
+        "text": "thuyên tắc phổi",
+        "label": "DISEASESYMTOM",
+        "count": 1
+      }
+    ],
+    "asr_only": [
+      {
+        "text": "máu",
+        "label": "ORGAN",
+        "count": 1
+      }
+    ],
+    "reference_entities": [
+      {
+        "text": "cơ thể",
+        "label": "ORGAN",
+        "score": 0.997809,
+        "start": 4,
+        "end": 10
+      },
+      {
+        "text": "thu",
+        "label": "DISEASESYMTOM",
+        "score": 0.807328,
+        "start": 31,
+        "end": 34
+      },
+      {
+        "text": "yên tắc phổi",
+        "label": "DISEASESYMTOM",
+        "score": 0.84769,
+        "start": 34,
+        "end": 46
+      },
+      {
+        "text": "thuyên tắc phổi",
+        "label": "DISEASESYMTOM",
+        "score": 0.829173,
+        "start": 51,
+        "end": 66
+      }
+    ],
+    "asr_entities": [
+      {
+        "text": "máu",
+        "label": "ORGAN",
+        "score": 0.997257,
+        "start": 0,
+        "end": 3
+      },
+      {
+        "text": "cơ thể",
+        "label": "ORGAN",
+        "score": 0.997731,
+        "start": 25,
+        "end": 31
+      }
+    ]
+  },
+  {
+    "index": 294,
+    "wer": 0.619048,
+    "reference_only": [
+      {
+        "text": "bây giờ",
+        "label": "DATETIME",
+        "count": 1
+      },
+      {
+        "text": "mười hai năm",
+        "label": "DATETIME",
+        "count": 1
+      }
+    ],
+    "asr_only": [
+      {
+        "text": "hai năm",
+        "label": "DATETIME",
+        "count": 1
+      }
+    ],
+    "reference_entities": [
+      {
+        "text": "bây giờ",
+        "label": "DATETIME",
+        "score": 0.995793,
+        "start": 9,
+        "end": 16
+      },
+      {
+        "text": "bây giờ",
+        "label": "DATETIME",
+        "score": 0.99533,
+        "start": 35,
+        "end": 42
+      },
+      {
+        "text": "mười hai năm",
+        "label": "DATETIME",
+        "score": 0.974643,
+        "start": 46,
+        "end": 58
+      },
+      {
+        "text": "bây giờ",
+        "label": "DATETIME",
+        "score": 0.996332,
+        "start": 66,
+        "end": 73
+      }
+    ],
+    "asr_entities": [
+      {
+        "text": "bây giờ",
+        "label": "DATETIME",
+        "score": 0.995836,
+        "start": 15,
+        "end": 22
+      },
+      {
+        "text": "hai năm",
+        "label": "DATETIME",
+        "score": 0.994876,
+        "start": 30,
+        "end": 37
+      },
+      {
+        "text": "bây giờ",
+        "label": "DATETIME",
+        "score": 0.996292,
+        "start": 45,
+        "end": 52
+      }
+    ]
+  },
+  {
+    "index": 389,
+    "wer": 0.615385,
+    "reference_only": [
+      {
+        "text": "rụng trứng",
+        "label": "DISEASESYMTOM",
+        "count": 1
+      },
+      {
+        "text": "chị",
+        "label": "GENDER",
+        "count": 1
+      },
+      {
+        "text": "em",
+        "label": "GENDER",
+        "count": 1
+      }
+    ],
+    "asr_only": [],
+    "reference_entities": [
+      {
+        "text": "rụng trứng",
+        "label": "DISEASESYMTOM",
+        "score": 0.99595,
+        "start": 31,
+        "end": 41
+      },
+      {
+        "text": "chị",
+        "label": "GENDER",
+        "score": 0.912864,
+        "start": 49,
+        "end": 52
+      },
+      {
+        "text": "em",
+        "label": "GENDER",
+        "score": 0.360855,
+        "start": 53,
+        "end": 55
+      }
+    ],
+    "asr_entities": []
+  },
+  {
+    "index": 286,
+    "wer": 0.6,
+    "reference_only": [
+      {
+        "text": "vòng tránh thai",
+        "label": "MEDDEVICETECHNIQUE",
+        "count": 1
+      }
+    ],
+    "asr_only": [
+      {
+        "text": "vương",
+        "label": "LOCATION",
+        "count": 1
+      }
+    ],
+    "reference_entities": [
+      {
+        "text": "vòng tránh thai",
+        "label": "MEDDEVICETECHNIQUE",
+        "score": 0.616055,
+        "start": 30,
+        "end": 45
+      }
+    ],
+    "asr_entities": [
+      {
+        "text": "vương",
+        "label": "LOCATION",
+        "score": 0.437175,
+        "start": 22,
+        "end": 27
+      }
+    ]
+  }
+]

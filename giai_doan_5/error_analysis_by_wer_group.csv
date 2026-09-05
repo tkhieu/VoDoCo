@@ -1,0 +1,5 @@
+﻿wer_group,num_samples,mean_wer,reference_entities,asr_entities,matched_entities,reference_only,asr_only,retention
+0%,2,0.0,3,3,3,0,0,1.0
+0–10%,34,0.075291,82,85,66,16,19,0.804878
+10–30%,317,0.209297,974,883,581,393,302,0.596509
+>30%,147,0.419554,428,303,150,278,153,0.350467

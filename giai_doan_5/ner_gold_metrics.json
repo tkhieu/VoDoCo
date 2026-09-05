@@ -1,0 +1,140 @@
+{
+  "dataset": "leduckhai/VietMed-NER",
+  "split": "test",
+  "num_examples": 3497,
+  "model": "leduckhai/VietMed-NER/xlm-roberta-base-VietMed-NER",
+  "overall": {
+    "precision": 52.58,
+    "recall": 66.2389,
+    "f1": 58.6243
+  },
+  "per_label": {
+    "AGE": {
+      "precision": 56.4661,
+      "recall": 70.9003,
+      "f1": 62.8653,
+      "support": 622
+    },
+    "DATETIME": {
+      "precision": 69.9854,
+      "recall": 71.6642,
+      "f1": 70.8148,
+      "support": 667
+    },
+    "DIAGNOSTICS": {
+      "precision": 57.5448,
+      "recall": 75.2508,
+      "f1": 65.2174,
+      "support": 299
+    },
+    "DISEASESYMTOM": {
+      "precision": 55.5863,
+      "recall": 68.5072,
+      "f1": 61.374,
+      "support": 1467
+    },
+    "DRUGCHEMICAL": {
+      "precision": 76.4957,
+      "recall": 75.7405,
+      "f1": 76.1162,
+      "support": 709
+    },
+    "FOODDRINK": {
+      "precision": 58.4239,
+      "recall": 82.3755,
+      "f1": 68.3625,
+      "support": 261
+    },
+    "GENDER": {
+      "precision": 49.1393,
+      "recall": 56.2724,
+      "f1": 52.4645,
+      "support": 558
+    },
+    "LOCATION": {
+      "precision": 58.9928,
+      "recall": 74.772,
+      "f1": 65.9517,
+      "support": 329
+    },
+    "MEDDEVICETECHNIQUE": {
+      "precision": 18.0288,
+      "recall": 11.811,
+      "f1": 14.2721,
+      "support": 635
+    },
+    "OCCUPATION": {
+      "precision": 83.3597,
+      "recall": 93.0973,
+      "f1": 87.9599,
+      "support": 565
+    },
+    "ORGAN": {
+      "precision": 54.5567,
+      "recall": 70.3175,
+      "f1": 61.4424,
+      "support": 1260
+    },
+    "ORGANIZATION": {
+      "precision": 12.1951,
+      "recall": 8.1967,
+      "f1": 9.8039,
+      "support": 61
+    },
+    "PERSONALCARE": {
+      "precision": 20.9169,
+      "recall": 76.8421,
+      "f1": 32.8829,
+      "support": 95
+    },
+    "PREVENTIVEMED": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 18
+    },
+    "SURGERY": {
+      "precision": 46.0674,
+      "recall": 59.4203,
+      "f1": 51.8987,
+      "support": 276
+    },
+    "TRANSPORTATION": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 27
+    },
+    "TREATMENT": {
+      "precision": 39.6728,
+      "recall": 83.6207,
+      "f1": 53.8141,
+      "support": 232
+    },
+    "UNITCALIBRATOR": {
+      "precision": 26.6284,
+      "recall": 54.0856,
+      "f1": 35.6868,
+      "support": 257
+    },
+    "micro avg": {
+      "precision": 52.58,
+      "recall": 66.2389,
+      "f1": 58.6243,
+      "support": 8338
+    },
+    "macro avg": {
+      "precision": 43.5589,
+      "recall": 57.3819,
+      "f1": 48.3849,
+      "support": 8338
+    },
+    "weighted avg": {
+      "precision": 54.647,
+      "recall": 66.2389,
+      "f1": 59.3108,
+      "support": 8338
+    }
+  },
+  "note": "Metrics compare predictions against official gold labels using the first-subword prediction for each word; O is the outside tag for seqeval."
+}
