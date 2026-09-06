@@ -2,9 +2,10 @@
 
 - **Ngày lập:** 2026-09-06.
 - **Nhánh tài liệu:** `hieutk/research`.
-- **Trạng thái:** thiết kế nghiên cứu và protocol triển khai; chưa huấn luyện các cấu hình R3/R4 được đề xuất bên dưới.
-- **Phạm vi dữ liệu:** hai snapshot đã tải, `leduckhai/VietMed` và `Viet-Medical/medical_bench_raw`.
+- **Trạng thái:** thiết kế nghiên cứu và protocol triển khai; chưa huấn luyện các cấu hình R3/R4, xây prototype hoặc thực hiện user study được đề xuất bên dưới.
+- **Phạm vi dữ liệu nền:** hai snapshot đã tải, `leduckhai/VietMed` và `Viet-Medical/medical_bench_raw`; khảo sát mở rộng đủ 48 kết quả tìm kiếm Hugging Face tại mục 16, chưa tự động đưa các nguồn mới vào training.
 - **Quyết định chính:** đóng băng ASR và NER; fine-tune mô-đun correction; dùng VietMed làm supervision chính, text trắc nghiệm đã rà soát làm nguồn phụ có đối chứng.
+- **Deliverable cuối:** prototype hỗ trợ phiên âm và rà soát lời nói y khoa tiếng Việt, pipeline/model tái hiện được và báo cáo đánh giá chất lượng cùng công sức sửa thủ công; không phải chatbot bác sĩ hay phần mềm y tế sẵn sàng triển khai.
 
 > Tài liệu này là protocol đề xuất cho nghiên cứu tiếp theo, không phải báo cáo kết quả fine-tune. Số liệu khảo sát được tách khỏi hyperparameter và ngưỡng chấp nhận đề xuất. Cải thiện chất lượng chưa được chứng minh trước khi thực hiện thí nghiệm.
 
@@ -25,6 +26,7 @@
 13. Rủi ro, giới hạn và kết quả âm
 14. Phụ lục phương pháp audit
 15. Tài liệu tham khảo
+16. Khảo sát mở rộng: 48 dataset cho training và hardening
 
 ## 1. Tóm tắt quyết định và câu hỏi nghiên cứu
 
@@ -49,6 +51,7 @@ Hai nguồn dữ liệu có vai trò khác nhau:
 | RQ2 | Text y khoa bổ trợ qua nhiễu tổng hợp có giúp thêm không? | R4 so với R3 và R3-budget |
 | RQ3 | Mức cải thiện WER có đi kèm bảo toàn thuật ngữ, số, phủ định và nội dung không? | Preservation probe và rà soát lỗi nội dung trước/sau |
 | RQ4 | Correction ảnh hưởng thế nào đến NER downstream? | Cùng NER checkpoint trên raw/reference/corrected; gold chỉ khi có nhãn phù hợp |
+| RQ5 | Workflow có correction có giúp người dùng hoàn thiện transcript nhanh hơn mà không tăng lỗi còn sót không? | User study đối chứng ASR raw và workflow correction, cùng chất lượng audio và tiêu chuẩn bản cuối; protocol tại mục 10.5 |
 
 Giả thuyết cần kiểm chứng, không phải kết luận sẵn có:
 
@@ -56,6 +59,7 @@ Giả thuyết cần kiểm chứng, không phải kết luận sẵn có:
 - Dữ liệu tổng hợp dựa trên phân bố lỗi train có thể bổ sung supervision cho miền y khoa.
 - Identity supervision có thể giảm xu hướng sửa văn bản vốn đã đúng.
 - Cải thiện WER không tự động đồng nghĩa với cải thiện NER hoặc an toàn nội dung.
+- Giảm WER có thể giảm công sửa thủ công, nhưng cũng có thể tăng thời gian kiểm tra do các thay đổi khó phát hiện; phải đo trên workflow có người dùng.
 
 ### 1.3. Những việc không thuộc đường nghiên cứu chính
 
@@ -64,6 +68,54 @@ Giả thuyết cần kiểm chứng, không phải kết luận sẵn có:
 - Không dùng TTS thay thế audio thật rồi gọi đó là lỗi ASR tự nhiên của VietMed.
 - Không tự viết lại reference test, bổ sung lời nói bị thiếu bằng suy đoán, hoặc tạo luật từ các case test đã xem.
 - Không yêu cầu một LLM lớn mới khi checkpoint correction hiện tại đã hỗ trợ seq2seq.
+- Không tự tạo chẩn đoán, đơn thuốc hoặc tóm tắt bệnh án; không tự ghi output vào hồ sơ bệnh nhân, xây hệ thống search hay bổ sung diarization/streaming trong prototype chính.
+
+### 1.4. Deliverable cuối và luồng sử dụng
+
+**Sản phẩm đích là prototype “hỗ trợ nhập liệu y khoa bằng giọng nói”, với tác vụ ban đầu là phiên âm và rà soát bản ghi âm/bài giảng y khoa.** Output là bản nháp để con người kiểm tra, không phải kết luận chuyên môn. Mục tiêu ứng dụng là giảm công gõ lại và sửa transcript, không chỉ đạt WER thấp hơn.
+
+```text
+Audio được phép sử dụng
+  → frozen ASR → transcript gốc
+  → phương án correction/baseline được chọn → transcript đề xuất
+  → frozen NER → thực thể dự đoán trên đúng phiên bản text
+  → người dùng nghe đối chiếu, rà soát và chỉnh sửa
+  → xuất bản nháp TXT/JSON, giữ riêng bản gốc, đề xuất và bản đã rà soát
+```
+
+Ba nhóm deliverable phải được bàn giao cùng nhau:
+
+| Nhóm | Bàn giao cụ thể | Điều kiện nghiệm thu |
+|---|---|---|
+| Prototype sử dụng được | Giao diện web chạy local: upload audio, phát lại audio, xem ASR gốc và bản đề xuất, tô thay đổi, xem entity, chỉnh sửa và xuất TXT/JSON | Chạy end-to-end trên audio hợp lệ trong phạm vi hỗ trợ; người dùng kiểm tra và xuất được bản cuối; không dùng kết quả giả thay cho inference |
+| Model và pipeline tái hiện được | Code inference/training/evaluation; cấu hình ASR/correction/NER; adapter/checkpoint của các run đã thực hiện; revisions, môi trường, preprocessing và hướng dẫn chạy | Tải lại artifact và tái hiện output/metric theo protocol deterministic hoặc tolerance đã công bố; ghi rõ cách lấy trọng số hợp lệ thay vì yêu cầu đưa mọi trọng số vào Git |
+| Bằng chứng nghiên cứu và sử dụng | Bảng R0–R4/R3-budget cho các run đủ điều kiện, seed/uncertainty, preservation, NER, runtime, case studies, user study và quyết định pipeline | Kết luận trả lời RQ1–RQ5 hoặc nêu rõ câu chưa có đủ bằng chứng; báo kết quả âm, run bị chặn và giới hạn, không chỉ chọn con số đẹp |
+
+Workflow demo tối thiểu:
+
+1. Người dùng chọn audio được phép xử lý. Công bố định dạng, thời lượng tối đa và phần cứng đã kiểm tra; audio không hỗ trợ phải báo rõ, không âm thầm cắt bỏ phần còn lại. Khả năng chạy trên utterance VietMed không chứng minh xử lý được toàn bộ một cuộc khám dài.
+2. Hiển thị transcript ASR gốc và transcript đề xuất cạnh nhau, với các thao tác thêm/xóa/thay từ được tô rõ. Khi chọn R0, hiển thị rõ “không correction”, không giả vờ đã cải thiện text.
+3. Hiển thị entity theo label schema thực sự có trong checkpoint NER, kèm text nguồn tương ứng. Không hứa nhận diện mọi loại bệnh, thuốc hoặc thông tin hành chính ngoài schema và chất lượng đã đo.
+4. Cho nghe lại audio và sửa bản nháp; luôn giữ được bản ASR gốc và bản đề xuất để đối chiếu. Các thay đổi về thuốc, số, đơn vị và phủ định cần được kiểm tra; tô thay đổi không phải bộ phát hiện đầy đủ mọi lỗi nguy hiểm.
+5. Khi export, phân biệt `transcript_raw`, `transcript_corrected` và `transcript_reviewed`, cùng `review_status`, model/run provenance và nguồn text của entity. Việc người dùng sửa transcript không tự xác nhận entity là đúng; không gắn span của text cũ lên text mới. Nếu không chạy lại NER, giữ entity ở phiên bản text cũ và ghi rõ trạng thái.
+6. Bản xuất chưa được người dùng xác nhận phải mang trạng thái chưa rà soát. Trạng thái “đã rà soát” chỉ ghi nhận thao tác của người dùng trong demo, không phải chứng nhận an toàn y khoa.
+
+**Hoàn tất deliverable không đồng nghĩa chứng minh correction có lợi.** Nếu R3/R4 không vượt các mốc phù hợp, vẫn bàn giao nghiên cứu và prototype với R0 hoặc R1 được chọn theo protocol. Giữ adapter/kết quả thí nghiệm để tái hiện, nhưng không ép neural correction vào đường dùng thực tế chỉ vì đã train.
+
+### 1.5. Ứng dụng thực tế và phạm vi phù hợp
+
+| Ứng dụng | Giá trị mong muốn | Phạm vi/giới hạn |
+|---|---|---|
+| Chép ghi âm/bài giảng, hội thảo y khoa | Tạo bản nháp transcript, hỗ trợ kiểm tra thuật ngữ và đoạn còn sai | Use case đầu tiên để demo; chỉ nhận định hiệu quả trên loại audio, độ dài và người dùng đã đánh giá |
+| Hỗ trợ nhập liệu y khoa bằng giọng nói | Giảm việc gõ lại nội dung đã nói và công rà soát bản nháp | Hướng ứng dụng tiếp theo; nhân viên y tế phải duyệt, không tự ghi vào hồ sơ và không tự tổng hợp thành bệnh án |
+| Chuẩn bị dữ liệu nghiên cứu/gán nhãn | Cung cấp transcript và entity dự đoán để người gán nhãn chỉnh sửa | Output model không phải gold annotation; phải đo công sửa và chất lượng nhãn cuối |
+| Tra cứu nội dung ghi âm tư vấn | Text và entity có thể làm đầu vào cho tìm kiếm | Hướng mở rộng, chưa thuộc deliverable demo; cần lớp lưu trữ/search, quyền truy cập và kiểm chứng riêng |
+
+**Chọn tác vụ phiên âm và rà soát trước, không bắt đầu bằng tích hợp bệnh án thật.** Tác vụ này có output quan sát được, cho phép đối chiếu với audio và đo thời gian sửa; ít rủi ro hơn tự động đưa thông tin vào quy trình khám chữa bệnh, nhưng vẫn có rủi ro sai thuật ngữ và lộ dữ liệu.
+
+Prototype mặc định chạy local với dữ liệu đã được phép sử dụng; không yêu cầu đưa audio người bệnh thật lên dịch vụ bên ngoài. Trước khi dùng dữ liệu nhạy cảm phải có sự đồng ý/cơ sở sử dụng phù hợp, hạn chế định danh, giới hạn người truy cập và quy định lưu/xóa audio, transcript, log, bản export. Không commit hoặc công bố chúng trong artifact demo. Local inference không tự giải quyết mọi nghĩa vụ bảo vệ dữ liệu.
+
+Phân biệt ba mức: **nghiên cứu** kiểm chứng giả thuyết; **prototype** chứng minh workflow có thể sử dụng và đo được; **triển khai thực tế** còn cần kiểm chứng trên miền đích, bảo vệ dữ liệu, quy trình chuyên môn và các yêu cầu pháp lý áp dụng. Tài liệu này cam kết hai mức đầu theo lộ trình, không cam kết sẵn sàng triển khai lâm sàng.
 
 ## 2. Bằng chứng hiện có và điều chỉnh so với kế hoạch cũ
 
@@ -517,6 +569,36 @@ R4 phải được đối chiếu với cả R3 và R3-budget. Nếu lợi ích 
 
 Trước test lock lưu: nguồn/split manifest, model revisions, dữ liệu derived, seeds, hyperparameters, decoder, normalization, checkpoint rule, review sampling, matrix run và metric definitions. Chạy toàn bộ matrix đã khai báo; báo cả thất bại. Nếu test làm thay đổi ý tưởng nghiên cứu, đó là chu kỳ nghiên cứu mới có khai báo, không phải tiếp tục tuning rồi tái sử dụng nhãn “test chưa thấy”.
 
+### 10.5. User study: đo công sửa và chất lượng bản cuối
+
+**Câu hỏi:** workflow có correction có giảm công hoàn thiện transcript mà không làm tăng lỗi còn sót, đặc biệt các lỗi quan trọng, hay không? WER/CER tự động chỉ đánh giá output model; không thay cho phép đo này.
+
+**Thiết kế pilot đề xuất, chưa thực hiện:**
+
+- Tuyển khoảng 8–12 người thông thạo tiếng Việt, ưu tiên sinh viên y hoặc nhân viên có nhiệm vụ ghi chép; ghi mức quen thuật ngữ và kinh nghiệm phiên âm. Đây là pilot khả thi, chưa có tính toán statistical power; không coi nhóm thuận tiện này là đại diện mọi bác sĩ/người dùng.
+- Chốt 24–40 audio clips từ official test cho user study trước khi xem mức lợi/hại của correction trên từng clip; phân tầng theo metadata recording và thời lượng. Pin IDs, tiêu chí lấy mẫu và assignment tại G0, không cần đọc lỗi correction/test để chọn mẫu. Tách tập này khỏi 200 dev utterances dùng cho content review tại mục 10.2; không sử dụng kết quả pilot để tune rồi gọi cùng test là chưa thấy.
+- Chọn một cấu hình/checkpoint dùng cho prototype bằng dev theo mục 10.4, kể cả quy tắc chọn seed, và khóa trước test. Không chọn model hoặc seed tốt nhất trên test để đưa vào user study.
+- So sánh **A: ASR raw + nghe/sửa thủ công** và **B: transcript correction + đối chiếu bản gốc/tô thay đổi + nghe/sửa thủ công**. Cùng audio player, editor, máy và tiêu chuẩn bản cuối; người dùng không được xem reference chuẩn. B đo giá trị của cả workflow hỗ trợ correction, không tách riêng tác động của model và giao diện tô thay đổi.
+- Mỗi người làm cả A và B trên các clip khác nhau, cân bằng recording/thời lượng và thứ tự A/B bằng randomization đã chốt. Không cho cùng người sửa cùng clip ở cả hai điều kiện để tránh nhớ nội dung. Mỗi clip được gán cho cả A và B qua những người khác nhau; lưu seed và assignment. Sau khi chạy, báo cả mức lỗi ASR raw và mất cân bằng mức khó nếu có, không đổi assignment theo kết quả. Lượt tập làm quen dùng audio ngoài tập đánh giá và không tính vào kết quả.
+- Nếu không có corrector vượt các điều kiện chọn model, vẫn có thể khảo sát đối chứng ứng viên đã khóa dưới nhãn thử nghiệm và có người kiểm tra; không gọi B là pipeline được khuyến nghị. Prototype bàn giao giữ baseline phù hợp, không tạo so sánh giả giữa hai output giống nhau.
+
+| Chỉ số | Cách đo | Cách diễn giải |
+|---|---|---|
+| Thời gian sửa chủ động `T_edit` | Từ khi transcript sẵn sàng để xem/nghe đến khi xác nhận bản cuối; gồm thời gian nghe lại, đối chiếu và sửa; nghỉ có chủ đích được ghi riêng theo cùng policy | Báo theo người/điều kiện, median/IQR và thời gian sửa trên mỗi phút audio; không trộn chờ inference với thao tác người dùng |
+| Thời gian chờ và thời gian end-to-end | Đo riêng upload/decode/inference/export và tổng thời gian tới bản cuối; ghi phần cứng, cold/warm load, độ dài audio | Có thể dùng outputs đã cache cho `T_edit` để tránh nhiễu, nhưng phải ghi rõ và không gọi thời gian đó là end-to-end live inference |
+| Công chỉnh sửa | Ghi event thêm/xóa/thay, undo và nghe lại nếu giao diện có instrument; lưu text ban đầu và text cuối để tính edit distance bổ sung | Edit distance giữa hai bản không phải số thao tác hoặc số phím bấm thực tế; không suy số thao tác từ diff cuối |
+| Chất lượng bản cuối | WER/CER theo metric chung và reviewer đối chiếu audio; reviewer không biết điều kiện A/B, bất đồng được adjudicate | Phân biệt lỗi model đầu vào với lỗi vẫn còn sau khi người dùng duyệt; reference nghi ngờ sai phải được ghi, không âm thầm sửa gold test |
+| Lỗi quan trọng còn sót | Reviewer có năng lực miền kiểm tra tên thuốc/thuật ngữ, số/liều/đơn vị, phủ định và thông tin được thêm không có trong audio | Ghi số lỗi, số clip bị ảnh hưởng và denominator cụ thể; không có lỗi trong pilot nhỏ không chứng minh an toàn |
+| Cảm nhận sử dụng | Hỏi ngắn về độ dễ đối chiếu, mức phải kiểm tra lại và phần gây khó hiểu | Kết quả bổ trợ; thích giao diện không đồng nghĩa transcript đúng hơn |
+
+Giữ cùng tiêu chuẩn bản cuối ở A/B; không chấp nhận việc sửa nhanh hơn nhờ bỏ qua các lỗi còn lại. Người dùng xác nhận “xong” không được dùng làm gold chất lượng; cần review độc lập nói trên.
+
+Phân tích phải báo từng người và cả hai điều kiện, chênh lệch thời gian/công sửa, chất lượng cuối và case study. Không coi mọi edit/clip là quan sát độc lập vì lặp theo cả người và recording; với pilot nhỏ ưu tiên thống kê mô tả, nêu rõ giới hạn. Nếu báo CI/kiểm định, khai báo phương pháp xử lý cấu trúc lặp này trước khi phân tích, không tái dùng bootstrap WER theo recording như thể đã xử lý khác biệt người dùng.
+
+**Tiêu chí diễn giải giá trị ứng dụng:** chỉ kết luận có tín hiệu giảm công khi thời gian/công sửa giảm mà chất lượng cuối không cho thấy đánh đổi bất lợi, nhất là lỗi quan trọng. Nếu WER giảm nhưng `T_edit` tăng hoặc lỗi còn sót tăng, lợi ích sử dụng chưa được chứng minh. Không đặt phần trăm tiết kiệm kỳ vọng thành kết quả, không suy ROI hoặc hiệu quả lâm sàng từ pilot.
+
+User study hoàn tất khi có assignment, dữ liệu đo hợp lệ, review bản cuối và báo cáo cả kết quả âm. Nếu chưa tuyển được người hoặc chưa có quyền dùng audio, ghi “chưa đánh giá giá trị sử dụng”; demo chạy được không đủ để đóng RQ5 hoặc tuyên bố tiết kiệm thời gian.
+
 ## 11. Artifact, schema và khả năng tái hiện
 
 ### 11.1. Bố trí đề xuất
@@ -555,6 +637,8 @@ Giữ nguyên `experiments/001-*`, `giai_doan_4/`, `giai_doan_5/` và train reru
 | Run manifest | Code commit, model/tokenizer hashes, data-manifest hashes, seeds, LoRA/training config, actual optimizer steps, hardware/library versions |
 | Prediction record | Run/seed/checkpoint, utterance ID, raw/corrected/reference, edit counts, change flags, NER predictions khi có |
 | Review record | Sample ID, blinded variant ID, audio reference, error category/severity, reviewer và adjudication |
+| Prototype export | Audio/sample ID, pipeline/run signature, `transcript_raw`, `transcript_corrected`, `transcript_reviewed` khi có, `review_status`, entity predictions và phiên bản text nguồn; dữ liệu nhạy cảm không tự đưa vào Git |
+| User-study record | Participant ID giả danh, sample/recording ID, condition/order, assignment seed, timing/pause policy, edit-event counts khi có, bản cuối, blinded review/adjudication; consent và thông tin định danh quản lý riêng |
 
 Manifest JSON phải serializable và có schema được kiểm tra khi triển khai. Một hash manifest không thay thế việc kiểm tra ID coverage hoặc nguồn dữ liệu đúng split.
 
@@ -568,16 +652,19 @@ Lượt kiểm tra nhỏ phải chứng minh: audio decode/resample đúng, batc
 
 | Giai đoạn | Công việc | Điều kiện hoàn tất |
 |---|---|---|
-| G0 — Đóng băng protocol | Lưu revision/hash; xác định split, ID/group policy, metric và quyền dữ liệu | Manifest rõ; không có ambiguity về train/dev/test; R4 còn bị chặn nếu quyền nguồn phụ chưa rõ |
+| G0 — Đóng băng protocol | Lưu revision/hash; xác định split, ID/group policy, metric, quyền dữ liệu và sampling/assignment user study | Manifest rõ; không có ambiguity về train/dev/test; R4 còn bị chặn nếu quyền nguồn phụ chưa rõ |
 | G1 — Cache ASR chuẩn | Pin model/preprocessor/decoder; sinh full train/dev; kiểm tra cache reuse và audio dài | Coverage đủ, ID/reference join đúng, không trộn signatures, lỗi kỹ thuật được giải quyết hoặc báo thành thiếu coverage |
 | G2 — D_real và mốc | Audit train pairs; giữ identity; chạy R0/R1/R2 trên dev_tune | Có metric chung, per-recording breakdown và preservation baseline |
 | G3 — Fine-tune real-only | Kiểm tra lượt nhỏ, rồi train R3 | Adapter tái tải được; generated dev metrics và review đủ để quyết định |
 | G4 — Nguồn phụ | Rights/text review, source grouping, train-only noise profile, D_aux | Không dùng QA labels; parent/source IDs rõ; synthetic noise được kiểm tra |
 | G5 — Ablation | R4 và R3-budget; khóa sampling/hyperparameters; ba seed | So sánh có kiểm soát updates và biến động, không chỉ một run đẹp |
-| G6 — Test lock và đánh giá | Khóa manifest/model/metrics, chạy matrix test và NER/review tương ứng | Đủ official test coverage, báo mọi seed/run và giới hạn gold NER |
-| G7 — Báo cáo | Bảng metrics, uncertainty, cost, case studies, quyết định pipeline | Phân biệt số đã đo với giả thuyết; có negative results và reproduction manifest |
+| G6 — Test lock và đánh giá | Khóa manifest/model/metrics và checkpoint/seed cho prototype, chạy matrix test và NER/review tương ứng | Đủ official test coverage, báo mọi seed/run và giới hạn gold NER; không dùng kết quả test để chọn lại model cho pilot |
+| G7 — Prototype và user study | Hoàn thiện workflow tại mục 1.4; smoke test upload → inference → nghe/sửa → export; pilot theo mục 10.5 | Demo dùng được với dữ liệu hợp lệ; có số đo và review chất lượng bản cuối; nếu pilot bị chặn thì G7 chưa hoàn tất |
+| G8 — Báo cáo và bàn giao | Gói demo, code/model/config, reproduction manifest; metrics, uncertainty, cost, case studies và báo cáo sử dụng | Đủ ba nhóm deliverable tại mục 1.4; phân biệt số đã đo/giả thuyết, báo negative results và phần còn bị chặn; không gọi delivery hoàn chỉnh nếu pilot chưa thực hiện |
 
 Có thể khảo sát và rà soát nguồn phụ song song với cache/train real-only. Không để G4 chặn R0–R3. Không thực thi G5 dùng nguồn phụ khi G4 chưa đạt điều kiện.
+
+Có thể xây giao diện prototype khi các lượt train đang chạy, nhưng chỉ kết nối pipeline/checkpoint đã được khóa để đánh giá cuối. Việc demo hoạt động không cho phép bỏ qua G6 hoặc thay user study bằng video minh họa. Lượt nghiệm thu phải kiểm tra cả audio hợp lệ, input ngoài phạm vi hỗ trợ, trạng thái chưa/đã rà soát, giữ bản gốc và export đúng phiên bản text/entity.
 
 Sau mỗi lượt, bổ sung kết quả vào [REPORT_LOG.md](REPORT_LOG.md) bằng entry mới, ghi cả cấu hình, lỗi, quyết định và đường dẫn artifact; không sửa lịch sử để khớp kết quả mới.
 
@@ -595,10 +682,13 @@ Sau mỗi lượt, bổ sung kết quả vào [REPORT_LOG.md](REPORT_LOG.md) b�
 | Dataset/record duplicates | Kiểm tra audio hash trước merge; group policy độc lập WER | Metadata giống nhau chắc chắn là cùng audio/hypothesis |
 | Không có gold NER trong hai nguồn | Đặt tên consistency đúng; nhánh gold riêng khi đủ điều kiện | Có thể lấy F1 lịch sử áp cho corrected text |
 | Chưa rõ quyền nguồn phụ | Chặn R4 cho đến khi làm rõ, vẫn thực hiện VietMed-only | Dataset public tự động cho phép mọi sử dụng/phân phối |
+| WER giảm nhưng công kiểm tra tăng | User study đối chứng, đo thời gian và chất lượng bản cuối | Metric tự động tốt hơn chắc chắn tiết kiệm công |
+| Người dùng tin quá mức vào text/entity được tô | Giữ bản gốc/audio, phân biệt đề xuất và đã rà soát, review độc lập | Người dùng bấm xác nhận hoặc NER có nhãn nghĩa là đúng y khoa |
+| Audio/transcript có dữ liệu nhạy cảm | Dữ liệu được phép sử dụng, chạy local, giới hạn truy cập/lưu trữ và công bố | Public demo hoặc local inference tự động đáp ứng mọi yêu cầu bảo vệ dữ liệu |
 
 Các kết quả âm vẫn trả lời câu hỏi nghiên cứu: R3 không hơn R2; R4 không hơn real-only; lợi ích biến mất ở matched budget; WER giảm nhưng medical review hoặc NER xấu đi; hoặc nguồn phụ không đủ chất lượng/quyền để dùng. Trong các trường hợp đó giữ baseline phù hợp và báo trung thực.
 
-Hệ thống là công cụ nghiên cứu xử lý tiếng nói, không đưa chẩn đoán hoặc khuyến nghị điều trị. Một mẫu review nhỏ không chứng minh an toàn triển khai lâm sàng.
+Hệ thống là công cụ nghiên cứu xử lý tiếng nói và hỗ trợ tạo bản nháp, không đưa chẩn đoán hoặc khuyến nghị điều trị. Một mẫu review/user study nhỏ, prototype chạy được hoặc WER tốt hơn đều không chứng minh an toàn triển khai lâm sàng. Chưa có kiểm chứng riêng thì không chuyển kết luận từ utterance VietMed sang toàn bộ cuộc khám, bệnh án thật hoặc workflow của mọi cơ sở y tế.
 
 ## 14. Phụ lục phương pháp audit
 
@@ -671,7 +761,9 @@ Không kiểm tra paraphrase, bản dịch, option text, tái dựng hội tho�
 
 Đã kiểm tra: snapshot/hash; Parquet/archive đọc được; schema/split/metadata; chất lượng text raw; ID/reference joins; thống kê trên hypothesis đã lưu; kiến trúc checkpoint và VRAM qua NVML.
 
-Chưa làm trong đợt khảo sát/tài liệu: sinh full ASR cache mới; xác nhận audio-byte duplicates; review và cấp phép clean auxiliary corpus; implement noise generator; train LoRA; đo peak VRAM training; đánh giá R3/R4; gán gold NER mới. Các mục này là công việc research theo lộ trình, không được ghi thành kết quả đã hoàn thành.
+Khảo sát mở rộng tại mục 16 đã kiểm tra metadata/card của 48 repo, đọc dữ liệu của 25 repo trong phạm vi ghi rõ và ghi nhận 23 repo gated. Khảo sát này không phải full download/full semantic audit của 48 corpus, không xác nhận quyền dùng hoặc chất lượng lâm sàng của chúng.
+
+Chưa làm trong đợt khảo sát/tài liệu: sinh full ASR cache mới; xác nhận audio-byte duplicates; review và cấp phép clean auxiliary corpus; implement noise generator; train LoRA; đo peak VRAM training; đánh giá R3/R4; gán gold NER mới; xây và nghiệm thu prototype; thực hiện user study hoặc đo mức tiết kiệm công. Các mục này là công việc research theo lộ trình, không được ghi thành kết quả đã hoàn thành.
 
 ## 15. Tài liệu tham khảo
 
@@ -695,3 +787,182 @@ Chưa làm trong đợt khảo sát/tài liệu: sinh full ASR cache mới; xác
 - [BARTpho documentation](https://huggingface.co/docs/transformers/model_doc/bartpho).
 - [PEFT LoRA documentation](https://huggingface.co/docs/peft/en/package_reference/lora).
 - [VietMed-NER](https://huggingface.co/datasets/leduckhai/VietMed-NER): nguồn gold riêng, ngoài hai snapshot của nghiên cứu chính.
+
+## 16. Khảo sát mở rộng: 48 dataset cho training và hardening
+
+### 16.1. Phạm vi, độ phủ và cách đọc kết quả
+
+Nguồn yêu cầu: [Hugging Face — medical vietnam, sort by downloads](https://huggingface.co/datasets?sort=downloads&search=medical+vietnam). Lúc **2026-09-06 07:08 UTC**, trang tìm kiếm báo **48 repo**; [API tương ứng](https://huggingface.co/api/datasets?search=medical%20vietnam&sort=downloads&direction=-1&limit=100&full=true) trả 48 ID duy nhất, không có trang tiếp theo. Đã khảo sát cả 48, không dừng ở 30 kết quả trang đầu. Đây là tập kết quả của truy vấn cụ thể, không phải mọi dataset y khoa tiếng Việt trên Internet; VietMed và medical_bench_raw nền không nằm trong 48 kết quả này.
+
+**Độ phủ thực tế:**
+
+- **48/48 repo:** kiểm tra card/metadata công khai, revision, cấu trúc file, schema/split được công bố và điều kiện truy cập.
+- **25 repo:** đọc được dữ liệu thực qua viewer hoặc file gốc; lấy mẫu ở các vị trí cách nhau khi có thể. Ngôn ngữ trong bảng là ngôn ngữ đã quan sát ở mẫu, không phải thống kê language-ID toàn corpus.
+- **23 repo:** dữ liệu gated, các đường viewer/raw-file trả HTTP 401; chỉ có metadata/card công khai. Không suy ra ngôn ngữ, độ sạch hoặc chất lượng từ tên repo/tổ chức. HTTP 429 tạm thời được xử lý bằng đọc tuần tự/range fallback; không đánh đồng rate limit với gating.
+- Kiểm tra cơ học sâu hơn: toàn bộ 85.525 dòng metadata noise; toàn bộ 658 text của bộ hội chẩn; toàn bộ các bảng benchmark/log public trong nhóm evaluation. “Kiểm tra cơ học toàn bảng” không có nghĩa đã nghe mọi audio, đọc mọi đoạn hoặc xác minh từng phát biểu y khoa.
+
+Audit chi tiết lưu local ở `datasets/derived/correction/audit/hf-medical-vietnam-survey-2026-09-06.json`: đủ 48 ID/revisions, configs/splits, phạm vi mẫu, provenance/license, quyết định và evidence URLs; có kết quả hash/header/noise/overlap. File nằm dưới `/datasets/` được ignore, không tự có trong clone Git. Bảng bên dưới là kết quả khảo sát trong tài liệu; các trang dataset có thể thay đổi sau thời điểm khảo sát. Trước sử dụng, lấy revision đã ghi trong audit và tạo source manifest/hash như mục 3/11.
+
+**Kết luận:** có ứng viên đáng khảo sát tiếp, nhưng **chưa có bộ nào được phê duyệt để nạp nguyên trạng vào correction training**. Giữ VietMed làm supervision chính. “Harden” ở đây là giữ đúng nội dung dưới lỗi ASR, tiếng ồn và tình huống dễ overcorrect; không chuyển model thành chatbot trả lời hoặc sửa kiến thức y khoa của người nói.
+
+### 16.2. Shortlist và thứ tự ưu tiên
+
+| Ưu tiên | Dataset | Giá trị đối với pipeline | Điều kiện trước khi dùng |
+|---|---|---|---|
+| A — audio bổ sung | [HieuNguyen203/Vietnamese_Medical_Consultation](https://huggingface.co/datasets/HieuNguyen203/Vietnamese_Medical_Consultation) | 460 train + 198 test, có audio và text; gần nhất với supervision cần thiết ngoài VietMed | License/consent, nguồn recording/speaker, chất lượng audio–text và overlap; sinh hypothesis bằng đúng frozen ASR, không mặc định text là gold đã duyệt |
+| N — acoustic hardening | [manhcuong2005/vietnam_medical_noise_dataset](https://huggingface.co/datasets/manhcuong2005/vietnam_medical_noise_dataset) | 85.525 đoạn noise theo metadata; thêm nhiễu vào audio rồi đo pipeline và/hoặc sinh thêm training pairs | Quyền từng nguồn, original-noise/mixture parent mapping và split, kiểm tra speech lẫn trong noise; WHAM gốc có điều kiện phi thương mại |
+| T — text phụ nhỏ để review | [hungnm/vietnamese-medical-qa](https://huggingface.co/datasets/hungnm/vietnamese-medical-qa) | 9.335 QA; câu hỏi gần văn phong người bệnh, có phủ định và cách diễn đạt tự nhiên | Loại thông tin định danh, tách các ca bị ghép, sửa lỗi crawl/orthography bằng review, dedup; chỉ lấy text độc lập đã duyệt, không học question → answer |
+| T — dự phòng, ưu tiên thấp | [Dqdung205/medical-vietnamese-qa](https://huggingface.co/datasets/Dqdung205/medical-vietnamese-qa), [mtue29/vietnamese-medical-dataset](https://huggingface.co/datasets/mtue29/vietnamese-medical-dataset) | Nguồn câu hỏi hoặc prose/thuật ngữ bổ sung sau trích lọc | Dqdung có PHI-like text/lỗi crawl và overlap; mtue là triplets retrieval, nhiều snippet lặp hoặc bị cắt giữa câu, article_id không đủ để chia nguồn an toàn |
+| B — chỉ xét held-out diagnostics | [II-Vietnam/Medical-VN-Benchmark](https://huggingface.co/datasets/II-Vietnam/Medical-VN-Benchmark) | Câu hỏi thi tiếng Việt để thiết kế probe bảo toàn thuật ngữ/số/phủ định đã review | Giữ ngoài training, dedup/group câu hỏi, xác minh nguồn/quyền; đáp án MCQ không phải reference correction hoặc gold NER |
+
+Ưu tiên này dựa trên độ khớp bài toán và bằng chứng kiểm tra, **không phải cải thiện WER đã đo**. Không thay medical_bench_raw bằng nguồn mới âm thầm trong R4: mỗi nguồn được chấp thuận phải là một nhánh ablation có manifest, ngân sách và tên riêng.
+
+### 16.3. Inventory đầy đủ 48 repo
+
+Quy ước:
+
+- **A/N/T:** ứng viên audio/noise/text có điều kiện; T thấp chỉ đáng trích lọc sau các lựa chọn tốt hơn.
+- **G:** dữ liệu gated; số dòng/schema là khai báo, chưa xác minh actual rows. Không đưa vào training khi chưa đủ quyền truy cập và kiểm tra.
+- **X:** không dùng nguyên trạng trong pipeline hiện tại do không đúng tác vụ hoặc có vấn đề đã quan sát.
+- **B:** benchmark/exclusion list hoặc diagnostic held-out; không biến thành training chỉ vì HF đặt tên split `train`.
+- License **A\*** = Apache-2.0 được khai báo; **SA\*** = CC-BY-SA-4.0 được khai báo; **?** = chưa rõ quyền từ tài liệu đã kiểm tra. Dấu `*` không xác nhận upstream rights/consent. Với noise, **NC** là hạn chế phi thương mại của WHAM gốc, không phải license đầy đủ cho mọi thành phần repack.
+- Số dòng mặc định là `default/train`, trừ chỗ ghi khác; không cộng các config/derivative thành số ví dụ độc lập.
+
+| # | Dataset | Rows/splits | License | Quan sát và quyết định |
+|---|---|---:|---|---|
+| 1 | [manhcuong2005/vietnam_medical_noise_dataset](https://huggingface.co/datasets/manhcuong2005/vietnam_medical_noise_dataset) | 85.525 | ? / WHAM NC | **N:** metadata noise, không transcript; 442,072 giờ cộng từ metadata, gồm raw và mixtures |
+| 2 | [hungnm/vietnamese-medical-qa](https://huggingface.co/datasets/hungnm/vietnamese-medical-qa) | 9.335 | A* | **T:** QA tiếng Việt; câu hỏi có thể hữu ích sau review, nhưng thấy tên/năm sinh gắn bệnh sử và nhiều ca bị ghép |
+| 3 | [manhcuong2005/vietnam_medical_ambient_noise](https://huggingface.co/datasets/manhcuong2005/vietnam_medical_ambient_noise) | 2.250 | ? / WHAM NC | **X:** chỉ thấy wham_raw, khác card bảy nhóm/~442 giờ; một WAV trùng byte với #1 |
+| 4 | [mtue29/vietnamese-medical-dataset](https://huggingface.co/datasets/mtue29/vietnamese-medical-dataset) | 463.422 | A* | **T thấp:** anchor/positive/negative + meta, tiếng Việt; retrieval triplets, lặp positive, có fragment |
+| 5 | [Dqdung205/medical-vietnamese-qa](https://huggingface.co/datasets/Dqdung205/medical-vietnamese-qa) | 13.594 | SA* | **T thấp:** QA tiếng Việt từ Vinmec/Long Châu theo card; PHI-like text, ghép từ/ca, overlap họ article |
+| 6 | [ntkhoi/Medical-Pretrain-Vietnamese](https://huggingface.co/datasets/ntkhoi/Medical-Pretrain-Vietnamese) | 143.310 khai báo | A* / prose NC | **G:** text-only theo schema; chưa xem rows; card giới hạn non-commercial dù tag Apache |
+| 7 | [ynguyen1010/medical_vietnamese_datasets](https://huggingface.co/datasets/ynguyen1010/medical_vietnamese_datasets) | cleaned_format 68.498; tfidf 68.494 | A* | **X:** hai biến đổi overlap; thấy thuật ngữ bị tách hỏng và tfidf cắt text, không phải 136.992 ví dụ độc lập |
+| 8 | [hungsvdut2k2/vietnamese-medical-chat-data](https://huggingface.co/datasets/hungsvdut2k2/vietnamese-medical-chat-data) | 46.479 | ? | **X:** conversation user/assistant tiếng Việt; không có audio/source/review xác minh |
+| 9 | [HieuNguyen203/Vietnamese_Medical_Consultation](https://huggingface.co/datasets/HieuNguyen203/Vietnamese_Medical_Consultation) | train 460; test 198 | ? | **A:** audio + text hội chẩn tiếng Việt; không có speaker/source ID hoặc gold NER trong schema |
+| 10 | [khoaliamle/vietnamese-medical-qa](https://huggingface.co/datasets/khoaliamle/vietnamese-medical-qa) | 18.709 | A* | **X:** QA/context tiếng Việt; sáu mẫu trùng #27 sau bỏ classification, không phải nguồn độc lập đã chứng minh |
+| 11 | [II-Vietnam/Public-Medical-Reasoning-Dataset](https://huggingface.co/datasets/II-Vietnam/Public-Medical-Reasoning-Dataset) | 181.204 khai báo | ? | **G:** card mô tả reasoning do LLM sinh; chưa quan sát ngôn ngữ rows; không phải transcript targets |
+| 12 | [II-Vietnam/Medical-ChatDoctor-HealthCareMagic-100k-Qwen3](https://huggingface.co/datasets/II-Vietnam/Medical-ChatDoctor-HealthCareMagic-100k-Qwen3) | 112.003 khai báo | ? | **G:** schema responses/judge scores; không coi generated answers là gold |
+| 13 | [II-Vietnam/Medical-MedQA-Synthetic](https://huggingface.co/datasets/II-Vietnam/Medical-MedQA-Synthetic) | 8.475 khai báo | ? | **G:** schema MCQ, generated responses/rewards; ngôn ngữ thực chưa biết |
+| 14 | [II-Vietnam/Medical-Guideline-V0-Prompt](https://huggingface.co/datasets/II-Vietnam/Medical-Guideline-V0-Prompt) | 99.685 khai báo | ? | **G:** question/reference_answer/source theo card; không biết nguồn guideline hay ngôn ngữ thực |
+| 15 | [Dqdung205/medical_vietnamese_datasets](https://huggingface.co/datasets/Dqdung205/medical_vietnamese_datasets) | 344.056 | SA* | **T thấp, không dùng raw:** article chunks/QA tiếng Việt, overlap ranh giới, text thiếu thành phần; cùng họ #7/#36 |
+| 16 | [II-Vietnam/Medical-Book-V0-Prompt](https://huggingface.co/datasets/II-Vietnam/Medical-Book-V0-Prompt) | 623.229 khai báo | ? | **G:** text QA/source theo schema; quyền sách và nội dung chưa xác minh |
+| 17 | [II-Vietnam/Medical-ChatDoctor-HealthCareMagic-100k-Qwen3-verify](https://huggingface.co/datasets/II-Vietnam/Medical-ChatDoctor-HealthCareMagic-100k-Qwen3-verify) | 267.924 khai báo | ? | **G:** verification records theo schema, không coi số record là số ca độc lập |
+| 18 | [II-Vietnam/Medical-Web-V0-Prompt](https://huggingface.co/datasets/II-Vietnam/Medical-Web-V0-Prompt) | 430.078 khai báo | ? | **G:** question/reference_answer/source; nguồn web/ngôn ngữ chưa quan sát |
+| 19 | [II-Vietnam/Medical-Guideline-V0-Prompt-Traces-Qwen3](https://huggingface.co/datasets/II-Vietnam/Medical-Guideline-V0-Prompt-Traces-Qwen3) | 99.065 khai báo | ? | **G:** generated traces/verification, không audio hoặc correction gold |
+| 20 | [II-Vietnam/Medical-Paper-V0-Prompt](https://huggingface.co/datasets/II-Vietnam/Medical-Paper-V0-Prompt) | 524.855 khai báo | ? | **G:** chưa biết paper IDs, nguồn/quyền hoặc ngôn ngữ rows |
+| 21 | [II-Vietnam/Medical-Wiki-V0-Prompt](https://huggingface.co/datasets/II-Vietnam/Medical-Wiki-V0-Prompt) | 182.033 khai báo | ? | **G:** chưa có revision/article lineage hoặc mẫu nội dung wiki xác minh |
+| 22 | [II-Vietnam/Medical-Patient-V0-Prompt-Qwen3](https://huggingface.co/datasets/II-Vietnam/Medical-Patient-V0-Prompt-Qwen3) | 162.205 khai báo | ? | **G:** question/response/reference/judge metadata; khác nguồn Patient public #43 |
+| 23 | [II-Vietnam/Medical-Patient-V0-Prompt-Qwen3-verify](https://huggingface.co/datasets/II-Vietnam/Medical-Patient-V0-Prompt-Qwen3-verify) | 507.855 khai báo | ? | **G:** verification records; không có bằng chứng human gold |
+| 24 | [II-Vietnam/Medical-Book-V0-Prompt-Traces-Qwen3](https://huggingface.co/datasets/II-Vietnam/Medical-Book-V0-Prompt-Traces-Qwen3) | 269.444 khai báo | ? | **G:** không ngoại suy lỗi ở sibling #34 sang rows bị khóa này |
+| 25 | [II-Vietnam/II-Medical-8B-V2-Health-Bench](https://huggingface.co/datasets/II-Vietnam/II-Medical-8B-V2-Health-Bench) | 5.000 khai báo | ? | **G/B:** schema rubric/score/prompt/completion gợi ý export đánh giá; không training trên benchmark |
+| 26 | [II-Vietnam/Medical-MedMCQA-Synthetic](https://huggingface.co/datasets/II-Vietnam/Medical-MedMCQA-Synthetic) | 199.580 khai báo | ? | **G:** schema MCQ/reasoning; rủi ro nguồn benchmark, chưa đo overlap |
+| 27 | [dangmanh1811/synthetic-vietnamese-medical-qa](https://huggingface.co/datasets/dangmanh1811/synthetic-vietnamese-medical-qa) | 18.709 | ? | **X:** QA/context tiếng Việt chứa dấu vết reasoning; sáu mẫu trùng #10, doc_0 tái dùng output #30 |
+| 28 | [II-Vietnam/EvalMedical_MMLU-Pro_Medical_Test](https://huggingface.co/datasets/II-Vietnam/EvalMedical_MMLU-Pro_Medical_Test) | 1.535 | ? | **B:** MCQ mẫu tiếng Anh, transformed MMLU-Pro test; 1.316 question stems phân biệt |
+| 29 | [II-Vietnam/EvalMedical_GPQA_Medical_Test](https://huggingface.co/datasets/II-Vietnam/EvalMedical_GPQA_Medical_Test) | 390 | ? | **B:** MCQ mẫu tiếng Anh; chỉ 78 exact unique rows, mỗi row lặp năm lần |
+| 30 | [dangmanh1811/vietnamese-medical-qa](https://huggingface.co/datasets/dangmanh1811/vietnamese-medical-qa) | 7.206 | ? | **X:** instruction/conversation có reasoning markup tiếng Việt, nguồn context cho mẫu #27/#10 |
+| 31 | [quannguyen204/vietnamese_medical_corpus_dataset](https://huggingface.co/datasets/quannguyen204/vietnamese_medical_corpus_dataset) | 151.622 | ? | **T thấp:** prose/QA tiếng Việt; thấy quảng cáo, giá dịch vụ, title/body lệch và boilerplate |
+| 32 | [tmnam20/vietnamese-medical-article](https://huggingface.co/datasets/tmnam20/vietnamese-medical-article) | default 188.739; 19 source configs khai báo | ? | **G:** tổng 19 config bằng default; không cộng gấp đôi, chưa xem được nội dung/config nào |
+| 33 | [hungsvdut2k2/vietnamese-medical-notes](https://huggingface.co/datasets/hungsvdut2k2/vietnamese-medical-notes) | 18.058 | ? | **X:** thực tế là conversations tiếng Việt, có tham chiếu hình không kèm hình và diễn đạt bất thường |
+| 34 | [II-Vietnam/Medical-Book-V0-Prompt-Traces-Qwen3-verify-Qwen3-8b](https://huggingface.co/datasets/II-Vietnam/Medical-Book-V0-Prompt-Traces-Qwen3-verify-Qwen3-8b) | 269.444 | ? | **X:** mẫu tiếng Anh; có judge chấm nhầm chủ đề/câu hỏi, không dùng verification scores làm gold |
+| 35 | [lengocquangLAB/vietnamese-medical-qa](https://huggingface.co/datasets/lengocquangLAB/vietnamese-medical-qa) | 20.789 | ? | **X mặc định:** MCQ tiếng Việt, nguồn/key chưa xác minh; chỉ xét probe thuật ngữ đã review, không QA→answer training |
+| 36 | [quannguyen204/vietnamese-medical-article-corpus](https://huggingface.co/datasets/quannguyen204/vietnamese-medical-article-corpus) | 68.498 | ? | **X:** article-title/question→body tiếng Việt; row 0 bị nhân đôi nguyên nửa, overlap #7/#15 |
+| 37 | [vnhkhwa/VMAD-Medical-Vietnamese](https://huggingface.co/datasets/vnhkhwa/VMAD-Medical-Vietnamese) | 3 | ? | **X:** đã đọc cả ba; instruction/input/output thiếu ngữ cảnh, output có lỗi thuật ngữ/khuyến nghị đáng báo động |
+| 38 | [II-Vietnam/Medical-VN-Benchmark](https://huggingface.co/datasets/II-Vietnam/Medical-VN-Benchmark) | 12.488 | ? | **B:** MCQ mẫu tiếng Việt; 11.144 stems phân biệt; key nhất quán cơ học không chứng minh đúng chuyên môn |
+| 39 | [II-Vietnam/inspect_simpleqa_ii_medical_8b_tool_e5_wikipedia_18_128k](https://huggingface.co/datasets/II-Vietnam/inspect_simpleqa_ii_medical_8b_tool_e5_wikipedia_18_128k) | 4.326 | ? | **X/B:** log SimpleQA, mẫu tiếng Anh/general knowledge; có output model sai, không phải medical text gold |
+| 40 | [II-Vietnam/inspect_frames_tue_ii_medical](https://huggingface.co/datasets/II-Vietnam/inspect_frames_tue_ii_medical) | 822 | ? | **X/B:** log FRAMES tiếng Anh trong mẫu; benchmark lineage đã đối chiếu, không corpus training mới |
+| 41 | [hungsvdut2k2/raft-vietnamese-medical-chat-data](https://huggingface.co/datasets/hungsvdut2k2/raft-vietnamese-medical-chat-data) | 39.893 | ? | **X:** retrieval QA tiếng Việt; assistant answer nằm nguyên trong user prompt ở cả sáu mẫu |
+| 42 | [II-Vietnam/Medical-Reasoning-QwQ](https://huggingface.co/datasets/II-Vietnam/Medical-Reasoning-QwQ) | 20.277 khai báo | ? | **G:** generated reasoning/answer theo schema; không phải human transcript gold |
+| 43 | [II-Vietnam/Medical-Patient-V0-Prompt](https://huggingface.co/datasets/II-Vietnam/Medical-Patient-V0-Prompt) | 162.992 | ? | **X:** sáu conversation mẫu đều tiếng Anh; actual schema messages/conversation, không audio |
+| 44 | [II-Vietnam/Medical-SFT-Qwen2.5-7B-Instruct-24-april-Rollout](https://huggingface.co/datasets/II-Vietnam/Medical-SFT-Qwen2.5-7B-Instruct-24-april-Rollout) | 231.349 khai báo | ? | **G:** rollout schema, không corpus phát ngôn y khoa đã xác minh |
+| 45 | [II-Vietnam/Medical-SFT-Qwen2.5-7B-Instruct-24-april-Rollout-v1](https://huggingface.co/datasets/II-Vietnam/Medical-SFT-Qwen2.5-7B-Instruct-24-april-Rollout-v1) | 368.750 khai báo | ? | **G:** 30/30 Parquet Git objects và sizes trùng #48 theo pinned tree API |
+| 46 | [II-Vietnam/Medical-Book-V0-Prompt-Traces-Qwen3-Patch-2](https://huggingface.co/datasets/II-Vietnam/Medical-Book-V0-Prompt-Traces-Qwen3-Patch-2) | 353.785 khai báo | ? | **G:** trace patch family; không coi là nguồn độc lập chỉ vì tên khác |
+| 47 | [II-Vietnam/OnPolicy-Medical-SFT-Experiment-v0](https://huggingface.co/datasets/II-Vietnam/OnPolicy-Medical-SFT-Experiment-v0) | 159.186 khai báo | ? | **G:** experiment/rollout metadata, chưa có mẫu ngôn ngữ hoặc gold xác minh |
+| 48 | [meoconxinhxan/II-Vietnam_Medical-SFT-Qwen2.5-7B-Instruct-28-april-Rollout](https://huggingface.co/datasets/meoconxinhxan/II-Vietnam_Medical-SFT-Qwen2.5-7B-Instruct-28-april-Rollout) | 368.750 khai báo | ? | **G:** trùng file objects với #45; không cộng thành 737.500 ví dụ mới độc lập |
+
+### 16.4. Các phát hiện ảnh hưởng trực tiếp tới quyết định
+
+**Audio hội chẩn:** kiểm tra cơ học toàn bộ 658 text cho thấy 0 text rỗng, 0 normalized whole-text duplicates trong/giữa train–test và 0 normalized whole-text overlap với từng split VietMed. Normalization là NFC/lowercase, bỏ ký tự ngoài word/whitespace, gộp khoảng trắng. Đọc định tính 12 transcript ở đầu/giữa/cuối hai split; hai WAV header mẫu là mono PCM16, 16 kHz, 30 giây. Đây không phải nghe/align toàn bộ audio, không chứng minh source/speaker-disjoint hoặc text đúng chuyên môn. Không có recording/speaker/consent metadata để xác nhận các điều đó.
+
+**Noise và quyền nguồn:** đọc toàn bộ `metadata.parquet` 494.817 bytes, SHA-256 `64d45f5e425dbc2ccc8e568f5903e00b452a15096649e7a4824fd60368d1abe9`. Có 85.525 paths phân biệt, duration dương và sample_rate metadata đều 16 kHz:
+
+| Nhóm | Rows | Giờ theo metadata |
+|---|---:|---:|
+| wham_raw | 25.000 | 76,181 |
+| hospital_raw | 562 | 0,781 |
+| output_raw | 3.321 | 27,444 |
+| wham_plus_hospital | 25.000 | 76,181 |
+| output_plus_hospital | 3.321 | 27,444 |
+| output_plus_wham | 3.321 | 27,444 |
+| triple | 25.000 | 206,597 |
+
+Tổng trước làm tròn là 442,072 giờ; phần lớn không phải recordings bệnh viện độc lập. Đã kiểm tra một WAV mỗi nhóm: mono PCM16/16 kHz, duration khớp metadata mẫu. Chưa kiểm tra tồn tại, tính độc lập hoặc chất lượng âm thanh của mọi path.
+
+[Nguồn WHAM gốc](http://wham.whisper.ai/) công bố noise ở San Francisco Bay Area, có train/dev/test gốc, loại các đoạn speech nghe hiểu được và license **CC-BY-NC-4.0**. Bản gốc mô tả 28.000 files, stereo float32, độ dài biến thiên; repack đang có 25.000 wham_raw rows cùng duration 10,97 giây. Cần làm rõ phép biến đổi và khôi phục mapping split gốc; không suy split từ số lượng trùng hợp. License/card của repack không xác minh quyền phần hospital/YouTube/mixtures và không loại bỏ hạn chế phi thương mại của WHAM. Nếu hướng tới sản phẩm thương mại, cần nguồn noise/quyền sử dụng phù hợp khác hoặc được cấp phép riêng.
+
+Repo ambient #3 chỉ có thư mục wham_raw ở root và viewer 2.250 rows với label `wham_raw-0/1/2`. WAV đầu tiên của #1/#3 có cùng SHA-256 `e52aeba1ea01431820b4f280f30ec583d2682a26bbebe1b42a32664f6d2886fc`. Đây là overlap một file đã chứng minh, không phải bằng chứng toàn bộ hai repo giống nhau; không dùng hai repo làm train/test noise “độc lập” nếu chưa group theo nguồn.
+
+**QA và text “cleaned” không tự thành target sạch:**
+
+- Hungnm/Dqdung có mẫu nêu tên đầy đủ, năm sinh gắn bệnh sử và ghép nhiều ca. Không chép dữ liệu nhạy cảm vào demo/report; deidentify và kiểm tra quyền trước mọi trích lọc.
+- Dqdung underscore, quannguyen article-corpus và ynguyen cleaned/tfidf có article/QA mẫu dùng chung. Một answer của quannguyen dài 10.678 ký tự gồm hai nửa 5.339 ký tự giống hệt. Ynguyen có thuật ngữ bị tách ký tự; một tfidf answer chỉ còn 300 whitespace tokens trong khi trường đếm vẫn là 1.211. Đây là lỗi dữ liệu gốc đã quan sát, không phải viewer tự cắt.
+- Mtue có positives lặp theo negative khác nhau; cùng title xuất hiện ở nhiều article_id. Không random split theo row hoặc tin article_id là ID bài gốc.
+- Sáu vị trí kiểm tra của khoaliamle và dangmanh synthetic có payload trùng sau bỏ classification; doc_0 còn tái dùng output reasoning của dangmanh bản khác. Chưa đo tỷ lệ overlap toàn corpus, nhưng đã đủ để không coi ba repo là ba nguồn độc lập.
+
+**“Verify” không phải human gold:** trong #34, 9/11 row được kiểm tra trọn vẹn về alignment có câu hỏi và nội dung judge khác chủ đề; đây là mẫu không đại diện, không phải tỷ lệ lỗi toàn corpus. Hai row đầu đã được kiểm tra lại độc lập: câu hỏi về dinh dưỡng người cao tuổi nhưng judge đánh giá siêu âm định lượng; câu hỏi về hepcidin nhưng judge đánh giá chọc dò thắt lưng. Các mẫu giữa/cuối có thể align đúng. Không dùng score đó làm reward/filter/gold trước khi sửa và audit join; không ngoại suy lỗi sang siblings gated.
+
+**Benchmark contamination:** GPQA fork 390 rows chỉ có 78 exact unique rows, mỗi row lặp năm lần, khớp upstream GPQA. MMLU fork có 1.535 stems khớp official test nhưng một số answer text khác phiên bản hiện tại; khác biệt lịch sử không tự chứng minh answer sai. Các prompt/reference của SimpleQA và FRAMES logs khớp upstream sau xử lý dấu `?` cuối câu; không phải ví dụ medical mới. Medical-VN-Benchmark có 12.488 IDs nhưng 11.144 question stems phân biệt. Tên split `train`, tên tác giả có “Vietnam”, hoặc model outputs kèm `is_correct` không biến chúng thành Vietnamese correction gold.
+
+**License chưa giải quyết:** ntkhoi có tag Apache-2.0 nhưng card ghi chỉ dùng phi thương mại/nghiên cứu/giáo dục, đồng thời gated. Không chọn cách diễn giải thuận lợi rồi ingest. Các tag Apache/CC-BY-SA ở repo crawl cũng không chứng minh quyền upstream hoặc consent. Không có bằng chứng đủ để chọn một bộ gold NER mới từ 48 repo này.
+
+### 16.5. Protocol dùng nguồn mới để training và hardening
+
+Các nhánh dưới đây là đề xuất sau khảo sát, **chưa thực hiện**, và không thay đổi ngầm protocol R0–R4 đã nêu.
+
+**A. Audio thật bổ sung — ưu tiên sát bài toán**
+
+1. Làm rõ nguồn/quyền/consent và recording/speaker groups của bộ hội chẩn; nghe/align, review reference trên train. Không sửa text test để làm model có vẻ tốt hơn.
+2. Giữ test 198 mẫu cho external evaluation sau khi xác minh độc lập; không chuyển vào train. Không coi zero exact text overlap là bằng chứng không audio/source leakage.
+3. Dùng cùng ASR signature để sinh `hypothesis → reference` từ train được chấp thuận. LoRA real stage tiếp tục giữ identity/preservation; so với R3 và đối chứng cùng budget, không quy lợi ích thêm updates thành lợi ích domain data.
+
+**B. Acoustic hardening — tác động lên audio, không bịa text errors**
+
+```text
+VietMed audio x + noise n đã duyệt → audio nhiễu
+  → cùng frozen ASR → hypothesis nhiễu
+  → correction đang đánh giá → cùng reference của lời nói gốc
+```
+
+- Chốt parent/source groups trước chia noise train/dev/test. Một raw noise và mọi mixture/biến đổi chứa nó phải cùng nhóm; split của speech cũng giữ nguyên. Nếu không khôi phục được nguồn/parent mapping, chưa được tuyên bố holdout noise độc lập.
+- Chỉ lấy noise được phép dùng và đã kiểm tra không mang speech thứ hai nghe hiểu được. Đặc biệt không mặc định YouTube/hospital noise là non-speech; speech thêm vào có thể làm reference gốc không còn đầy đủ.
+- Stress test ban đầu gồm clean và các mức **SNR 20/10/0 dB**, là grid thiết kế chứ không phải điều kiện bệnh viện đã đo. Dùng noise crop/offset/seed cố định; RMS tính trên cùng cửa sổ trộn theo một định nghĩa đã chốt. Với RMS noise bằng 0 phải báo lỗi chọn mẫu, không chia cho 0.
+
+```text
+alpha = RMS(x) / (RMS(n) × 10^(SNR_dB / 20))
+x_noisy = x + alpha × n
+```
+
+- Lưu parent IDs, noise hash/offset, requested/measured SNR, resampling và gain policy; tránh clipping làm sai SNR. Mọi run so sánh dùng đúng cùng audio nhiễu và ASR cache.
+- **Chỉ evaluation:** không cập nhật model từ các case test mới xem. **Nếu augmentation training:** chỉ tạo pairs từ speech train và noise train; target vẫn là lời nói thật, không phải label `noise_type`.
+- Báo WER/CER, overcorrection/lỗi quan trọng và NER consistency theo noise category/SNR/recording, thêm clean regression và runtime. Không loại các trường hợp khó sau khi xem WER; dữ liệu không nghe hiểu được cần báo riêng nhưng không bị âm thầm bỏ.
+
+**C. Text phụ — một nguồn mỗi ablation**
+
+- Bắt đầu với một tập nhỏ câu hỏi Hungnm đã làm rõ quyền, deidentify, tách ca và review surface text. Dqdung hoặc prose Mtue là nhánh dự phòng, không gộp cả 48 repo.
+- Giữ ý nghĩa phát ngôn, số, đơn vị, tên thuốc và phủ định; không “sửa kiến thức” bằng suy đoán. Câu hỏi→đáp án, heading→snippet, MCQ→letter và instruction→reasoning đều không phải correction pairs.
+- Dedup cross-repo theo source article/question/context và gần trùng trước chia dữ liệu; không chỉ dedup row IDs. Tạo nhiễu từ train ASR confusion profile như mục 7, không học noise rules từ test.
+- So với real-only và matched-budget; chốt số câu độc lập đã duyệt/token budget thay vì dùng số hàng hoặc số repo làm bằng chứng đa dạng. Mỗi nguồn có run/manifest riêng, không tự ghi kết quả là R4 gốc.
+
+**D. Hardening bảo toàn nội dung**
+
+Tạo một tập challenge riêng đã review và khóa trước training, không giao parent/source với train. Bao gồm text vốn đúng phải giữ nguyên; tên thuốc/thuật ngữ dễ bị đổi thành từ phổ thông; số, số thập phân, liều/đơn vị; phủ định; câu cụt đầu/cuối không được tự hoàn thiện; câu hỏi y khoa phải được phiên âm chứ không được trả lời.
+
+Có thể dùng text từ nguồn đã được phép để tạo các case này, nhưng expected output phải là transcript trung thành đã review, không phải đáp án/tư vấn của dataset. Khi dùng Medical-VN-Benchmark làm nguồn diagnostic, giữ nó ngoài training, group câu hỏi lặp và ghi rõ đây không phải đánh giá QA hoặc gold NER. Không dùng case test lịch sử đã thấy lỗi làm train rule; benchmark exclusions áp dụng xuyên các repo derivative.
+
+### 16.6. Quyết định triển khai sau khảo sát
+
+1. **Giữ đường chính VietMed → frozen ASR → correction → frozen NER.** Chưa có thí nghiệm chứng minh nguồn mới nào giúp giảm WER, cải thiện NER hoặc giảm công sửa thủ công.
+2. **Ưu tiên audit bộ hội chẩn và nguồn noise**, vì chúng bổ sung đúng yếu tố audio/error distribution mà text QA không cung cấp. Với noise, ưu tiên provenance/split gốc có thể kiểm tra hơn repack hỗn hợp thiếu mapping; tôn trọng điều kiện phi thương mại.
+3. **Text phụ chỉ thử nhỏ, đã duyệt, từng nguồn một**; Hungnm là ứng viên review đầu tiên, không phải corpus clean đã phê duyệt. Không tăng quy mô bằng cách cộng các bản lặp, cleaned variants hoặc model traces.
+4. **Chưa dùng 23 repo gated** khi không có quyền truy cập hợp lệ. Khi được cấp quyền, cần inspect rows/language/provenance/quality rồi mới đổi quyết định; card/schema không đủ.
+5. **Giữ benchmark và evaluation logs ngoài training.** Hardening cần đo khả năng bảo toàn lời nói dưới nhiễu, không phải học đáp án từ tập đánh giá.
+6. Nghiệm thu vẫn theo mục 1.4, 10 và 12: pipeline tái hiện được, demo, số đo chất lượng/cost và user study. Dataset nhiều hơn hoặc training loss thấp hơn không thay thế bằng chứng người dùng sửa ít hơn mà không tăng lỗi còn sót.
