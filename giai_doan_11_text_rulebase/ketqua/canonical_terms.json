@@ -1,0 +1,5702 @@
+[
+  {
+    "text": "cái",
+    "count": 2669,
+    "document_count": 1638
+  },
+  {
+    "text": "thì",
+    "count": 1473,
+    "document_count": 1211
+  },
+  {
+    "text": "chúng",
+    "count": 1044,
+    "document_count": 801
+  },
+  {
+    "text": "những",
+    "count": 896,
+    "document_count": 723
+  },
+  {
+    "text": "bệnh",
+    "count": 764,
+    "document_count": 642
+  },
+  {
+    "text": "người",
+    "count": 757,
+    "document_count": 621
+  },
+  {
+    "text": "như",
+    "count": 751,
+    "document_count": 672
+  },
+  {
+    "text": "của",
+    "count": 723,
+    "document_count": 619
+  },
+  {
+    "text": "một",
+    "count": 706,
+    "document_count": 613
+  },
+  {
+    "text": "không",
+    "count": 691,
+    "document_count": 567
+  },
+  {
+    "text": "các",
+    "count": 679,
+    "document_count": 578
+  },
+  {
+    "text": "thể",
+    "count": 608,
+    "document_count": 523
+  },
+  {
+    "text": "được",
+    "count": 596,
+    "document_count": 509
+  },
+  {
+    "text": "cho",
+    "count": 591,
+    "document_count": 531
+  },
+  {
+    "text": "cũng",
+    "count": 588,
+    "document_count": 517
+  },
+  {
+    "text": "mình",
+    "count": 509,
+    "document_count": 377
+  },
+  {
+    "text": "phải",
+    "count": 467,
+    "document_count": 404
+  },
+  {
+    "text": "trị",
+    "count": 464,
+    "document_count": 376
+  },
+  {
+    "text": "trong",
+    "count": 457,
+    "document_count": 414
+  },
+  {
+    "text": "điều",
+    "count": 454,
+    "document_count": 395
+  },
+  {
+    "text": "với",
+    "count": 417,
+    "document_count": 379
+  },
+  {
+    "text": "rất",
+    "count": 405,
+    "document_count": 360
+  },
+  {
+    "text": "này",
+    "count": 382,
+    "document_count": 339
+  },
+  {
+    "text": "khi",
+    "count": 373,
+    "document_count": 344
+  },
+  {
+    "text": "lại",
+    "count": 343,
+    "document_count": 314
+  },
+  {
+    "text": "bác",
+    "count": 324,
+    "document_count": 267
+  },
+  {
+    "text": "nhiều",
+    "count": 319,
+    "document_count": 274
+  },
+  {
+    "text": "việc",
+    "count": 304,
+    "document_count": 280
+  },
+  {
+    "text": "đến",
+    "count": 298,
+    "document_count": 281
+  },
+  {
+    "text": "vậy",
+    "count": 291,
+    "document_count": 274
+  },
+  {
+    "text": "làm",
+    "count": 287,
+    "document_count": 252
+  },
+  {
+    "text": "thuốc",
+    "count": 269,
+    "document_count": 223
+  },
+  {
+    "text": "rồi",
+    "count": 267,
+    "document_count": 239
+  },
+  {
+    "text": "nên",
+    "count": 254,
+    "document_count": 232
+  },
+  {
+    "text": "tôi",
+    "count": 249,
+    "document_count": 216
+  },
+  {
+    "text": "nhân",
+    "count": 234,
+    "document_count": 209
+  },
+  {
+    "text": "thư",
+    "count": 232,
+    "document_count": 191
+  },
+  {
+    "text": "thế",
+    "count": 231,
+    "document_count": 212
+  },
+  {
+    "text": "ung",
+    "count": 230,
+    "document_count": 190
+  },
+  {
+    "text": "hơn",
+    "count": 215,
+    "document_count": 187
+  },
+  {
+    "text": "dụng",
+    "count": 201,
+    "document_count": 184
+  },
+  {
+    "text": "tốt",
+    "count": 201,
+    "document_count": 182
+  },
+  {
+    "text": "hai",
+    "count": 193,
+    "document_count": 176
+  },
+  {
+    "text": "béo",
+    "count": 189,
+    "document_count": 177
+  },
+  {
+    "text": "quan",
+    "count": 180,
+    "document_count": 171
+  },
+  {
+    "text": "chứng",
+    "count": 179,
+    "document_count": 156
+  },
+  {
+    "text": "hợp",
+    "count": 179,
+    "document_count": 167
+  },
+  {
+    "text": "động",
+    "count": 176,
+    "document_count": 151
+  },
+  {
+    "text": "đối",
+    "count": 174,
+    "document_count": 155
+  },
+  {
+    "text": "vấn",
+    "count": 173,
+    "document_count": 160
+  },
+  {
+    "text": "trình",
+    "count": 172,
+    "document_count": 158
+  },
+  {
+    "text": "thấy",
+    "count": 169,
+    "document_count": 153
+  },
+  {
+    "text": "não",
+    "count": 168,
+    "document_count": 148
+  },
+  {
+    "text": "nếu",
+    "count": 168,
+    "document_count": 160
+  },
+  {
+    "text": "nhưng",
+    "count": 166,
+    "document_count": 161
+  },
+  {
+    "text": "sau",
+    "count": 165,
+    "document_count": 150
+  },
+  {
+    "text": "chính",
+    "count": 164,
+    "document_count": 160
+  },
+  {
+    "text": "thứ",
+    "count": 164,
+    "document_count": 145
+  },
+  {
+    "text": "nữa",
+    "count": 162,
+    "document_count": 153
+  },
+  {
+    "text": "còn",
+    "count": 160,
+    "document_count": 149
+  },
+  {
+    "text": "nhất",
+    "count": 159,
+    "document_count": 148
+  },
+  {
+    "text": "phì",
+    "count": 159,
+    "document_count": 151
+  },
+  {
+    "text": "chỉ",
+    "count": 156,
+    "document_count": 147
+  },
+  {
+    "text": "phẫu",
+    "count": 153,
+    "document_count": 134
+  },
+  {
+    "text": "quá",
+    "count": 153,
+    "document_count": 133
+  },
+  {
+    "text": "tâm",
+    "count": 152,
+    "document_count": 134
+  },
+  {
+    "text": "nào",
+    "count": 150,
+    "document_count": 138
+  },
+  {
+    "text": "thuật",
+    "count": 150,
+    "document_count": 133
+  },
+  {
+    "text": "cảm",
+    "count": 145,
+    "document_count": 130
+  },
+  {
+    "text": "giúp",
+    "count": 145,
+    "document_count": 136
+  },
+  {
+    "text": "hay",
+    "count": 145,
+    "document_count": 135
+  },
+  {
+    "text": "rằng",
+    "count": 144,
+    "document_count": 140
+  },
+  {
+    "text": "hóa",
+    "count": 143,
+    "document_count": 125
+  },
+  {
+    "text": "vào",
+    "count": 143,
+    "document_count": 134
+  },
+  {
+    "text": "chất",
+    "count": 142,
+    "document_count": 124
+  },
+  {
+    "text": "máu",
+    "count": 134,
+    "document_count": 102
+  },
+  {
+    "text": "trạng",
+    "count": 130,
+    "document_count": 117
+  },
+  {
+    "text": "tình",
+    "count": 129,
+    "document_count": 114
+  },
+  {
+    "text": "thường",
+    "count": 127,
+    "document_count": 115
+  },
+  {
+    "text": "cách",
+    "count": 126,
+    "document_count": 117
+  },
+  {
+    "text": "cần",
+    "count": 126,
+    "document_count": 116
+  },
+  {
+    "text": "tác",
+    "count": 126,
+    "document_count": 112
+  },
+  {
+    "text": "lên",
+    "count": 125,
+    "document_count": 107
+  },
+  {
+    "text": "cân",
+    "count": 124,
+    "document_count": 108
+  },
+  {
+    "text": "pháp",
+    "count": 124,
+    "document_count": 117
+  },
+  {
+    "text": "thích",
+    "count": 124,
+    "document_count": 117
+  },
+  {
+    "text": "quả",
+    "count": 121,
+    "document_count": 113
+  },
+  {
+    "text": "đây",
+    "count": 119,
+    "document_count": 113
+  },
+  {
+    "text": "khác",
+    "count": 118,
+    "document_count": 110
+  },
+  {
+    "text": "khớp",
+    "count": 116,
+    "document_count": 102
+  },
+  {
+    "text": "tất",
+    "count": 115,
+    "document_count": 108
+  },
+  {
+    "text": "giảm",
+    "count": 113,
+    "document_count": 101
+  },
+  {
+    "text": "đấy",
+    "count": 113,
+    "document_count": 105
+  },
+  {
+    "text": "chế",
+    "count": 112,
+    "document_count": 103
+  },
+  {
+    "text": "hiện",
+    "count": 112,
+    "document_count": 105
+  },
+  {
+    "text": "nói",
+    "count": 112,
+    "document_count": 107
+  },
+  {
+    "text": "sống",
+    "count": 111,
+    "document_count": 100
+  },
+  {
+    "text": "theo",
+    "count": 111,
+    "document_count": 102
+  },
+  {
+    "text": "nhĩ",
+    "count": 110,
+    "document_count": 85
+  },
+  {
+    "text": "thời",
+    "count": 110,
+    "document_count": 107
+  },
+  {
+    "text": "biến",
+    "count": 109,
+    "document_count": 103
+  },
+  {
+    "text": "hoặc",
+    "count": 109,
+    "document_count": 101
+  },
+  {
+    "text": "trường",
+    "count": 109,
+    "document_count": 98
+  },
+  {
+    "text": "khó",
+    "count": 108,
+    "document_count": 99
+  },
+  {
+    "text": "tiếp",
+    "count": 106,
+    "document_count": 103
+  },
+  {
+    "text": "năng",
+    "count": 105,
+    "document_count": 93
+  },
+  {
+    "text": "phương",
+    "count": 105,
+    "document_count": 98
+  },
+  {
+    "text": "năm",
+    "count": 104,
+    "document_count": 78
+  },
+  {
+    "text": "phần",
+    "count": 104,
+    "document_count": 98
+  },
+  {
+    "text": "nhận",
+    "count": 102,
+    "document_count": 98
+  },
+  {
+    "text": "câu",
+    "count": 100,
+    "document_count": 85
+  },
+  {
+    "text": "hiệu",
+    "count": 100,
+    "document_count": 93
+  },
+  {
+    "text": "quý",
+    "count": 100,
+    "document_count": 89
+  },
+  {
+    "text": "sâu",
+    "count": 100,
+    "document_count": 98
+  },
+  {
+    "text": "đau",
+    "count": 100,
+    "document_count": 82
+  },
+  {
+    "text": "triệu",
+    "count": 99,
+    "document_count": 81
+  },
+  {
+    "text": "định",
+    "count": 98,
+    "document_count": 90
+  },
+  {
+    "text": "sao",
+    "count": 97,
+    "document_count": 92
+  },
+  {
+    "text": "kích",
+    "count": 96,
+    "document_count": 90
+  },
+  {
+    "text": "lượng",
+    "count": 96,
+    "document_count": 89
+  },
+  {
+    "text": "mạch",
+    "count": 96,
+    "document_count": 74
+  },
+  {
+    "text": "chuyện",
+    "count": 95,
+    "document_count": 82
+  },
+  {
+    "text": "rung",
+    "count": 93,
+    "document_count": 74
+  },
+  {
+    "text": "tăng",
+    "count": 93,
+    "document_count": 77
+  },
+  {
+    "text": "thực",
+    "count": 92,
+    "document_count": 85
+  },
+  {
+    "text": "biệt",
+    "count": 91,
+    "document_count": 89
+  },
+  {
+    "text": "nặng",
+    "count": 91,
+    "document_count": 86
+  },
+  {
+    "text": "dưỡng",
+    "count": 89,
+    "document_count": 77
+  },
+  {
+    "text": "cùng",
+    "count": 88,
+    "document_count": 77
+  },
+  {
+    "text": "gây",
+    "count": 87,
+    "document_count": 82
+  },
+  {
+    "text": "vẫn",
+    "count": 86,
+    "document_count": 77
+  },
+  {
+    "text": "ảnh",
+    "count": 86,
+    "document_count": 83
+  },
+  {
+    "text": "giờ",
+    "count": 85,
+    "document_count": 84
+  },
+  {
+    "text": "tới",
+    "count": 85,
+    "document_count": 82
+  },
+  {
+    "text": "đặc",
+    "count": 84,
+    "document_count": 84
+  },
+  {
+    "text": "ngày",
+    "count": 83,
+    "document_count": 77
+  },
+  {
+    "text": "trước",
+    "count": 83,
+    "document_count": 78
+  },
+  {
+    "text": "dùng",
+    "count": 82,
+    "document_count": 72
+  },
+  {
+    "text": "hưởng",
+    "count": 82,
+    "document_count": 80
+  },
+  {
+    "text": "xương",
+    "count": 82,
+    "document_count": 73
+  },
+  {
+    "text": "lúc",
+    "count": 81,
+    "document_count": 74
+  },
+  {
+    "text": "biết",
+    "count": 78,
+    "document_count": 76
+  },
+  {
+    "text": "chương",
+    "count": 78,
+    "document_count": 72
+  },
+  {
+    "text": "trọng",
+    "count": 78,
+    "document_count": 76
+  },
+  {
+    "text": "đầu",
+    "count": 78,
+    "document_count": 76
+  },
+  {
+    "text": "hạn",
+    "count": 77,
+    "document_count": 74
+  },
+  {
+    "text": "liên",
+    "count": 77,
+    "document_count": 75
+  },
+  {
+    "text": "cải",
+    "count": 76,
+    "document_count": 70
+  },
+  {
+    "text": "sức",
+    "count": 76,
+    "document_count": 74
+  },
+  {
+    "text": "đổi",
+    "count": 76,
+    "document_count": 71
+  },
+  {
+    "text": "chưa",
+    "count": 75,
+    "document_count": 62
+  },
+  {
+    "text": "thông",
+    "count": 75,
+    "document_count": 68
+  },
+  {
+    "text": "hỏi",
+    "count": 73,
+    "document_count": 64
+  },
+  {
+    "text": "nhiên",
+    "count": 73,
+    "document_count": 71
+  },
+  {
+    "text": "parkinson",
+    "count": 73,
+    "document_count": 68
+  },
+  {
+    "text": "đang",
+    "count": 73,
+    "document_count": 66
+  },
+  {
+    "text": "đông",
+    "count": 73,
+    "document_count": 62
+  },
+  {
+    "text": "dinh",
+    "count": 72,
+    "document_count": 63
+  },
+  {
+    "text": "thay",
+    "count": 72,
+    "document_count": 67
+  },
+  {
+    "text": "thiện",
+    "count": 72,
+    "document_count": 66
+  },
+  {
+    "text": "thành",
+    "count": 72,
+    "document_count": 70
+  },
+  {
+    "text": "thôi",
+    "count": 72,
+    "document_count": 70
+  },
+  {
+    "text": "thức",
+    "count": 72,
+    "document_count": 67
+  },
+  {
+    "text": "mới",
+    "count": 71,
+    "document_count": 68
+  },
+  {
+    "text": "đúng",
+    "count": 70,
+    "document_count": 68
+  },
+  {
+    "text": "bây",
+    "count": 69,
+    "document_count": 68
+  },
+  {
+    "text": "bình",
+    "count": 69,
+    "document_count": 63
+  },
+  {
+    "text": "khỏe",
+    "count": 69,
+    "document_count": 66
+  },
+  {
+    "text": "thần",
+    "count": 69,
+    "document_count": 65
+  },
+  {
+    "text": "tiêu",
+    "count": 69,
+    "document_count": 64
+  },
+  {
+    "text": "uống",
+    "count": 69,
+    "document_count": 59
+  },
+  {
+    "text": "đoạn",
+    "count": 69,
+    "document_count": 61
+  },
+  {
+    "text": "thân",
+    "count": 68,
+    "document_count": 66
+  },
+  {
+    "text": "giá",
+    "count": 67,
+    "document_count": 61
+  },
+  {
+    "text": "khoảng",
+    "count": 67,
+    "document_count": 58
+  },
+  {
+    "text": "nay",
+    "count": 67,
+    "document_count": 63
+  },
+  {
+    "text": "vân",
+    "count": 67,
+    "document_count": 33
+  },
+  {
+    "text": "bởi",
+    "count": 66,
+    "document_count": 61
+  },
+  {
+    "text": "cuộc",
+    "count": 66,
+    "document_count": 62
+  },
+  {
+    "text": "tim",
+    "count": 66,
+    "document_count": 53
+  },
+  {
+    "text": "mặt",
+    "count": 64,
+    "document_count": 60
+  },
+  {
+    "text": "kiểm",
+    "count": 63,
+    "document_count": 62
+  },
+  {
+    "text": "giai",
+    "count": 62,
+    "document_count": 54
+  },
+  {
+    "text": "vận",
+    "count": 62,
+    "document_count": 57
+  },
+  {
+    "text": "đồng",
+    "count": 62,
+    "document_count": 58
+  },
+  {
+    "text": "bào",
+    "count": 61,
+    "document_count": 46
+  },
+  {
+    "text": "bên",
+    "count": 61,
+    "document_count": 58
+  },
+  {
+    "text": "chuyên",
+    "count": 61,
+    "document_count": 57
+  },
+  {
+    "text": "trợ",
+    "count": 61,
+    "document_count": 58
+  },
+  {
+    "text": "hiểu",
+    "count": 60,
+    "document_count": 59
+  },
+  {
+    "text": "loại",
+    "count": 60,
+    "document_count": 50
+  },
+  {
+    "text": "trở",
+    "count": 60,
+    "document_count": 60
+  },
+  {
+    "text": "tại",
+    "count": 60,
+    "document_count": 54
+  },
+  {
+    "text": "muốn",
+    "count": 59,
+    "document_count": 55
+  },
+  {
+    "text": "ngoài",
+    "count": 59,
+    "document_count": 58
+  },
+  {
+    "text": "toàn",
+    "count": 59,
+    "document_count": 57
+  },
+  {
+    "text": "trên",
+    "count": 59,
+    "document_count": 58
+  },
+  {
+    "text": "điện",
+    "count": 59,
+    "document_count": 53
+  },
+  {
+    "text": "khám",
+    "count": 58,
+    "document_count": 58
+  },
+  {
+    "text": "chia",
+    "count": 57,
+    "document_count": 56
+  },
+  {
+    "text": "càng",
+    "count": 57,
+    "document_count": 38
+  },
+  {
+    "text": "nguyên",
+    "count": 57,
+    "document_count": 53
+  },
+  {
+    "text": "gia",
+    "count": 56,
+    "document_count": 49
+  },
+  {
+    "text": "liệu",
+    "count": 56,
+    "document_count": 52
+  },
+  {
+    "text": "gọi",
+    "count": 55,
+    "document_count": 54
+  },
+  {
+    "text": "khoa",
+    "count": 55,
+    "document_count": 51
+  },
+  {
+    "text": "bạn",
+    "count": 54,
+    "document_count": 52
+  },
+  {
+    "text": "dài",
+    "count": 54,
+    "document_count": 48
+  },
+  {
+    "text": "xem",
+    "count": 54,
+    "document_count": 50
+  },
+  {
+    "text": "cao",
+    "count": 53,
+    "document_count": 51
+  },
+  {
+    "text": "hoạt",
+    "count": 53,
+    "document_count": 51
+  },
+  {
+    "text": "kinh",
+    "count": 53,
+    "document_count": 51
+  },
+  {
+    "text": "lời",
+    "count": 53,
+    "document_count": 50
+  },
+  {
+    "text": "tin",
+    "count": 53,
+    "document_count": 51
+  },
+  {
+    "text": "vâng",
+    "count": 53,
+    "document_count": 49
+  },
+  {
+    "text": "xin",
+    "count": 53,
+    "document_count": 49
+  },
+  {
+    "text": "đường",
+    "count": 53,
+    "document_count": 50
+  },
+  {
+    "text": "gặp",
+    "count": 52,
+    "document_count": 47
+  },
+  {
+    "text": "nước",
+    "count": 52,
+    "document_count": 39
+  },
+  {
+    "text": "phát",
+    "count": 52,
+    "document_count": 46
+  },
+  {
+    "text": "đánh",
+    "count": 52,
+    "document_count": 50
+  },
+  {
+    "text": "bản",
+    "count": 51,
+    "document_count": 50
+  },
+  {
+    "text": "cực",
+    "count": 51,
+    "document_count": 47
+  },
+  {
+    "text": "huyết",
+    "count": 51,
+    "document_count": 47
+  },
+  {
+    "text": "mươi",
+    "count": 51,
+    "document_count": 41
+  },
+  {
+    "text": "phòng",
+    "count": 51,
+    "document_count": 50
+  },
+  {
+    "text": "phù",
+    "count": 51,
+    "document_count": 48
+  },
+  {
+    "text": "qua",
+    "count": 51,
+    "document_count": 50
+  },
+  {
+    "text": "trăm",
+    "count": 51,
+    "document_count": 42
+  },
+  {
+    "text": "chí",
+    "count": 50,
+    "document_count": 48
+  },
+  {
+    "text": "chẳng",
+    "count": 50,
+    "document_count": 49
+  },
+  {
+    "text": "hành",
+    "count": 50,
+    "document_count": 48
+  },
+  {
+    "text": "khuyên",
+    "count": 50,
+    "document_count": 48
+  },
+  {
+    "text": "tức",
+    "count": 50,
+    "document_count": 49
+  },
+  {
+    "text": "bằng",
+    "count": 49,
+    "document_count": 44
+  },
+  {
+    "text": "gian",
+    "count": 48,
+    "document_count": 48
+  },
+  {
+    "text": "nhóm",
+    "count": 48,
+    "document_count": 41
+  },
+  {
+    "text": "phẩm",
+    "count": 48,
+    "document_count": 43
+  },
+  {
+    "text": "tập",
+    "count": 48,
+    "document_count": 40
+  },
+  {
+    "text": "vừa",
+    "count": 48,
+    "document_count": 40
+  },
+  {
+    "text": "hết",
+    "count": 47,
+    "document_count": 45
+  },
+  {
+    "text": "khối",
+    "count": 47,
+    "document_count": 41
+  },
+  {
+    "text": "kết",
+    "count": 47,
+    "document_count": 43
+  },
+  {
+    "text": "loạn",
+    "count": 47,
+    "document_count": 44
+  },
+  {
+    "text": "thậm",
+    "count": 47,
+    "document_count": 45
+  },
+  {
+    "text": "tiến",
+    "count": 46,
+    "document_count": 45
+  },
+  {
+    "text": "tìm",
+    "count": 45,
+    "document_count": 43
+  },
+  {
+    "text": "vitamin",
+    "count": 45,
+    "document_count": 33
+  },
+  {
+    "text": "chống",
+    "count": 44,
+    "document_count": 38
+  },
+  {
+    "text": "chứ",
+    "count": 44,
+    "document_count": 43
+  },
+  {
+    "text": "nghĩa",
+    "count": 44,
+    "document_count": 43
+  },
+  {
+    "text": "nhau",
+    "count": 44,
+    "document_count": 40
+  },
+  {
+    "text": "nội",
+    "count": 44,
+    "document_count": 40
+  },
+  {
+    "text": "tuổi",
+    "count": 44,
+    "document_count": 40
+  },
+  {
+    "text": "kháng",
+    "count": 43,
+    "document_count": 33
+  },
+  {
+    "text": "lâu",
+    "count": 43,
+    "document_count": 41
+  },
+  {
+    "text": "rối",
+    "count": 43,
+    "document_count": 42
+  },
+  {
+    "text": "thiết",
+    "count": 43,
+    "document_count": 40
+  },
+  {
+    "text": "chung",
+    "count": 42,
+    "document_count": 40
+  },
+  {
+    "text": "chức",
+    "count": 42,
+    "document_count": 34
+  },
+  {
+    "text": "công",
+    "count": 42,
+    "document_count": 40
+  },
+  {
+    "text": "cứu",
+    "count": 42,
+    "document_count": 40
+  },
+  {
+    "text": "giác",
+    "count": 42,
+    "document_count": 36
+  },
+  {
+    "text": "hôm",
+    "count": 42,
+    "document_count": 37
+  },
+  {
+    "text": "thoái",
+    "count": 42,
+    "document_count": 38
+  },
+  {
+    "text": "thưa",
+    "count": 42,
+    "document_count": 42
+  },
+  {
+    "text": "trầm",
+    "count": 42,
+    "document_count": 39
+  },
+  {
+    "text": "tuy",
+    "count": 42,
+    "document_count": 42
+  },
+  {
+    "text": "yếu",
+    "count": 42,
+    "document_count": 36
+  },
+  {
+    "text": "cạnh",
+    "count": 41,
+    "document_count": 41
+  },
+  {
+    "text": "cục",
+    "count": 41,
+    "document_count": 38
+  },
+  {
+    "text": "chân",
+    "count": 40,
+    "document_count": 31
+  },
+  {
+    "text": "chịu",
+    "count": 40,
+    "document_count": 35
+  },
+  {
+    "text": "luôn",
+    "count": 40,
+    "document_count": 28
+  },
+  {
+    "text": "phục",
+    "count": 40,
+    "document_count": 38
+  },
+  {
+    "text": "thêm",
+    "count": 40,
+    "document_count": 40
+  },
+  {
+    "text": "tránh",
+    "count": 40,
+    "document_count": 36
+  },
+  {
+    "text": "viêm",
+    "count": 40,
+    "document_count": 35
+  },
+  {
+    "text": "hình",
+    "count": 39,
+    "document_count": 35
+  },
+  {
+    "text": "mức",
+    "count": 39,
+    "document_count": 38
+  },
+  {
+    "text": "soát",
+    "count": 39,
+    "document_count": 38
+  },
+  {
+    "text": "tay",
+    "count": 39,
+    "document_count": 32
+  },
+  {
+    "text": "thương",
+    "count": 39,
+    "document_count": 36
+  },
+  {
+    "text": "tiết",
+    "count": 39,
+    "document_count": 36
+  },
+  {
+    "text": "đặt",
+    "count": 39,
+    "document_count": 39
+  },
+  {
+    "text": "tiên",
+    "count": 38,
+    "document_count": 38
+  },
+  {
+    "text": "khăn",
+    "count": 37,
+    "document_count": 37
+  },
+  {
+    "text": "lớn",
+    "count": 37,
+    "document_count": 35
+  },
+  {
+    "text": "mất",
+    "count": 37,
+    "document_count": 34
+  },
+  {
+    "text": "nguy",
+    "count": 37,
+    "document_count": 36
+  },
+  {
+    "text": "sinh",
+    "count": 37,
+    "document_count": 36
+  },
+  {
+    "text": "tương",
+    "count": 37,
+    "document_count": 35
+  },
+  {
+    "text": "điểm",
+    "count": 37,
+    "document_count": 34
+  },
+  {
+    "text": "đôi",
+    "count": 37,
+    "document_count": 33
+  },
+  {
+    "text": "đều",
+    "count": 37,
+    "document_count": 37
+  },
+  {
+    "text": "giả",
+    "count": 36,
+    "document_count": 35
+  },
+  {
+    "text": "khán",
+    "count": 36,
+    "document_count": 35
+  },
+  {
+    "text": "suy",
+    "count": 36,
+    "document_count": 34
+  },
+  {
+    "text": "xảy",
+    "count": 36,
+    "document_count": 35
+  },
+  {
+    "text": "chuyển",
+    "count": 35,
+    "document_count": 32
+  },
+  {
+    "text": "giải",
+    "count": 35,
+    "document_count": 33
+  },
+  {
+    "text": "hướng",
+    "count": 35,
+    "document_count": 34
+  },
+  {
+    "text": "mong",
+    "count": 35,
+    "document_count": 32
+  },
+  {
+    "text": "ràng",
+    "count": 35,
+    "document_count": 33
+  },
+  {
+    "text": "trung",
+    "count": 35,
+    "document_count": 33
+  },
+  {
+    "text": "tính",
+    "count": 35,
+    "document_count": 33
+  },
+  {
+    "text": "từng",
+    "count": 35,
+    "document_count": 27
+  },
+  {
+    "text": "nghiên",
+    "count": 34,
+    "document_count": 32
+  },
+  {
+    "text": "thăm",
+    "count": 34,
+    "document_count": 34
+  },
+  {
+    "text": "đột",
+    "count": 34,
+    "document_count": 31
+  },
+  {
+    "text": "chỉnh",
+    "count": 33,
+    "document_count": 32
+  },
+  {
+    "text": "dõi",
+    "count": 33,
+    "document_count": 32
+  },
+  {
+    "text": "hội",
+    "count": 33,
+    "document_count": 31
+  },
+  {
+    "text": "lưng",
+    "count": 33,
+    "document_count": 27
+  },
+  {
+    "text": "miệng",
+    "count": 33,
+    "document_count": 28
+  },
+  {
+    "text": "ngay",
+    "count": 33,
+    "document_count": 32
+  },
+  {
+    "text": "thiếu",
+    "count": 33,
+    "document_count": 28
+  },
+  {
+    "text": "tổn",
+    "count": 33,
+    "document_count": 31
+  },
+  {
+    "text": "khả",
+    "count": 32,
+    "document_count": 32
+  },
+  {
+    "text": "lưu",
+    "count": 32,
+    "document_count": 32
+  },
+  {
+    "text": "máy",
+    "count": 32,
+    "document_count": 30
+  },
+  {
+    "text": "mười",
+    "count": 32,
+    "document_count": 29
+  },
+  {
+    "text": "vùng",
+    "count": 32,
+    "document_count": 29
+  },
+  {
+    "text": "đưa",
+    "count": 32,
+    "document_count": 30
+  },
+  {
+    "text": "bảo",
+    "count": 31,
+    "document_count": 31
+  },
+  {
+    "text": "dẫn",
+    "count": 31,
+    "document_count": 30
+  },
+  {
+    "text": "hồi",
+    "count": 31,
+    "document_count": 29
+  },
+  {
+    "text": "nghĩ",
+    "count": 31,
+    "document_count": 28
+  },
+  {
+    "text": "phụ",
+    "count": 31,
+    "document_count": 30
+  },
+  {
+    "text": "quỵ",
+    "count": 31,
+    "document_count": 28
+  },
+  {
+    "text": "bất",
+    "count": 30,
+    "document_count": 28
+  },
+  {
+    "text": "chắc",
+    "count": 30,
+    "document_count": 28
+  },
+  {
+    "text": "cấp",
+    "count": 30,
+    "document_count": 30
+  },
+  {
+    "text": "giáp",
+    "count": 30,
+    "document_count": 23
+  },
+  {
+    "text": "gắng",
+    "count": 30,
+    "document_count": 26
+  },
+  {
+    "text": "pin",
+    "count": 30,
+    "document_count": 22
+  },
+  {
+    "text": "cột",
+    "count": 29,
+    "document_count": 26
+  },
+  {
+    "text": "mỗi",
+    "count": 29,
+    "document_count": 28
+  },
+  {
+    "text": "stress",
+    "count": 29,
+    "document_count": 24
+  },
+  {
+    "text": "triển",
+    "count": 29,
+    "document_count": 27
+  },
+  {
+    "text": "xuất",
+    "count": 29,
+    "document_count": 27
+  },
+  {
+    "text": "đâu",
+    "count": 29,
+    "document_count": 27
+  },
+  {
+    "text": "khá",
+    "count": 28,
+    "document_count": 27
+  },
+  {
+    "text": "thận",
+    "count": 28,
+    "document_count": 18
+  },
+  {
+    "text": "thật",
+    "count": 28,
+    "document_count": 27
+  },
+  {
+    "text": "tục",
+    "count": 28,
+    "document_count": 28
+  },
+  {
+    "text": "bốn",
+    "count": 27,
+    "document_count": 25
+  },
+  {
+    "text": "chú",
+    "count": 27,
+    "document_count": 21
+  },
+  {
+    "text": "chọn",
+    "count": 27,
+    "document_count": 24
+  },
+  {
+    "text": "cường",
+    "count": 27,
+    "document_count": 22
+  },
+  {
+    "text": "duy",
+    "count": 27,
+    "document_count": 24
+  },
+  {
+    "text": "giống",
+    "count": 27,
+    "document_count": 27
+  },
+  {
+    "text": "hàng",
+    "count": 27,
+    "document_count": 27
+  },
+  {
+    "text": "lần",
+    "count": 27,
+    "document_count": 21
+  },
+  {
+    "text": "lợi",
+    "count": 27,
+    "document_count": 26
+  },
+  {
+    "text": "nhà",
+    "count": 27,
+    "document_count": 26
+  },
+  {
+    "text": "tắc",
+    "count": 27,
+    "document_count": 23
+  },
+  {
+    "text": "xác",
+    "count": 27,
+    "document_count": 26
+  },
+  {
+    "text": "đình",
+    "count": 27,
+    "document_count": 24
+  },
+  {
+    "text": "bao",
+    "count": 26,
+    "document_count": 23
+  },
+  {
+    "text": "cung",
+    "count": 26,
+    "document_count": 26
+  },
+  {
+    "text": "gần",
+    "count": 26,
+    "document_count": 25
+  },
+  {
+    "text": "mạnh",
+    "count": 26,
+    "document_count": 25
+  },
+  {
+    "text": "trì",
+    "count": 26,
+    "document_count": 23
+  },
+  {
+    "text": "trực",
+    "count": 26,
+    "document_count": 26
+  },
+  {
+    "text": "vật",
+    "count": 26,
+    "document_count": 24
+  },
+  {
+    "text": "xét",
+    "count": 26,
+    "document_count": 24
+  },
+  {
+    "text": "anh",
+    "count": 25,
+    "document_count": 18
+  },
+  {
+    "text": "biểu",
+    "count": 25,
+    "document_count": 22
+  },
+  {
+    "text": "dần",
+    "count": 25,
+    "document_count": 15
+  },
+  {
+    "text": "hoàn",
+    "count": 25,
+    "document_count": 23
+  },
+  {
+    "text": "mắc",
+    "count": 25,
+    "document_count": 25
+  },
+  {
+    "text": "ngã",
+    "count": 25,
+    "document_count": 23
+  },
+  {
+    "text": "sáu",
+    "count": 25,
+    "document_count": 24
+  },
+  {
+    "text": "tháng",
+    "count": 25,
+    "document_count": 20
+  },
+  {
+    "text": "tinh",
+    "count": 25,
+    "document_count": 25
+  },
+  {
+    "text": "tuyến",
+    "count": 25,
+    "document_count": 21
+  },
+  {
+    "text": "ích",
+    "count": 25,
+    "document_count": 24
+  },
+  {
+    "text": "đầy",
+    "count": 25,
+    "document_count": 24
+  },
+  {
+    "text": "mọi",
+    "count": 24,
+    "document_count": 22
+  },
+  {
+    "text": "nhanh",
+    "count": 24,
+    "document_count": 24
+  },
+  {
+    "text": "thị",
+    "count": 24,
+    "document_count": 23
+  },
+  {
+    "text": "đoán",
+    "count": 24,
+    "document_count": 24
+  },
+  {
+    "text": "cầu",
+    "count": 23,
+    "document_count": 18
+  },
+  {
+    "text": "cộng",
+    "count": 23,
+    "document_count": 21
+  },
+  {
+    "text": "dày",
+    "count": 23,
+    "document_count": 20
+  },
+  {
+    "text": "học",
+    "count": 23,
+    "document_count": 19
+  },
+  {
+    "text": "ngừa",
+    "count": 23,
+    "document_count": 23
+  },
+  {
+    "text": "nhắc",
+    "count": 23,
+    "document_count": 22
+  },
+  {
+    "text": "xong",
+    "count": 23,
+    "document_count": 21
+  },
+  {
+    "text": "ứng",
+    "count": 23,
+    "document_count": 21
+  },
+  {
+    "text": "biện",
+    "count": 22,
+    "document_count": 22
+  },
+  {
+    "text": "bắt",
+    "count": 22,
+    "document_count": 22
+  },
+  {
+    "text": "bớt",
+    "count": 22,
+    "document_count": 21
+  },
+  {
+    "text": "chẩn",
+    "count": 22,
+    "document_count": 22
+  },
+  {
+    "text": "coi",
+    "count": 22,
+    "document_count": 21
+  },
+  {
+    "text": "kèm",
+    "count": 22,
+    "document_count": 22
+  },
+  {
+    "text": "lập",
+    "count": 22,
+    "document_count": 20
+  },
+  {
+    "text": "riêng",
+    "count": 22,
+    "document_count": 20
+  },
+  {
+    "text": "vai",
+    "count": 22,
+    "document_count": 21
+  },
+  {
+    "text": "xuống",
+    "count": 22,
+    "document_count": 18
+  },
+  {
+    "text": "đừng",
+    "count": 22,
+    "document_count": 18
+  },
+  {
+    "text": "hậu",
+    "count": 21,
+    "document_count": 20
+  },
+  {
+    "text": "kéo",
+    "count": 21,
+    "document_count": 19
+  },
+  {
+    "text": "kẽm",
+    "count": 21,
+    "document_count": 18
+  },
+  {
+    "text": "lấy",
+    "count": 21,
+    "document_count": 19
+  },
+  {
+    "text": "mục",
+    "count": 21,
+    "document_count": 18
+  },
+  {
+    "text": "sớm",
+    "count": 21,
+    "document_count": 20
+  },
+  {
+    "text": "tái",
+    "count": 21,
+    "document_count": 18
+  },
+  {
+    "text": "bát",
+    "count": 20,
+    "document_count": 12
+  },
+  {
+    "text": "chi",
+    "count": 20,
+    "document_count": 18
+  },
+  {
+    "text": "chắn",
+    "count": 20,
+    "document_count": 20
+  },
+  {
+    "text": "gan",
+    "count": 20,
+    "document_count": 15
+  },
+  {
+    "text": "giữ",
+    "count": 20,
+    "document_count": 18
+  },
+  {
+    "text": "khắc",
+    "count": 20,
+    "document_count": 20
+  },
+  {
+    "text": "lực",
+    "count": 20,
+    "document_count": 20
+  },
+  {
+    "text": "mời",
+    "count": 20,
+    "document_count": 20
+  },
+  {
+    "text": "nghiệm",
+    "count": 20,
+    "document_count": 18
+  },
+  {
+    "text": "nuôi",
+    "count": 20,
+    "document_count": 19
+  },
+  {
+    "text": "phối",
+    "count": 20,
+    "document_count": 18
+  },
+  {
+    "text": "sung",
+    "count": 20,
+    "document_count": 20
+  },
+  {
+    "text": "sát",
+    "count": 20,
+    "document_count": 17
+  },
+  {
+    "text": "sụt",
+    "count": 20,
+    "document_count": 17
+  },
+  {
+    "text": "tiền",
+    "count": 20,
+    "document_count": 19
+  },
+  {
+    "text": "tra",
+    "count": 20,
+    "document_count": 20
+  },
+  {
+    "text": "bài",
+    "count": 19,
+    "document_count": 18
+  },
+  {
+    "text": "chấp",
+    "count": 19,
+    "document_count": 17
+  },
+  {
+    "text": "dầu",
+    "count": 19,
+    "document_count": 10
+  },
+  {
+    "text": "mang",
+    "count": 19,
+    "document_count": 19
+  },
+  {
+    "text": "nam",
+    "count": 19,
+    "document_count": 17
+  },
+  {
+    "text": "sản",
+    "count": 19,
+    "document_count": 19
+  },
+  {
+    "text": "thất",
+    "count": 19,
+    "document_count": 15
+  },
+  {
+    "text": "thắt",
+    "count": 19,
+    "document_count": 17
+  },
+  {
+    "text": "trí",
+    "count": 19,
+    "document_count": 19
+  },
+  {
+    "text": "viên",
+    "count": 19,
+    "document_count": 15
+  },
+  {
+    "text": "viện",
+    "count": 19,
+    "document_count": 18
+  },
+  {
+    "text": "buồn",
+    "count": 18,
+    "document_count": 18
+  },
+  {
+    "text": "cháo",
+    "count": 18,
+    "document_count": 14
+  },
+  {
+    "text": "chỗ",
+    "count": 18,
+    "document_count": 16
+  },
+  {
+    "text": "cận",
+    "count": 18,
+    "document_count": 18
+  },
+  {
+    "text": "lành",
+    "count": 18,
+    "document_count": 18
+  },
+  {
+    "text": "lắm",
+    "count": 18,
+    "document_count": 17
+  },
+  {
+    "text": "môi",
+    "count": 18,
+    "document_count": 11
+  },
+  {
+    "text": "ngồi",
+    "count": 18,
+    "document_count": 15
+  },
+  {
+    "text": "nhìn",
+    "count": 18,
+    "document_count": 18
+  },
+  {
+    "text": "táo",
+    "count": 18,
+    "document_count": 16
+  },
+  {
+    "text": "vượt",
+    "count": 18,
+    "document_count": 18
+  },
+  {
+    "text": "vọng",
+    "count": 18,
+    "document_count": 18
+  },
+  {
+    "text": "đơn",
+    "count": 18,
+    "document_count": 17
+  },
+  {
+    "text": "bón",
+    "count": 17,
+    "document_count": 14
+  },
+  {
+    "text": "bảy",
+    "count": 17,
+    "document_count": 15
+  },
+  {
+    "text": "bữa",
+    "count": 17,
+    "document_count": 14
+  },
+  {
+    "text": "chữa",
+    "count": 17,
+    "document_count": 17
+  },
+  {
+    "text": "cuối",
+    "count": 17,
+    "document_count": 16
+  },
+  {
+    "text": "diễn",
+    "count": 17,
+    "document_count": 15
+  },
+  {
+    "text": "nhức",
+    "count": 17,
+    "document_count": 17
+  },
+  {
+    "text": "nãy",
+    "count": 17,
+    "document_count": 16
+  },
+  {
+    "text": "nối",
+    "count": 17,
+    "document_count": 15
+  },
+  {
+    "text": "phá",
+    "count": 17,
+    "document_count": 15
+  },
+  {
+    "text": "sạc",
+    "count": 17,
+    "document_count": 11
+  },
+  {
+    "text": "tháo",
+    "count": 17,
+    "document_count": 16
+  },
+  {
+    "text": "thủ",
+    "count": 17,
+    "document_count": 16
+  },
+  {
+    "text": "tạo",
+    "count": 17,
+    "document_count": 17
+  },
+  {
+    "text": "việt",
+    "count": 17,
+    "document_count": 16
+  },
+  {
+    "text": "vài",
+    "count": 17,
+    "document_count": 16
+  },
+  {
+    "text": "đái",
+    "count": 17,
+    "document_count": 16
+  },
+  {
+    "text": "can",
+    "count": 16,
+    "document_count": 16
+  },
+  {
+    "text": "chuẩn",
+    "count": 16,
+    "document_count": 15
+  },
+  {
+    "text": "chảy",
+    "count": 16,
+    "document_count": 13
+  },
+  {
+    "text": "gửi",
+    "count": 16,
+    "document_count": 15
+  },
+  {
+    "text": "khô",
+    "count": 16,
+    "document_count": 14
+  },
+  {
+    "text": "lắng",
+    "count": 16,
+    "document_count": 15
+  },
+  {
+    "text": "lựa",
+    "count": 16,
+    "document_count": 14
+  },
+  {
+    "text": "nhẹ",
+    "count": 16,
+    "document_count": 16
+  },
+  {
+    "text": "nôn",
+    "count": 16,
+    "document_count": 11
+  },
+  {
+    "text": "nơi",
+    "count": 16,
+    "document_count": 12
+  },
+  {
+    "text": "tai",
+    "count": 16,
+    "document_count": 14
+  },
+  {
+    "text": "tuân",
+    "count": 16,
+    "document_count": 14
+  },
+  {
+    "text": "tắt",
+    "count": 16,
+    "document_count": 15
+  },
+  {
+    "text": "đáp",
+    "count": 16,
+    "document_count": 16
+  },
+  {
+    "text": "độc",
+    "count": 16,
+    "document_count": 16
+  },
+  {
+    "text": "chán",
+    "count": 15,
+    "document_count": 13
+  },
+  {
+    "text": "chút",
+    "count": 15,
+    "document_count": 14
+  },
+  {
+    "text": "giới",
+    "count": 15,
+    "document_count": 15
+  },
+  {
+    "text": "mạc",
+    "count": 15,
+    "document_count": 10
+  },
+  {
+    "text": "nghe",
+    "count": 15,
+    "document_count": 15
+  },
+  {
+    "text": "ngoại",
+    "count": 15,
+    "document_count": 14
+  },
+  {
+    "text": "nhiêu",
+    "count": 15,
+    "document_count": 13
+  },
+  {
+    "text": "nhu",
+    "count": 15,
+    "document_count": 10
+  },
+  {
+    "text": "niêm",
+    "count": 15,
+    "document_count": 10
+  },
+  {
+    "text": "nâng",
+    "count": 15,
+    "document_count": 14
+  },
+  {
+    "text": "rau",
+    "count": 15,
+    "document_count": 13
+  },
+  {
+    "text": "thịt",
+    "count": 15,
+    "document_count": 9
+  },
+  {
+    "text": "thống",
+    "count": 15,
+    "document_count": 12
+  },
+  {
+    "text": "tích",
+    "count": 15,
+    "document_count": 14
+  },
+  {
+    "text": "chậm",
+    "count": 14,
+    "document_count": 11
+  },
+  {
+    "text": "căng",
+    "count": 14,
+    "document_count": 14
+  },
+  {
+    "text": "cảnh",
+    "count": 14,
+    "document_count": 12
+  },
+  {
+    "text": "hãy",
+    "count": 14,
+    "document_count": 12
+  },
+  {
+    "text": "mặc",
+    "count": 14,
+    "document_count": 14
+  },
+  {
+    "text": "ngại",
+    "count": 14,
+    "document_count": 13
+  },
+  {
+    "text": "phân",
+    "count": 14,
+    "document_count": 13
+  },
+  {
+    "text": "quay",
+    "count": 14,
+    "document_count": 13
+  },
+  {
+    "text": "selen",
+    "count": 14,
+    "document_count": 11
+  },
+  {
+    "text": "thiệp",
+    "count": 14,
+    "document_count": 14
+  },
+  {
+    "text": "trả",
+    "count": 14,
+    "document_count": 14
+  },
+  {
+    "text": "đương",
+    "count": 14,
+    "document_count": 14
+  },
+  {
+    "text": "đạt",
+    "count": 14,
+    "document_count": 14
+  },
+  {
+    "text": "đẩy",
+    "count": 14,
+    "document_count": 14
+  },
+  {
+    "text": "địa",
+    "count": 14,
+    "document_count": 12
+  },
+  {
+    "text": "đứng",
+    "count": 14,
+    "document_count": 12
+  },
+  {
+    "text": "chiều",
+    "count": 13,
+    "document_count": 13
+  },
+  {
+    "text": "chủ",
+    "count": 13,
+    "document_count": 13
+  },
+  {
+    "text": "dưới",
+    "count": 13,
+    "document_count": 13
+  },
+  {
+    "text": "gốc",
+    "count": 13,
+    "document_count": 12
+  },
+  {
+    "text": "gối",
+    "count": 13,
+    "document_count": 11
+  },
+  {
+    "text": "khoáng",
+    "count": 13,
+    "document_count": 13
+  },
+  {
+    "text": "khuyến",
+    "count": 13,
+    "document_count": 13
+  },
+  {
+    "text": "lạnh",
+    "count": 13,
+    "document_count": 9
+  },
+  {
+    "text": "ngọt",
+    "count": 13,
+    "document_count": 8
+  },
+  {
+    "text": "nấu",
+    "count": 13,
+    "document_count": 10
+  },
+  {
+    "text": "phí",
+    "count": 13,
+    "document_count": 11
+  },
+  {
+    "text": "quen",
+    "count": 13,
+    "document_count": 12
+  },
+  {
+    "text": "quyết",
+    "count": 13,
+    "document_count": 13
+  },
+  {
+    "text": "rủi",
+    "count": 13,
+    "document_count": 10
+  },
+  {
+    "text": "tham",
+    "count": 13,
+    "document_count": 13
+  },
+  {
+    "text": "thẳng",
+    "count": 13,
+    "document_count": 13
+  },
+  {
+    "text": "xúc",
+    "count": 13,
+    "document_count": 12
+  },
+  {
+    "text": "đáng",
+    "count": 13,
+    "document_count": 13
+  },
+  {
+    "text": "bàn",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "chiến",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "chụp",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "diện",
+    "count": 12,
+    "document_count": 11
+  },
+  {
+    "text": "dung",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "kia",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "liều",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "mri",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "muối",
+    "count": 12,
+    "document_count": 10
+  },
+  {
+    "text": "mặn",
+    "count": 12,
+    "document_count": 11
+  },
+  {
+    "text": "ngược",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "ngắn",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "nhỏ",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "nhồi",
+    "count": 12,
+    "document_count": 11
+  },
+  {
+    "text": "nắm",
+    "count": 12,
+    "document_count": 8
+  },
+  {
+    "text": "nằm",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "phổi",
+    "count": 12,
+    "document_count": 10
+  },
+  {
+    "text": "quản",
+    "count": 12,
+    "document_count": 11
+  },
+  {
+    "text": "rút",
+    "count": 12,
+    "document_count": 10
+  },
+  {
+    "text": "suốt",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "sóng",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "tạng",
+    "count": 12,
+    "document_count": 11
+  },
+  {
+    "text": "đại",
+    "count": 12,
+    "document_count": 12
+  },
+  {
+    "text": "chua",
+    "count": 11,
+    "document_count": 10
+  },
+  {
+    "text": "chấn",
+    "count": 11,
+    "document_count": 9
+  },
+  {
+    "text": "chứa",
+    "count": 11,
+    "document_count": 11
+  },
+  {
+    "text": "dịch",
+    "count": 11,
+    "document_count": 10
+  },
+  {
+    "text": "gót",
+    "count": 11,
+    "document_count": 10
+  },
+  {
+    "text": "hormone",
+    "count": 11,
+    "document_count": 9
+  },
+  {
+    "text": "hạt",
+    "count": 11,
+    "document_count": 7
+  },
+  {
+    "text": "hủy",
+    "count": 11,
+    "document_count": 11
+  },
+  {
+    "text": "kiến",
+    "count": 11,
+    "document_count": 11
+  },
+  {
+    "text": "loét",
+    "count": 11,
+    "document_count": 10
+  },
+  {
+    "text": "ngăn",
+    "count": 11,
+    "document_count": 11
+  },
+  {
+    "text": "nhớ",
+    "count": 11,
+    "document_count": 11
+  },
+  {
+    "text": "oxy",
+    "count": 11,
+    "document_count": 10
+  },
+  {
+    "text": "phổ",
+    "count": 11,
+    "document_count": 11
+  },
+  {
+    "text": "song",
+    "count": 11,
+    "document_count": 6
+  },
+  {
+    "text": "thói",
+    "count": 11,
+    "document_count": 10
+  },
+  {
+    "text": "tiện",
+    "count": 11,
+    "document_count": 10
+  },
+  {
+    "text": "trò",
+    "count": 11,
+    "document_count": 11
+  },
+  {
+    "text": "tùy",
+    "count": 11,
+    "document_count": 11
+  },
+  {
+    "text": "tối",
+    "count": 11,
+    "document_count": 10
+  },
+  {
+    "text": "đốt",
+    "count": 11,
+    "document_count": 10
+  },
+  {
+    "text": "axit",
+    "count": 10,
+    "document_count": 7
+  },
+  {
+    "text": "chanh",
+    "count": 10,
+    "document_count": 9
+  },
+  {
+    "text": "chăm",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "dao",
+    "count": 10,
+    "document_count": 9
+  },
+  {
+    "text": "dàng",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "dược",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "dạng",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "dấu",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "gắn",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "hữu",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "iod",
+    "count": 10,
+    "document_count": 7
+  },
+  {
+    "text": "khảo",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "khẳng",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "khỏi",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "liền",
+    "count": 10,
+    "document_count": 9
+  },
+  {
+    "text": "luyện",
+    "count": 10,
+    "document_count": 9
+  },
+  {
+    "text": "luận",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "mấy",
+    "count": 10,
+    "document_count": 9
+  },
+  {
+    "text": "ngưng",
+    "count": 10,
+    "document_count": 9
+  },
+  {
+    "text": "ngực",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "nhiệt",
+    "count": 10,
+    "document_count": 9
+  },
+  {
+    "text": "nhàng",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "sóc",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "thở",
+    "count": 10,
+    "document_count": 7
+  },
+  {
+    "text": "trộm",
+    "count": 10,
+    "document_count": 6
+  },
+  {
+    "text": "tuần",
+    "count": 10,
+    "document_count": 9
+  },
+  {
+    "text": "tượng",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "văn",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "xuyên",
+    "count": 10,
+    "document_count": 9
+  },
+  {
+    "text": "đảm",
+    "count": 10,
+    "document_count": 10
+  },
+  {
+    "text": "đợt",
+    "count": 10,
+    "document_count": 9
+  },
+  {
+    "text": "báo",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "bóp",
+    "count": 9,
+    "document_count": 7
+  },
+  {
+    "text": "bật",
+    "count": 9,
+    "document_count": 7
+  },
+  {
+    "text": "canxi",
+    "count": 9,
+    "document_count": 7
+  },
+  {
+    "text": "cholesterol",
+    "count": 9,
+    "document_count": 7
+  },
+  {
+    "text": "chạy",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "chết",
+    "count": 9,
+    "document_count": 8
+  },
+  {
+    "text": "con",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "corticoid",
+    "count": 9,
+    "document_count": 8
+  },
+  {
+    "text": "cáo",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "cơn",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "dành",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "ghi",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "giữa",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "hiểm",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "hại",
+    "count": 9,
+    "document_count": 8
+  },
+  {
+    "text": "khiến",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "lăm",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "may",
+    "count": 9,
+    "document_count": 8
+  },
+  {
+    "text": "món",
+    "count": 9,
+    "document_count": 5
+  },
+  {
+    "text": "mệt",
+    "count": 9,
+    "document_count": 7
+  },
+  {
+    "text": "nguồn",
+    "count": 9,
+    "document_count": 8
+  },
+  {
+    "text": "nhịp",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "niệm",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "run",
+    "count": 9,
+    "document_count": 8
+  },
+  {
+    "text": "sai",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "sàng",
+    "count": 9,
+    "document_count": 8
+  },
+  {
+    "text": "sẵn",
+    "count": 9,
+    "document_count": 8
+  },
+  {
+    "text": "thu",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "thách",
+    "count": 9,
+    "document_count": 7
+  },
+  {
+    "text": "thử",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "tám",
+    "count": 9,
+    "document_count": 8
+  },
+  {
+    "text": "tổng",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "đạm",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "đậu",
+    "count": 9,
+    "document_count": 7
+  },
+  {
+    "text": "đựng",
+    "count": 9,
+    "document_count": 9
+  },
+  {
+    "text": "chín",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "chục",
+    "count": 8,
+    "document_count": 6
+  },
+  {
+    "text": "dám",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "dây",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "gen",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "giản",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "gãy",
+    "count": 8,
+    "document_count": 5
+  },
+  {
+    "text": "hẹp",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "kiêng",
+    "count": 8,
+    "document_count": 6
+  },
+  {
+    "text": "kém",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "kính",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "kịp",
+    "count": 8,
+    "document_count": 6
+  },
+  {
+    "text": "lan",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "loãng",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "lâm",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "mãn",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "mỏi",
+    "count": 8,
+    "document_count": 6
+  },
+  {
+    "text": "nghẽn",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "ngủ",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "nành",
+    "count": 8,
+    "document_count": 6
+  },
+  {
+    "text": "nóng",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "nạn",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "phút",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "phấn",
+    "count": 8,
+    "document_count": 6
+  },
+  {
+    "text": "quanh",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "sữa",
+    "count": 8,
+    "document_count": 4
+  },
+  {
+    "text": "thái",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "thèm",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "thúc",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "thảo",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "thấp",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "tiếng",
+    "count": 8,
+    "document_count": 6
+  },
+  {
+    "text": "trao",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "truyền",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "tưởng",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "vong",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "xót",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "đích",
+    "count": 8,
+    "document_count": 7
+  },
+  {
+    "text": "đòi",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "đạp",
+    "count": 8,
+    "document_count": 4
+  },
+  {
+    "text": "đập",
+    "count": 8,
+    "document_count": 6
+  },
+  {
+    "text": "đội",
+    "count": 8,
+    "document_count": 8
+  },
+  {
+    "text": "ban",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "bại",
+    "count": 7,
+    "document_count": 6
+  },
+  {
+    "text": "chuột",
+    "count": 7,
+    "document_count": 5
+  },
+  {
+    "text": "covid",
+    "count": 7,
+    "document_count": 5
+  },
+  {
+    "text": "căn",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "cấy",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "cắt",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "giao",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "gáy",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "góp",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "hấp",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "khiển",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "khẩu",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "kiện",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "lỏng",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "lứa",
+    "count": 7,
+    "document_count": 6
+  },
+  {
+    "text": "muộn",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "mái",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "mùa",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "mềm",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "nhịn",
+    "count": 7,
+    "document_count": 5
+  },
+  {
+    "text": "nuốt",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "phác",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "phía",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "thanh",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "trái",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "trời",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "tóm",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "tỏa",
+    "count": 7,
+    "document_count": 5
+  },
+  {
+    "text": "vành",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "vòng",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "yên",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "ông",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "đai",
+    "count": 7,
+    "document_count": 6
+  },
+  {
+    "text": "đói",
+    "count": 7,
+    "document_count": 7
+  },
+  {
+    "text": "buổi",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "bước",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "bối",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "chặt",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "cơm",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "cứng",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "dân",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "dậy",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "dục",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "dứt",
+    "count": 6,
+    "document_count": 4
+  },
+  {
+    "text": "gam",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "gút",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "gạo",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "hơi",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "khung",
+    "count": 6,
+    "document_count": 4
+  },
+  {
+    "text": "khích",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "liệt",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "lẫn",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "lặp",
+    "count": 6,
+    "document_count": 4
+  },
+  {
+    "text": "mối",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "mừng",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "nghỉ",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "nhạt",
+    "count": 6,
+    "document_count": 4
+  },
+  {
+    "text": "nổi",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "sang",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "sụn",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "thiểu",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "thoải",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "thắc",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "tiểu",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "trộn",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "tật",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "tọa",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "vui",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "vẹn",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "vững",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "xung",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "đẹp",
+    "count": 6,
+    "document_count": 5
+  },
+  {
+    "text": "ủng",
+    "count": 6,
+    "document_count": 6
+  },
+  {
+    "text": "buồng",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "cam",
+    "count": 5,
+    "document_count": 4
+  },
+  {
+    "text": "cay",
+    "count": 5,
+    "document_count": 2
+  },
+  {
+    "text": "chèn",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "chóng",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "chúc",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "chị",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "diệt",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "giàu",
+    "count": 5,
+    "document_count": 4
+  },
+  {
+    "text": "giáo",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "giết",
+    "count": 5,
+    "document_count": 4
+  },
+  {
+    "text": "gân",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "gồm",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "hoa",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "hưng",
+    "count": 5,
+    "document_count": 4
+  },
+  {
+    "text": "hầu",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "khách",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "khí",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "khía",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "kiệt",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "lũy",
+    "count": 5,
+    "document_count": 4
+  },
+  {
+    "text": "lệch",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "lịch",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "lối",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "lộn",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "lứt",
+    "count": 5,
+    "document_count": 4
+  },
+  {
+    "text": "minh",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "mạng",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "nghiêm",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "niên",
+    "count": 5,
+    "document_count": 4
+  },
+  {
+    "text": "niềm",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "nỗi",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "phiền",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "phức",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "rơi",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "siêu",
+    "count": 5,
+    "document_count": 4
+  },
+  {
+    "text": "thiệt",
+    "count": 5,
+    "document_count": 4
+  },
+  {
+    "text": "thoại",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "thuận",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "thượng",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "thắng",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "tuyệt",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "tần",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "xưa",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "xấu",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "đem",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "đắt",
+    "count": 5,
+    "document_count": 4
+  },
+  {
+    "text": "ống",
+    "count": 5,
+    "document_count": 5
+  },
+  {
+    "text": "buộc",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "bày",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "bắc",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "bắp",
+    "count": 4,
+    "document_count": 3
+  },
+  {
+    "text": "chấm",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "chặn",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "cortisol",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "cây",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "dính",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "ghép",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "giường",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "giấc",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "hoạch",
+    "count": 4,
+    "document_count": 2
+  },
+  {
+    "text": "huy",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "hòa",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "khử",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "kiếm",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "kêu",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "leo",
+    "count": 4,
+    "document_count": 3
+  },
+  {
+    "text": "mai",
+    "count": 4,
+    "document_count": 3
+  },
+  {
+    "text": "men",
+    "count": 4,
+    "document_count": 3
+  },
+  {
+    "text": "mua",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "mắt",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "ngon",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "ngón",
+    "count": 4,
+    "document_count": 2
+  },
+  {
+    "text": "ngưỡng",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "nha",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "nhiệm",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "nhằm",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "niu",
+    "count": 4,
+    "document_count": 3
+  },
+  {
+    "text": "nản",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "phó",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "phẩy",
+    "count": 4,
+    "document_count": 3
+  },
+  {
+    "text": "rán",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "rệt",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "sáng",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "súp",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "sắp",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "sắt",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "thoáng",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "thoát",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "thuần",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "thú",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "thấu",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "thọ",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "toán",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "trôi",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "trùng",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "trẻ",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "trừ",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "tài",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "tạp",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "tụy",
+    "count": 4,
+    "document_count": 3
+  },
+  {
+    "text": "vôi",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "vắt",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "vốn",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "xâm",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "xây",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "xộn",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "đeo",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "đãi",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "đêm",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "đón",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "đậm",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "đắng",
+    "count": 4,
+    "document_count": 2
+  },
+  {
+    "text": "đặn",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "đọc",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "đời",
+    "count": 4,
+    "document_count": 4
+  },
+  {
+    "text": "amin",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "biên",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "bọt",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "bột",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "chuỗi",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "chào",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "chăng",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "chạm",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "chữ",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "cưỡng",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "cản",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "cẩn",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "cậy",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "dbs",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "dáng",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "gai",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "giày",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "gánh",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "gói",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "hoang",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "hoại",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "hàn",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "hút",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "hẳn",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "hứng",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "inr",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "insulin",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "kcal",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "khao",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "khát",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "khép",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "khởi",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "khứu",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "lai",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "lạc",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "lạng",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "lấn",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "lầm",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "lẩn",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "lớp",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "miếng",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "màn",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "mách",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "mòn",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "môn",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "mạn",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "mầm",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "mốc",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "nghi",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "ngơi",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "nhiễm",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "nhánh",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "nhé",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "nôm",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "nấm",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "nền",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "nửa",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "pepsin",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "phận",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "quẩn",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "rào",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "rét",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "sút",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "tan",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "teo",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "tha",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "thiệu",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "thuộc",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "thải",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "thẩm",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "thụ",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "thừa",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "trệ",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "trữ",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "tuệ",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "tách",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "tây",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "tóc",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "tầm",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "tốn",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "tồn",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "umami",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "video",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "viết",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "vết",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "vữa",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "xoa",
+    "count": 3,
+    "document_count": 2
+  },
+  {
+    "text": "xóa",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "xếp",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "đun",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "đài",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "đào",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "đấu",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "đớn",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "đợi",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "ương",
+    "count": 3,
+    "document_count": 3
+  },
+  {
+    "text": "amylase",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "bung",
+    "count": 2,
+    "document_count": 1
+  },
+  {
+    "text": "bám",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "bóc",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "bảng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "bền",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "bụng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "canh",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "catecholamine",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "chiếu",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "choạng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "chu",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "châm",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "chê",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "chó",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "chạp",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "chải",
+    "count": 2,
+    "document_count": 1
+  },
+  {
+    "text": "chằng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "chẽ",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "chối",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "chờ",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "chừng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "clip",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "collagen",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "cuồng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "cài",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "cánh",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "cười",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "cập",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "cặp",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "cửa",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "danh",
+    "count": 2,
+    "document_count": 1
+  },
+  {
+    "text": "dép",
+    "count": 2,
+    "document_count": 1
+  },
+  {
+    "text": "dòng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "dọc",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "dừa",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "dựa",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "dựng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "giang",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "giãn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "giòn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "giơ",
+    "count": 2,
+    "document_count": 1
+  },
+  {
+    "text": "google",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "gương",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "gấp",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "gọn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "ham",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "hao",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "hào",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "hạnh",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "hảo",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "hẹn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "hổng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "khái",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "kiên",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "kiểu",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "kín",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "levodopa",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "long",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "loạng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "lánh",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "lão",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "lòng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "lùi",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "lướt",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "lạm",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "lệnh",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "lọc",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "lợn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "miễn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "multivitamin",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "móc",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "mông",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "mùi",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "mưa",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "mẫu",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "mật",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "mắm",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "mắn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "natri",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "nghiệp",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "nghìn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "nghị",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "ngoáy",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "ngoạn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "ngàn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "ngâm",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "ngũ",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "ngấm",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "ngửi",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "nhiễu",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "nho",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "nhá",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "nhấn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "nhầm",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "nhập",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "nêu",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "phi",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "phytoncide",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "phúc",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "phản",
+    "count": 2,
+    "document_count": 1
+  },
+  {
+    "text": "quyền",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "quát",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "quên",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "rộng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "rời",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "sulfonylurea",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "sánh",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "sướng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "sắc",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "sắm",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "sợi",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "sửa",
+    "count": 2,
+    "document_count": 1
+  },
+  {
+    "text": "tam",
+    "count": 2,
+    "document_count": 1
+  },
+  {
+    "text": "tang",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "team",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "thang",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "thao",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "thi",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "thua",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "thước",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "thạc",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "thầy",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "thằng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "thỏa",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "thủng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "thủy",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "tiếc",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "tiềm",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "trang",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "triệt",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "trách",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "trúng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "trơn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "trải",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "trắng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "trặc",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "trễ",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "trọn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "trội",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "trục",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "tung",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "tuýp",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "tên",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "tĩnh",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "tải",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "tảng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "tận",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "tỉnh",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "tống",
+    "count": 2,
+    "document_count": 1
+  },
+  {
+    "text": "tụt",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "vươn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "vịn",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "vời",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "vừng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "vực",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "xanh",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "xài",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "xào",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "xám",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "xáo",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "xíu",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "xóm",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "yêu",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "đám",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "đóng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "đĩa",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "đảo",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "đắp",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "đệm",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "đụng",
+    "count": 2,
+    "document_count": 2
+  },
+  {
+    "text": "đứa",
+    "count": 2,
+    "document_count": 2
+  }
+]

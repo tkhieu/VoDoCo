@@ -1,0 +1,403 @@
+{
+  "trials": [
+    {
+      "trial_id": "validation_lr3e-05_ep8_wd0.05",
+      "learning_rate": 3e-05,
+      "epochs": 8,
+      "weight_decay": 0.05,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.19400769472122192,
+        "eval_precision": 0.819431543748839,
+        "eval_recall": 0.8450191570881226,
+        "eval_f1": 0.832028671130812,
+        "eval_runtime": 2.6996,
+        "eval_samples_per_second": 427.467,
+        "eval_steps_per_second": 27.041,
+        "epoch": 8.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr3e-05_ep8_wd0.05",
+      "seconds": 692.46
+    },
+    {
+      "trial_id": "validation_lr3e-05_ep8_wd0.01",
+      "learning_rate": 3e-05,
+      "epochs": 8,
+      "weight_decay": 0.01,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.19608816504478455,
+        "eval_precision": 0.8194160312441882,
+        "eval_recall": 0.8440613026819923,
+        "eval_f1": 0.8315561007832406,
+        "eval_runtime": 3.0071,
+        "eval_samples_per_second": 383.759,
+        "eval_steps_per_second": 24.276,
+        "epoch": 8.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr3e-05_ep8_wd0.01",
+      "seconds": 704.31
+    },
+    {
+      "trial_id": "validation_lr3e-05_ep6_wd0.05",
+      "learning_rate": 3e-05,
+      "epochs": 6,
+      "weight_decay": 0.05,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.21197840571403503,
+        "eval_precision": 0.8061395348837209,
+        "eval_recall": 0.8300766283524904,
+        "eval_f1": 0.8179329872581406,
+        "eval_runtime": 3.0954,
+        "eval_samples_per_second": 372.806,
+        "eval_steps_per_second": 23.583,
+        "epoch": 6.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr3e-05_ep6_wd0.05",
+      "seconds": 508.7
+    },
+    {
+      "trial_id": "validation_lr3e-05_ep6_wd0.01",
+      "learning_rate": 3e-05,
+      "epochs": 6,
+      "weight_decay": 0.01,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.21504651010036469,
+        "eval_precision": 0.8122866894197952,
+        "eval_recall": 0.8206896551724138,
+        "eval_f1": 0.8164665523156089,
+        "eval_runtime": 2.758,
+        "eval_samples_per_second": 418.426,
+        "eval_steps_per_second": 26.469,
+        "epoch": 6.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr3e-05_ep6_wd0.01",
+      "seconds": 539.91
+    },
+    {
+      "trial_id": "validation_lr3e-05_ep4_wd0.05",
+      "learning_rate": 3e-05,
+      "epochs": 4,
+      "weight_decay": 0.05,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.2790636122226715,
+        "eval_precision": 0.7560262965668371,
+        "eval_recall": 0.7931034482758621,
+        "eval_f1": 0.7741211667913238,
+        "eval_runtime": 2.8138,
+        "eval_samples_per_second": 410.122,
+        "eval_steps_per_second": 25.944,
+        "epoch": 4.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr3e-05_ep4_wd0.05",
+      "seconds": 302.63
+    },
+    {
+      "trial_id": "validation_lr3e-05_ep4_wd0.01",
+      "learning_rate": 3e-05,
+      "epochs": 4,
+      "weight_decay": 0.01,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.2873630225658417,
+        "eval_precision": 0.7543410711021751,
+        "eval_recall": 0.7906130268199234,
+        "eval_f1": 0.7720512580675334,
+        "eval_runtime": 2.6927,
+        "eval_samples_per_second": 428.563,
+        "eval_steps_per_second": 27.11,
+        "epoch": 4.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr3e-05_ep4_wd0.01",
+      "seconds": 340.74
+    },
+    {
+      "trial_id": "validation_lr1e-05_ep8_wd0.01",
+      "learning_rate": 1e-05,
+      "epochs": 8,
+      "weight_decay": 0.01,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.37212324142456055,
+        "eval_precision": 0.7185337572470544,
+        "eval_recall": 0.7360153256704981,
+        "eval_f1": 0.7271694899214536,
+        "eval_runtime": 2.8216,
+        "eval_samples_per_second": 408.989,
+        "eval_steps_per_second": 25.872,
+        "epoch": 8.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr1e-05_ep8_wd0.01",
+      "seconds": 724.52
+    },
+    {
+      "trial_id": "validation_lr1e-05_ep8_wd0.05",
+      "learning_rate": 1e-05,
+      "epochs": 8,
+      "weight_decay": 0.05,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.3874285817146301,
+        "eval_precision": 0.6875453885257807,
+        "eval_recall": 0.7254789272030652,
+        "eval_f1": 0.7060029828486205,
+        "eval_runtime": 2.7366,
+        "eval_samples_per_second": 421.695,
+        "eval_steps_per_second": 26.676,
+        "epoch": 8.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr1e-05_ep8_wd0.05",
+      "seconds": 671.83
+    },
+    {
+      "trial_id": "validation_lr1e-05_ep6_wd0.05",
+      "learning_rate": 1e-05,
+      "epochs": 6,
+      "weight_decay": 0.05,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.46278759837150574,
+        "eval_precision": 0.6545593576753966,
+        "eval_recall": 0.6559386973180077,
+        "eval_f1": 0.6552483015979332,
+        "eval_runtime": 2.7867,
+        "eval_samples_per_second": 414.113,
+        "eval_steps_per_second": 26.196,
+        "epoch": 6.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr1e-05_ep6_wd0.05",
+      "seconds": 548.96
+    },
+    {
+      "trial_id": "validation_lr1e-05_ep6_wd0.01",
+      "learning_rate": 1e-05,
+      "epochs": 6,
+      "weight_decay": 0.01,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.46745800971984863,
+        "eval_precision": 0.6386618513590572,
+        "eval_recall": 0.6436781609195402,
+        "eval_f1": 0.6411601946379162,
+        "eval_runtime": 2.8357,
+        "eval_samples_per_second": 406.953,
+        "eval_steps_per_second": 25.743,
+        "epoch": 6.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr1e-05_ep6_wd0.01",
+      "seconds": 503.51
+    },
+    {
+      "trial_id": "validation_lr5e-06_ep8_wd0.01",
+      "learning_rate": 5e-06,
+      "epochs": 8,
+      "weight_decay": 0.01,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.6080437898635864,
+        "eval_precision": 0.5980032599837001,
+        "eval_recall": 0.5622605363984674,
+        "eval_f1": 0.5795813586097947,
+        "eval_runtime": 2.7877,
+        "eval_samples_per_second": 413.965,
+        "eval_steps_per_second": 26.187,
+        "epoch": 8.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr5e-06_ep8_wd0.01",
+      "seconds": 584.81
+    },
+    {
+      "trial_id": "validation_lr5e-06_ep8_wd0.05",
+      "learning_rate": 5e-06,
+      "epochs": 8,
+      "weight_decay": 0.05,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.6138914823532104,
+        "eval_precision": 0.5846518987341772,
+        "eval_recall": 0.5662835249042145,
+        "eval_f1": 0.5753211366290385,
+        "eval_runtime": 3.1388,
+        "eval_samples_per_second": 367.652,
+        "eval_steps_per_second": 23.257,
+        "epoch": 8.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr5e-06_ep8_wd0.05",
+      "seconds": 708.23
+    },
+    {
+      "trial_id": "validation_lr1e-05_ep4_wd0.01",
+      "learning_rate": 1e-05,
+      "epochs": 4,
+      "weight_decay": 0.01,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.6223450303077698,
+        "eval_precision": 0.5816448152562574,
+        "eval_recall": 0.5609195402298851,
+        "eval_f1": 0.5710942071386776,
+        "eval_runtime": 3.0976,
+        "eval_samples_per_second": 372.544,
+        "eval_steps_per_second": 23.566,
+        "epoch": 4.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr1e-05_ep4_wd0.01",
+      "seconds": 386.65
+    },
+    {
+      "trial_id": "validation_lr1e-05_ep4_wd0.05",
+      "learning_rate": 1e-05,
+      "epochs": 4,
+      "weight_decay": 0.05,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.6213816404342651,
+        "eval_precision": 0.5841705966782859,
+        "eval_recall": 0.5457854406130268,
+        "eval_f1": 0.5643260374368624,
+        "eval_runtime": 2.7828,
+        "eval_samples_per_second": 414.693,
+        "eval_steps_per_second": 26.233,
+        "epoch": 4.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr1e-05_ep4_wd0.05",
+      "seconds": 366.0
+    },
+    {
+      "trial_id": "validation_lr5e-06_ep6_wd0.01",
+      "learning_rate": 5e-06,
+      "epochs": 6,
+      "weight_decay": 0.01,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.7393701672554016,
+        "eval_precision": 0.5580631025416302,
+        "eval_recall": 0.4879310344827586,
+        "eval_f1": 0.5206459525756336,
+        "eval_runtime": 3.1014,
+        "eval_samples_per_second": 372.09,
+        "eval_steps_per_second": 23.538,
+        "epoch": 6.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr5e-06_ep6_wd0.01",
+      "seconds": 332.43
+    },
+    {
+      "trial_id": "validation_lr5e-06_ep6_wd0.05",
+      "learning_rate": 5e-06,
+      "epochs": 6,
+      "weight_decay": 0.05,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.7383884787559509,
+        "eval_precision": 0.5659603554340397,
+        "eval_recall": 0.47586206896551725,
+        "eval_f1": 0.517015298157977,
+        "eval_runtime": 2.7263,
+        "eval_samples_per_second": 423.281,
+        "eval_steps_per_second": 26.776,
+        "epoch": 6.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr5e-06_ep6_wd0.05",
+      "seconds": 385.69
+    },
+    {
+      "trial_id": "validation_lr5e-06_ep4_wd0.01",
+      "learning_rate": 5e-06,
+      "epochs": 4,
+      "weight_decay": 0.01,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.8983365893363953,
+        "eval_precision": 0.43282024523871643,
+        "eval_recall": 0.317816091954023,
+        "eval_f1": 0.3665083397768696,
+        "eval_runtime": 2.8206,
+        "eval_samples_per_second": 409.136,
+        "eval_steps_per_second": 25.881,
+        "epoch": 4.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr5e-06_ep4_wd0.01",
+      "seconds": 256.16
+    },
+    {
+      "trial_id": "validation_lr5e-06_ep4_wd0.05",
+      "learning_rate": 5e-06,
+      "epochs": 4,
+      "weight_decay": 0.05,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.9276378750801086,
+        "eval_precision": 0.36945244956772333,
+        "eval_recall": 0.24559386973180078,
+        "eval_f1": 0.29505178365937856,
+        "eval_runtime": 2.8628,
+        "eval_samples_per_second": 403.098,
+        "eval_steps_per_second": 25.499,
+        "epoch": 4.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr5e-06_ep4_wd0.05",
+      "seconds": 249.61
+    }
+  ],
+  "best_config": {
+    "trial_id": "validation_lr3e-05_ep8_wd0.05",
+    "learning_rate": 3e-05,
+    "epochs": 8,
+    "weight_decay": 0.05,
+    "warmup_ratio": 0.1,
+    "scheduler": "linear",
+    "seed": 42,
+    "validation": {
+      "eval_loss": 0.19400769472122192,
+      "eval_precision": 0.819431543748839,
+      "eval_recall": 0.8450191570881226,
+      "eval_f1": 0.832028671130812,
+      "eval_runtime": 2.6996,
+      "eval_samples_per_second": 427.467,
+      "eval_steps_per_second": 27.041,
+      "epoch": 8.0
+    },
+    "checkpoint": "/content/phobert-vietmed-ner/validation_lr3e-05_ep8_wd0.05",
+    "seconds": 692.46
+  }
+}

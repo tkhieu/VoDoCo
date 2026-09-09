@@ -1,0 +1,419 @@
+{
+  "dataset": "leduckhai/VietMed-NER",
+  "split": "test",
+  "best_config": {
+    "trial_id": "validation_lr3e-05_ep8_wd0.05",
+    "learning_rate": 3e-05,
+    "epochs": 8,
+    "weight_decay": 0.05,
+    "warmup_ratio": 0.1,
+    "scheduler": "linear",
+    "seed": 42,
+    "validation": {
+      "eval_loss": 0.19400769472122192,
+      "eval_precision": 0.819431543748839,
+      "eval_recall": 0.8450191570881226,
+      "eval_f1": 0.832028671130812,
+      "eval_runtime": 2.6996,
+      "eval_samples_per_second": 427.467,
+      "eval_steps_per_second": 27.041,
+      "epoch": 8.0
+    },
+    "checkpoint": "/content/phobert-vietmed-ner/validation_lr3e-05_ep8_wd0.05",
+    "seconds": 692.46
+  },
+  "seed_summary": {
+    "best_config": {
+      "trial_id": "validation_lr3e-05_ep8_wd0.05",
+      "learning_rate": 3e-05,
+      "epochs": 8,
+      "weight_decay": 0.05,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 42,
+      "validation": {
+        "eval_loss": 0.19400769472122192,
+        "eval_precision": 0.819431543748839,
+        "eval_recall": 0.8450191570881226,
+        "eval_f1": 0.832028671130812,
+        "eval_runtime": 2.6996,
+        "eval_samples_per_second": 427.467,
+        "eval_steps_per_second": 27.041,
+        "epoch": 8.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/validation_lr3e-05_ep8_wd0.05",
+      "seconds": 692.46
+    },
+    "seeds": [
+      {
+        "trial_id": "seed_123_lr3e-05_ep8_wd0.05",
+        "learning_rate": 3e-05,
+        "epochs": 8,
+        "weight_decay": 0.05,
+        "warmup_ratio": 0.1,
+        "scheduler": "linear",
+        "seed": 123,
+        "validation": {
+          "eval_loss": 0.1924794763326645,
+          "eval_precision": 0.832391713747646,
+          "eval_recall": 0.8467432950191571,
+          "eval_f1": 0.8395061728395062,
+          "eval_runtime": 2.8128,
+          "eval_samples_per_second": 410.262,
+          "eval_steps_per_second": 25.952,
+          "epoch": 8.0
+        },
+        "checkpoint": "/content/phobert-vietmed-ner/seed_123_lr3e-05_ep8_wd0.05",
+        "seconds": 622.67
+      },
+      {
+        "trial_id": "seed_42_lr3e-05_ep8_wd0.05",
+        "learning_rate": 3e-05,
+        "epochs": 8,
+        "weight_decay": 0.05,
+        "warmup_ratio": 0.1,
+        "scheduler": "linear",
+        "seed": 42,
+        "validation": {
+          "eval_loss": 0.19400769472122192,
+          "eval_precision": 0.819431543748839,
+          "eval_recall": 0.8450191570881226,
+          "eval_f1": 0.832028671130812,
+          "eval_runtime": 2.8655,
+          "eval_samples_per_second": 402.718,
+          "eval_steps_per_second": 25.475,
+          "epoch": 8.0
+        },
+        "checkpoint": "/content/phobert-vietmed-ner/seed_42_lr3e-05_ep8_wd0.05",
+        "seconds": 712.44
+      },
+      {
+        "trial_id": "seed_2024_lr3e-05_ep8_wd0.05",
+        "learning_rate": 3e-05,
+        "epochs": 8,
+        "weight_decay": 0.05,
+        "warmup_ratio": 0.1,
+        "scheduler": "linear",
+        "seed": 2024,
+        "validation": {
+          "eval_loss": 0.1918393075466156,
+          "eval_precision": 0.8190600037154003,
+          "eval_recall": 0.8446360153256705,
+          "eval_f1": 0.8316514194096011,
+          "eval_runtime": 2.6839,
+          "eval_samples_per_second": 429.974,
+          "eval_steps_per_second": 27.199,
+          "epoch": 8.0
+        },
+        "checkpoint": "/content/phobert-vietmed-ner/seed_2024_lr3e-05_ep8_wd0.05",
+        "seconds": 620.29
+      }
+    ],
+    "validation_f1_mean": 0.8343954211266398,
+    "validation_f1_std_population": 0.0036171274992010554,
+    "selected_seed": {
+      "trial_id": "seed_123_lr3e-05_ep8_wd0.05",
+      "learning_rate": 3e-05,
+      "epochs": 8,
+      "weight_decay": 0.05,
+      "warmup_ratio": 0.1,
+      "scheduler": "linear",
+      "seed": 123,
+      "validation": {
+        "eval_loss": 0.1924794763326645,
+        "eval_precision": 0.832391713747646,
+        "eval_recall": 0.8467432950191571,
+        "eval_f1": 0.8395061728395062,
+        "eval_runtime": 2.8128,
+        "eval_samples_per_second": 410.262,
+        "eval_steps_per_second": 25.952,
+        "epoch": 8.0
+      },
+      "checkpoint": "/content/phobert-vietmed-ner/seed_123_lr3e-05_ep8_wd0.05",
+      "seconds": 622.67
+    }
+  },
+  "metrics": {
+    "baseline_xlm_roberta": {
+      "precision": 0.5181907571288102,
+      "recall": 0.627796161482462,
+      "f1": 0.5677519751017477,
+      "classification_report": {
+        "AGE": {
+          "precision": 0.5646606914212549,
+          "recall": 0.7090032154340836,
+          "f1-score": 0.6286528866714185,
+          "support": 622
+        },
+        "DATETIME": {
+          "precision": 0.6998535871156661,
+          "recall": 0.7166416791604198,
+          "f1-score": 0.7081481481481481,
+          "support": 667
+        },
+        "DIAGNOSTICS": {
+          "precision": 0.5754475703324808,
+          "recall": 0.7525083612040134,
+          "f1-score": 0.6521739130434782,
+          "support": 299
+        },
+        "DISEASESYMTOM": {
+          "precision": 0.5558628318584071,
+          "recall": 0.6850715746421268,
+          "f1-score": 0.6137404580152672,
+          "support": 1467
+        },
+        "DRUGCHEMICAL": {
+          "precision": 0.7649572649572649,
+          "recall": 0.7574047954866009,
+          "f1-score": 0.7611622962437987,
+          "support": 709
+        },
+        "FOODDRINK": {
+          "precision": 0.5842391304347826,
+          "recall": 0.8237547892720306,
+          "f1-score": 0.6836248012718601,
+          "support": 261
+        },
+        "GENDER": {
+          "precision": 0.49139280125195617,
+          "recall": 0.5627240143369175,
+          "f1-score": 0.5246449456975771,
+          "support": 558
+        },
+        "LOCATION": {
+          "precision": 0.5899280575539568,
+          "recall": 0.7477203647416414,
+          "f1-score": 0.6595174262734584,
+          "support": 329
+        },
+        "MEDDEVICETECHNIQUE": {
+          "precision": 0.18028846153846154,
+          "recall": 0.11811023622047244,
+          "f1-score": 0.142721217887726,
+          "support": 635
+        },
+        "OCCUPATION": {
+          "precision": 0.8335974643423137,
+          "recall": 0.9309734513274336,
+          "f1-score": 0.8795986622073578,
+          "support": 565
+        },
+        "ORGAN": {
+          "precision": 0.5455665024630542,
+          "recall": 0.7031746031746032,
+          "f1-score": 0.6144244105409155,
+          "support": 1260
+        },
+        "ORGANIZATION": {
+          "precision": 0.12195121951219512,
+          "recall": 0.08196721311475409,
+          "f1-score": 0.09803921568627451,
+          "support": 61
+        },
+        "PERSONALCARE": {
+          "precision": 0.20916905444126074,
+          "recall": 0.7684210526315789,
+          "f1-score": 0.3288288288288288,
+          "support": 95
+        },
+        "PREVENTIVEMED": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 18
+        },
+        "SURGERY": {
+          "precision": 0.4606741573033708,
+          "recall": 0.5942028985507246,
+          "f1-score": 0.5189873417721519,
+          "support": 276
+        },
+        "TRANSPORTATION": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 27
+        },
+        "TREATMENT": {
+          "precision": 0.3967280163599182,
+          "recall": 0.8362068965517241,
+          "f1-score": 0.5381414701803051,
+          "support": 232
+        },
+        "UNITCALIBRATOR": {
+          "precision": 0.2662835249042146,
+          "recall": 0.5408560311284046,
+          "f1-score": 0.35686777920410784,
+          "support": 257
+        },
+        "_": {
+          "precision": 0.5079466803383748,
+          "recall": 0.585203780271707,
+          "f1-score": 0.543845203787567,
+          "support": 6772
+        },
+        "micro avg": {
+          "precision": 0.5181907571288102,
+          "recall": 0.627796161482462,
+          "f1-score": 0.5677519751017477,
+          "support": 15110
+        },
+        "macro avg": {
+          "precision": 0.439397211375207,
+          "recall": 0.5744181556446967,
+          "f1-score": 0.48700626344527587,
+          "support": 15110
+        },
+        "weighted avg": {
+          "precision": 0.5292046253426154,
+          "recall": 0.627796161482462,
+          "f1-score": 0.5710295558400846,
+          "support": 15110
+        }
+      },
+      "num_examples": 3497
+    },
+    "phobert_best_validation_seed": {
+      "precision": 0.5620417529523702,
+      "recall": 0.6645929847782925,
+      "f1": 0.6090305364344847,
+      "classification_report": {
+        "AGE": {
+          "precision": 0.649025069637883,
+          "recall": 0.7491961414790996,
+          "f1-score": 0.6955223880597016,
+          "support": 622
+        },
+        "DATETIME": {
+          "precision": 0.704225352112676,
+          "recall": 0.7496251874062968,
+          "f1-score": 0.7262164124909223,
+          "support": 667
+        },
+        "DIAGNOSTICS": {
+          "precision": 0.6616766467065869,
+          "recall": 0.7391304347826086,
+          "f1-score": 0.69826224328594,
+          "support": 299
+        },
+        "DISEASESYMTOM": {
+          "precision": 0.6086105675146771,
+          "recall": 0.6359918200408998,
+          "f1-score": 0.622,
+          "support": 1467
+        },
+        "DRUGCHEMICAL": {
+          "precision": 0.7136363636363636,
+          "recall": 0.8857545839210155,
+          "f1-score": 0.7904342353681559,
+          "support": 709
+        },
+        "FOODDRINK": {
+          "precision": 0.6478405315614618,
+          "recall": 0.7471264367816092,
+          "f1-score": 0.693950177935943,
+          "support": 261
+        },
+        "GENDER": {
+          "precision": 0.7487603305785124,
+          "recall": 0.8118279569892473,
+          "f1-score": 0.7790197764402408,
+          "support": 558
+        },
+        "LOCATION": {
+          "precision": 0.625,
+          "recall": 0.8662613981762918,
+          "f1-score": 0.7261146496815287,
+          "support": 329
+        },
+        "MEDDEVICETECHNIQUE": {
+          "precision": 0.22420634920634921,
+          "recall": 0.17795275590551182,
+          "f1-score": 0.1984196663740123,
+          "support": 635
+        },
+        "OCCUPATION": {
+          "precision": 0.8826446280991735,
+          "recall": 0.9451327433628318,
+          "f1-score": 0.9128205128205128,
+          "support": 565
+        },
+        "ORGAN": {
+          "precision": 0.5473176612417119,
+          "recall": 0.7206349206349206,
+          "f1-score": 0.6221308667351834,
+          "support": 1260
+        },
+        "ORGANIZATION": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 61
+        },
+        "PERSONALCARE": {
+          "precision": 0.2052505966587112,
+          "recall": 0.9052631578947369,
+          "f1-score": 0.33463035019455256,
+          "support": 95
+        },
+        "PREVENTIVEMED": {
+          "precision": 0.012987012987012988,
+          "recall": 0.2777777777777778,
+          "f1-score": 0.02481389578163772,
+          "support": 18
+        },
+        "SURGERY": {
+          "precision": 0.45703125,
+          "recall": 0.42391304347826086,
+          "f1-score": 0.4398496240601504,
+          "support": 276
+        },
+        "TRANSPORTATION": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 27
+        },
+        "TREATMENT": {
+          "precision": 0.5875370919881305,
+          "recall": 0.853448275862069,
+          "f1-score": 0.6959578207381371,
+          "support": 232
+        },
+        "UNITCALIBRATOR": {
+          "precision": 0.2891566265060241,
+          "recall": 0.5603112840466926,
+          "f1-score": 0.3814569536423841,
+          "support": 257
+        },
+        "_": {
+          "precision": 0.5551062997260988,
+          "recall": 0.6284701712935618,
+          "f1-score": 0.5895145093150495,
+          "support": 6772
+        },
+        "micro avg": {
+          "precision": 0.5620417529523702,
+          "recall": 0.6645929847782925,
+          "f1-score": 0.6090305364344847,
+          "support": 15110
+        },
+        "macro avg": {
+          "precision": 0.4800006514821775,
+          "recall": 0.6146220047280755,
+          "f1-score": 0.5226902148907396,
+          "support": 15110
+        },
+        "weighted avg": {
+          "precision": 0.5763688395700299,
+          "recall": 0.6645929847782925,
+          "f1-score": 0.6144492531934271,
+          "support": 15110
+        }
+      },
+      "num_examples": 3497
+    }
+  },
+  "note": "Both models use the same test split, manual first-subtoken alignment and seqeval evaluator. PhoBERT checkpoint was selected using validation only; test was run once here."
+}

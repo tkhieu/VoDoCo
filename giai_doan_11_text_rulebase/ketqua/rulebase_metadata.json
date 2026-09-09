@@ -1,0 +1,10 @@
+{
+  "source": "giai_doan_10_text_rulebase\\train_text.jsonl",
+  "source_split": "train",
+  "record_count": 2773,
+  "term_count": 1140,
+  "phrase_count": 20277,
+  "min_count": 2,
+  "max_ngram": 5,
+  "warning": "Clean vocabulary is not an ASR error map; replacements require fuzzy evidence and are abstained when ambiguous."
+}

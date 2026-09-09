@@ -1,0 +1,15 @@
+{
+  "num_samples": 500,
+  "asr_model": "leduckhai/MultiMed-ST/asr/whisper-small-vietnamese/checkpoint-5000",
+  "baseline_xlm_roberta": {
+    "matched_entities": 785,
+    "reference_entity_count": 1487,
+    "entity_retention": 0.5279085406859448
+  },
+  "phobert_best_validation": {
+    "matched_entities": 741,
+    "reference_entity_count": 1391,
+    "entity_retention": 0.5327102803738317
+  },
+  "note": "Both NER models process the identical ASR transcript. Retention compares each model prediction on reference vs ASR text and is not gold recall."
+}

@@ -1,0 +1,14 @@
+{
+  "train_records": 2773,
+  "dev_records_scanned": 2912,
+  "synthetic_examples": 500,
+  "changed_examples": 500,
+  "exact_recovery_sentences": 0,
+  "exact_recovery_rate": 0.0,
+  "noisy_error_tokens": 10682,
+  "recovered_error_tokens": 4329,
+  "introduced_error_tokens": 39,
+  "token_recovery_rate": 0.405261,
+  "correction_precision_on_changed_tokens": 0.991071,
+  "noise": "accent removal only; synthetic validation is not real ASR evaluation"
+}
