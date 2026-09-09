@@ -1,0 +1,37 @@
+{
+  "num_samples": 100,
+  "A_asr_raw": {
+    "wer": 0.220680393912265,
+    "cer": 0.18048469387755103,
+    "substitutions": 155,
+    "deletions": 144,
+    "insertions": 194,
+    "hits": 1935,
+    "num_scored_sentences": 100
+  },
+  "B_after_correction": {
+    "wer": 0.2224709042076992,
+    "cer": 0.1832482993197279,
+    "substitutions": 155,
+    "deletions": 150,
+    "insertions": 192,
+    "hits": 1929,
+    "num_scored_sentences": 100
+  },
+  "C_overcorrection_on_gold": {
+    "wer": 0.010295434198746643,
+    "cer": 0.006909013605442177,
+    "substitutions": 14,
+    "deletions": 6,
+    "insertions": 3,
+    "hits": 2214,
+    "num_scored_sentences": 100
+  },
+  "relative_wer_reduction": -0.00811359026369169,
+  "sentence_level": {
+    "improved": 1,
+    "worsened": 6,
+    "unchanged": 93
+  },
+  "reference_left_untouched": 79
+}
