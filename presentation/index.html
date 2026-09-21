@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Spoken Named Entity Recognition</title>
+    
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/white.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Title -->
+            <section class="title-slide">
+                <div class="institution-lockup">
+                    <img src="assets/images/Logo_UIT_updated.svg" alt="Logo Trường Đại học Công nghệ Thông tin">
+                    <span>TRƯỜNG ĐẠI HỌC CÔNG NGHỆ THÔNG TIN<br>ĐẠI HỌC QUỐC GIA TP. HỒ CHÍ MINH</span>
+                </div>
+                <h1>Phân loại nhóm từ</h1>
+                <h1>trong y khoa</h1>
+                <div class="medical-icon">
+                    <i class="fas fa-heartbeat"></i>
+                    <i class="fas fa-microphone"></i>
+                </div>
+                <p class="author">Môn học: Xử lý ngôn ngữ tự nhiên</p>
+                <p class="author">Giảng viên hướng dẫn: Đặng Văn Thìn</p>
+                <p class="author">Nhóm thực hiện: Nhóm 8</p>
+                <aside class="notes">
+                    Giới thiệu đề tài Phân loại nhóm từ trong y khoa thuộc môn Xử lý ngôn ngữ tự nhiên.
+                    Nhóm thực hiện là Nhóm 8, giảng viên hướng dẫn Đặng Văn Thìn.
+                </aside>
+            </section>
+
+            <!-- Slide 2: Lý do chọn đề tài -->
+            <section>
+                <h2>Lý do chọn đề tài</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Vấn đề thực tế</h3>
+                        <ul>
+                            <li><strong>Cần tự động hóa</strong> trích xuất thông tin từ hội thoại bác sĩ - bệnh nhân</li>
+                            <li><strong>Tên bệnh, thuốc, cơ quan, số và đơn vị</strong> ít xuất hiện trong dữ liệu phổ thông</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3><i class="fas fa-lightbulb"></i> Ý nghĩa</h3>
+                        <ul>
+                            <li>Phát triển công cụ hỗ trợ bác sĩ <strong class="highlight">nhập liệu hồ sơ bệnh án bằng giọng nói</strong></li>
+                            <li>Tự động nhận diện các nhóm từ quan trọng trong nội dung y khoa</li>
+                        </ul>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Có ba lý do chính: tự động hóa trích xuất thông tin từ hội thoại bác sĩ - bệnh nhân; các thuật ngữ y khoa như tên bệnh, thuốc, cơ quan, số và đơn vị ít xuất hiện trong dữ liệu phổ thông; và hướng tới công cụ hỗ trợ bác sĩ nhập liệu hồ sơ bệnh án bằng giọng nói.
+                    Thời gian: 2 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 3: Pipeline Overview -->
+            <section>
+                <h2>Baseline của dự án - Pipeline Overview</h2>
+                <div class="pipeline">
+                    <div class="pipeline-step">
+                        <div class="step-icon"><i class="fas fa-microphone-alt"></i></div>
+                        <div class="step-label">AUDIO</div>
+                        <div class="step-desc">File âm thanh (.wav)</div>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step highlight-step">
+                        <div class="step-icon"><i class="fas fa-robot"></i></div>
+                        <div class="step-label">ASR Model</div>
+                        <div class="step-desc">Whisper-small-vietnamese</div>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <div class="step-icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="step-label">TEXT</div>
+                        <div class="step-desc">Văn bản tiếng Việt</div>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step highlight-step">
+                        <div class="step-icon"><i class="fas fa-brain"></i></div>
+                        <div class="step-label">NER Model</div>
+                        <div class="step-desc">PhoBERT / XLM-RoBERTa</div>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <div class="step-icon"><i class="fas fa-list-check"></i></div>
+                        <div class="step-label">RESULT</div>
+                        <div class="step-desc">Entities (18 types)</div>
+                    </div>
+                </div>
+                <div class="pipeline-details">
+                    <div class="detail-box">
+                        <h4>ASR (Automatic Speech Recognition)</h4>
+                        <p><strong>Input:</strong> File âm thanh → <strong>Output:</strong> Text</p>
+                    </div>
+                    <div class="detail-box">
+                        <h4>NER (Named Entity Recognition)</h4>
+                        <p><strong>Input:</strong> Text từ ASR → <strong>Output:</strong> Entities (18 loại)</p>
+                        <p><strong>Metrics:</strong> F1-score, Precision, Recall</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Giải thích pipeline: AUDIO → ASR → TEXT → NER → RESULT.
+                    Nhấn mạnh 2 model chính: ASR model và NER model.
+                    Thời gian: 2 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 4: NER Model Comparison -->
+            <section>
+                <h2>So sánh NER: PhoBERT vs XLM-RoBERTa</h2>
+                <h3 class="benchmark-subheading"><i class="fas fa-chart-column"></i> NER benchmark</h3>
+                <table class="comparison-table benchmark-table">
+                    <thead>
+                        <tr>
+                            <th>Tiêu chí</th>
+                            <th><i class="fas fa-code"></i> PhoBERT</th>
+                            <th><i class="fas fa-code-branch"></i> XLM-RoBERTa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Architecture</strong></td>
+                            <td>Encoder-only token classification</td>
+                            <td>Encoder-only token classification</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dataset</strong></td>
+                            <td>VietMed-NER test</td>
+                            <td>VietMed-NER test</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Test examples</strong></td>
+                            <td>3,497 mẫu</td>
+                            <td>3,497 mẫu</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Precision</strong></td>
+                            <td>56.73%</td>
+                            <td>52.58%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Recall</strong></td>
+                            <td>69.39%</td>
+                            <td>66.24%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Matched gold spans</strong></td>
+                            <td>5,786 / 8,338</td>
+                            <td>5,523 / 8,338</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Đo như thế nào?</strong></td>
+                            <td>Khớp đúng span + nhãn entity</td>
+                            <td>Khớp đúng span + nhãn entity</td>
+                        </tr>
+                        <tr>
+                            <td><strong>F1-score</strong></td>
+                            <td class="winner">62.42%</td>
+                            <td>58.62%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="conclusion-box">
+                    <h4><i class="fas fa-trophy"></i> Tổng kết</h4>
+                    <ul>
+                        <li>✅ <strong>PhoBERT:</strong> đúng tổng thể theo F1 <strong>62.42%</strong> (Precision 56.73%, Recall 69.39%)</li>
+                        <li>✅ <strong>XLM-RoBERTa:</strong> F1 <strong>58.62%</strong> (Precision 52.58%, Recall 66.24%)</li>
+                        <li>✅ PhoBERT cao hơn <strong>3.80 điểm F1</strong> trên cùng 3.497 mẫu test</li>
+                        <li>ℹ️ Đây là NER chạy trên <strong>reference text</strong>; chưa phải accuracy khi nhận transcript ASR</li>
+                    </ul>
+                </div>
+                <aside class="notes">
+                    Đây là benchmark chạy thật: hai model được chạy inference trên toàn bộ 3.497 mẫu test.
+                    Khi nói “tỉ lệ đúng”, dùng F1: PhoBERT 62.42%, XLM-RoBERTa 58.62%.
+                    Precision là tỷ lệ dự đoán entity đúng; recall là tỷ lệ entity thật được tìm thấy.
+                    Đây là reference text benchmark, còn kết quả khi đi qua ASR được trình bày riêng bằng entity retention.
+                    Thời gian: 2.5 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 5: Metrics Comparison -->
+            <section>
+                <h2>So sánh chi tiết - Metrics</h2>
+                <p class="note"><i class="fas fa-database"></i> Benchmark được chạy trên 3.497 mẫu dữ liệu</p>
+                <div class="metric-explainer">
+                    <div class="metric-explainer-card">
+                        <h3>Precision</h3>
+                        <p>Trong các entity dự đoán, bao nhiêu entity đúng?</p>
+                        <div class="model-score phobert-score"><span>PhoBERT</span><strong>56.73%</strong></div>
+                        <div class="model-score xlm-score"><span>XLM-RoBERTa</span><strong>52.58%</strong></div>
+                    </div>
+                    <div class="metric-explainer-card">
+                        <h3>Recall</h3>
+                        <p>Trong các entity thật, mô hình tìm được bao nhiêu?</p>
+                        <div class="model-score phobert-score"><span>PhoBERT</span><strong>69.39%</strong></div>
+                        <div class="model-score xlm-score"><span>XLM-RoBERTa</span><strong>66.24%</strong></div>
+                    </div>
+                    <div class="metric-explainer-card primary-metric">
+                        <h3>F1-score</h3>
+                        <p>Cân bằng giữa Precision và Recall. Dùng để chọn model.</p>
+                        <div class="model-score phobert-score"><span>PhoBERT</span><strong>62.42%</strong></div>
+                        <div class="model-score xlm-score"><span>XLM-RoBERTa</span><strong>58.62%</strong></div>
+                        <div class="metric-verdict">PhoBERT cao hơn 3.80 điểm F1</div>
+                    </div>
+                </div>
+                <div class="entity-types">
+                    <h4><i class="fas fa-tags"></i> 18 Entity Types</h4>
+                    <div class="tags">
+                        <span class="tag tag-symptom">SYMPTOM</span>
+                        <span class="tag tag-disease">DISEASE</span>
+                        <span class="tag tag-drug">DRUG</span>
+                        <span class="tag tag-test">TEST</span>
+                        <span class="tag tag-anatomy">ANATOMY</span>
+                        <span class="tag tag-duration">DURATION</span>
+                        <span class="tag tag-other">+ 12 more types</span>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Giải thích theo thứ tự: Precision là dự đoán đúng, Recall là tìm được entity thật, F1 là điểm cân bằng.
+                    PhoBERT đạt F1 62.42%, cao hơn XLM-RoBERTa 58.62%.
+                    18 entity types bao gồm: triệu chứng, bệnh, thuốc, xét nghiệm, v.v.
+                    Thời gian: 2 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 6: Correction Benchmark -->
+            <section>
+                <h2>Correction Benchmark</h2>
+                <p class="note"><i class="fas fa-database"></i> ASR pipeline benchmark · 500 audio samples · entity retention / consistency (không phải accuracy hay WER)</p>
+                <h3 class="benchmark-subheading"><i class="fas fa-chart-column"></i> Entity retention</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>ASR → NER</th>
+                            <th>ASR → correction → NER</th>
+                            <th class="highlight-col">Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>PhoBERT</strong></td>
+                            <td>53.27%</td>
+                            <td>42.27%</td>
+                            <td class="winner"><strong>-11.00 pts</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>XLM-RoBERTa</strong></td>
+                            <td>52.79%</td>
+                            <td>42.10%</td>
+                            <td class="winner"><strong>-10.69 pts</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3 class="benchmark-subheading"><i class="fas fa-bullseye"></i> Matched entities</h3>
+                <div class="matched-entities-grid">
+                    <div class="matched-card">
+                        <strong>PhoBERT</strong>
+                        <span>741 / 1,391</span>
+                        <b>→ 588 / 1,391</b>
+                        <small>-153 matched entities</small>
+                    </div>
+                    <div class="matched-card">
+                        <strong>XLM-RoBERTa</strong>
+                        <span>785 / 1,487</span>
+                        <b>→ 626 / 1,487</b>
+                        <small>-159 matched entities</small>
+                    </div>
+                </div>
+                <div class="conclusion-box">
+                    <h4><i class="fas fa-lightbulb"></i> Kết luận</h4>
+                    <p>Correction hiện làm retention giảm trong benchmark: PhoBERT <strong>53.27% → 42.27%</strong>, XLM-RoBERTa <strong>52.79% → 42.10%</strong>.</p>
+                    <p><strong>Vì sao xấu đi?</strong> Clean vocabulary không phải ASR error map; fuzzy replacement thiếu ngữ cảnh có thể đổi entity span/label; metric yêu cầu khớp đồng thời text và label nên rất nhạy với thay đổi nhỏ.</p>
+                    <p>Benchmark text-only riêng: <strong>1,025 / 1,154 examples (88.8%)</strong> thay đổi, tổng <strong>2,506 changes</strong>; cần gold ASR labels để đánh giá precision thực tế.</p>
+                </div>
+                <aside class="notes">
+                    Correction chưa cải thiện retention trên 500 audio: PhoBERT giảm 53.27% xuống 42.27%.
+                    Nguyên nhân: vocabulary sạch không đại diện lỗi ASR, fuzzy match thiếu ngữ cảnh, và entity retention yêu cầu khớp đúng cả text lẫn label.
+                    Synthetic validation 99.11% precision chỉ áp dụng cho accent-removal noise, không đại diện ASR thật.
+                    Thời gian: 2 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 7: Correction Failure Case Study -->
+            <section>
+                <h2>Case study: Correction sai ngữ cảnh</h2>
+                <p class="note"><i class="fas fa-triangle-exclamation"></i> Ví dụ lấy từ nhóm case có WER cao trong ASR benchmark</p>
+                <div class="two-column case-study-grid">
+                    <div class="column">
+                        <h3><i class="fas fa-wave-square"></i> Transcript</h3>
+                        <p><strong>Reference:</strong><br>mụn này không ạ em không không bị tác dụng phụ...</p>
+                        <p><strong>ASR output:</strong><br>này không ạ</p>
+                        <p><strong>After correction:</strong><br>này không ăn</p>
+                    </div>
+                    <div class="column">
+                        <h3><i class="fas fa-chart-line"></i> Tác động</h3>
+                        <ul>
+                            <li>Rule fuzzy đổi <code>không ạ</code> thành <code>không ăn</code>.</li>
+                            <li>WER tăng từ <strong>83.33%</strong> lên <strong>88.89%</strong>.</li>
+                            <li>Không khôi phục được entity bị mất từ ASR.</li>
+                            <li>Đây là lỗi thay thế thiếu ngữ cảnh, không phải lỗi mô hình NER.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="conclusion-box">
+                    <h4><i class="fas fa-lightbulb"></i> Bài học</h4>
+                    <p>Correction chỉ nên thay thế khi có evidence từ ASR error map và ngữ cảnh đủ mạnh; nếu không, hệ thống nên <strong>abstain</strong>.</p>
+                </div>
+                <aside class="notes">
+                    Đây là ví dụ trực quan vì sao precision synthetic cao không đảm bảo correction tốt trên ASR thật.
+                    ASR đã bỏ mất phần lớn reference; rulebase không thể khôi phục thông tin và còn đổi một cụm đúng ngữ cảnh thành cụm sai.
+                    Thời gian: 1.5 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 8: Hạn chế và Hướng phát triển -->
+            <section>
+                <h2>Hạn chế và Hướng phát triển</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Hạn chế hiện tại</h3>
+                        <ul class="limitation-list">
+                            <li>Chỉ support <strong>tiếng Việt</strong></li>
+                            <li>Phụ thuộc vào <strong>chất lượng ASR</strong></li>
+                            <li>Cần nhiều <strong>labeled data</strong> cho training</li>
+                            <li>Chưa có <strong>real-time processing</strong></li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3><i class="fas fa-rocket"></i> Hướng phát triển</h3>
+                        <ul class="future-list">
+                            <li>Mở rộng sang <strong>ngôn ngữ khác</strong> (multilingual)</li>
+                            <li><strong>Xử lý Real-time</strong> với độ trễ thấp</li>
+                            <li>Integration với <strong>EMR</strong> (Electronic Medical Records)</li>
+                            <li><strong>Mobile app</strong> cho bác sĩ</li>
+                            <li>Có thêm nhiều nhóm có thể phân loại</li>
+                            <li>Cải thiện độ chính xác của model </strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="vision-box">
+                    <h4><i class="fas fa-eye"></i> Vision</h4>
+                    <p>Xây dựng pipeline medical speech có thể đánh giá và cải tiến theo từng lớp: ASR, NER và Correction.</p>
+                </div>
+                <aside class="notes">
+                    Hạn chế: chỉ tiếng Việt, phụ thuộc ASR, cần labeled data.
+                    Hướng phát triển: multilingual, real-time, EMR integration, mobile app.
+                    Vision: hệ thống AI y tế toàn diện.
+                    Thời gian: 1.5 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 9: Kết thúc -->
+            <section class="ending-slide">
+                <h1>Cảm ơn Thầy và Anh Chị đã lắng nghe!</h1>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/search/search.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/zoom/zoom.js"></script>
+    
+    <script>
+        // Initialize Reveal.js
+        Reveal.initialize({
+            width: 1600,
+            height: 900,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.5,
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            progress: true,
+            history: true,
+            center: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            plugins: [ RevealNotes, RevealHighlight, RevealSearch, RevealZoom ]
+        });
+    </script>
+</body>
+</html>

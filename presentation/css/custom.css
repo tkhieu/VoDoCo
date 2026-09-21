@@ -1,0 +1,2841 @@
+/* VietMed-NER Presentation - Redesigned Professional Theme */
+/* Optimized for 16:9 presentation screens */
+
+/* ========================================
+   1. Global Styles & Refined Color Palette
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    /* Refined palette - calm & professional */
+    --bg-soft: #F7F5F1;
+    --surface-white: #FFFFFF;
+    --border-subtle: #E7E3DA;
+    --ink: #1E2227;
+    --text-muted: #6B7077;
+    --accent-slate: #3C5A78;
+    --accent-slate-hover: #2E4760;
+    --accent-warm: #9A7B5C;
+    
+    /* Entity colors - medical themed but softer */
+    --entity-symptom: #C85A54;
+    --entity-disease: #D4874B;
+    --entity-drug: #7B68A6;
+    --entity-test: #4A7BA7;
+    --entity-anatomy: #3D8B7C;
+    --entity-duration: #B88D4F;
+    --entity-other: #7A8A8F;
+    
+    /* Shadows & effects */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Base Reveal.js overrides */
+.reveal {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--bg-soft);
+}
+
+.reveal .slides {
+    text-align: left;
+}
+
+.reveal section {
+    height: 100%;
+    padding: 40px 60px;
+}
+
+/* Typography - Classical serif for headings */
+.reveal h1, 
+.reveal h2, 
+.reveal h3, 
+.reveal h4 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 600;
+    color: var(--ink);
+    text-transform: none;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5em 0;
+}
+
+.reveal h1 {
+    font-size: 2.4em;
+    font-weight: 700;
+    margin-bottom: 0.3em;
+}
+
+.reveal h2 {
+    font-size: 1.6em;
+    font-weight: 600;
+    margin-bottom: 0.6em;
+}
+
+.reveal h3 {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 0.4em;
+}
+
+.reveal h4 {
+    font-size: 1em;
+    font-weight: 500;
+    margin-bottom: 0.3em;
+}
+
+.reveal p {
+    line-height: 1.5;
+    margin-bottom: 0.6em;
+}
+
+.reveal ul, 
+.reveal ol {
+    text-align: left;
+    margin-left: 1.2em;
+}
+
+.reveal li {
+    margin-bottom: 0.4em;
+    line-height: 1.4;
+}
+
+.reveal strong {
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.reveal a {
+    color: var(--accent-slate);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.reveal a:hover {
+    color: var(--accent-slate-hover);
+    border-bottom-color: var(--accent-slate-hover);
+}
+
+.reveal code {
+    font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+    background: rgba(60, 90, 120, 0.06);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* ========================================
+   2. Title Slide - Hero Style
+   ======================================== */
+
+.title-slide {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, var(--bg-soft) 0%, #FFFFFF 100%);
+}
+
+.title-slide h1 {
+    font-size: 3em;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.2em;
+    color: var(--ink);
+}
+
+.title-slide h2 {
+    font-size: 1.4em;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 0.3em;
+}
+
+.title-slide .subtitle {
+    font-size: 0.9em;
+    color: var(--text-muted);
+    font-style: italic;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 1em;
+}
+
+.title-slide .medical-icon {
+    font-size: 2em;
+    margin: 0.6em 0;
+    display: flex;
+    gap: 0.5em;
+}
+
+.title-slide .medical-icon i {
+    color: var(--accent-slate);
+    opacity: 0.7;
+}
+
+.title-slide .author,
+.title-slide .date {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75em;
+    color: var(--text-muted);
+    margin-top: 0.3em;
+}
+
+/* Eyebrow pill */
+.eyebrow-pill {
+    display: inline-block;
+    background: var(--surface-white);
+    border: 1px solid var(--border-subtle);
+    padding: 0.3em 0.8em;
+    border-radius: 20px;
+    font-size: 0.5em;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 1em;
+}
+
+/* ========================================
+   3. Layout Utilities
+   ======================================== */
+
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5em;
+    margin-top: 0.8em;
+}
+
+.column {
+    text-align: left;
+}
+
+.column h3 {
+    font-size: 1.1em;
+    margin-bottom: 0.6em;
+    padding-bottom: 0.3em;
+    border-bottom: 2px solid var(--border-subtle);
+}
+
+.column h3 i {
+    color: var(--accent-slate);
+    margin-right: 0.3em;
+    font-size: 0.9em;
+}
+
+/* ========================================
+   4. Refined Boxes & Cards
+   ======================================== */
+
+.highlight-box {
+    background: var(--surface-white);
+    border: 2px solid var(--accent-slate);
+    border-left: 6px solid var(--accent-slate);
+    color: var(--ink);
+    padding: 0.8em 1.2em;
+    border-radius: 8px;
+    margin-top: 1em;
+    font-size: 0.8em;
+    box-shadow: var(--shadow-sm);
+}
+
+.highlight-box i {
+    margin-right: 0.5em;
+    color: var(--accent-slate);
+}
+
+.highlight {
+    color: var(--accent-slate);
+    font-weight: 600;
+}
+
+.question-box {
+    background: var(--surface-white);
+    border-left: 4px solid var(--accent-slate);
+    padding: 1em 1.3em;
+    margin: 1em 0;
+    border-radius: 6px;
+    box-shadow: var(--shadow-sm);
+}
+
+.question-box h3 {
+    color: var(--accent-slate);
+    margin-bottom: 0.6em;
+    font-size: 1.1em;
+}
+
+.question-box h3 i {
+    margin-right: 0.4em;
+}
+
+.conclusion-box {
+    background: var(--surface-white);
+    border: 2px solid var(--accent-slate);
+    padding: 1.2em 1.5em;
+    border-radius: 8px;
+    margin-top: 1.2em;
+    box-shadow: var(--shadow-md);
+}
+
+.conclusion-box h4 {
+    color: var(--accent-slate);
+    margin-bottom: 0.6em;
+    font-size: 1em;
+}
+
+.conclusion-box h4 i {
+    margin-right: 0.4em;
+}
+
+.conclusion-box ul {
+    margin: 0;
+    padding-left: 1.2em;
+    font-size: 0.85em;
+}
+
+.conclusion-box li {
+    margin-bottom: 0.5em;
+}
+
+.warning-box {
+    background: #FFF8F0;
+    border: 1px solid #E8D4B8;
+    border-left: 4px solid var(--accent-warm);
+    padding: 1em 1.8em;
+    border-radius: 6px;
+    margin-top: 1.5em;
+    font-size: 0.8em;
+}
+
+.warning-box i {
+    color: var(--accent-warm);
+    margin-right: 0.6em;
+}
+
+.result-box {
+    background: var(--surface-white);
+    padding: 1.8em;
+    border-radius: 8px;
+    margin-top: 1.5em;
+    box-shadow: var(--shadow-sm);
+}
+
+.note {
+    font-size: 0.7em;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 1em;
+}
+
+/* ========================================
+   5. Pipeline Visualization - Streamlined
+   ======================================== */
+
+.pipeline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+    margin: 2.5em 0;
+    padding: 2em 0;
+}
+
+.pipeline-step {
+    background: var(--surface-white);
+    border: 2px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 1.5em 1.2em;
+    min-width: 130px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.pipeline-step:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.pipeline-step.highlight-step {
+    background: var(--accent-slate);
+    color: var(--surface-white);
+    border-color: var(--accent-slate);
+    box-shadow: var(--shadow-md);
+}
+
+.step-icon {
+    font-size: 2.2em;
+    margin-bottom: 0.4em;
+    color: var(--accent-slate);
+}
+
+.highlight-step .step-icon {
+    color: var(--surface-white);
+}
+
+.step-label {
+    font-weight: 600;
+    font-size: 0.75em;
+    margin-bottom: 0.3em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.step-desc {
+    font-size: 0.6em;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.highlight-step .step-desc {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.pipeline-arrow {
+    font-size: 2em;
+    color: var(--border-subtle);
+    font-weight: 300;
+    margin: 0 -0.5em;
+}
+
+.pipeline-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2em;
+    margin-top: 2.5em;
+}
+
+.detail-box {
+    background: var(--surface-white);
+    padding: 1.8em;
+    border-radius: 8px;
+    text-align: left;
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-sm);
+}
+
+.detail-box h4 {
+    color: var(--ink);
+    margin-bottom: 0.8em;
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.detail-box p {
+    font-size: 0.75em;
+    margin: 0.5em 0;
+    line-height: 1.6;
+}
+
+/* ========================================
+   6. Model & Metrics Display
+   ======================================== */
+
+.model-info h3, 
+.result-box h3 {
+    color: var(--ink);
+    margin-bottom: 1em;
+    font-size: 1.4em;
+}
+
+.model-info h3 i,
+.result-box h3 i {
+    color: var(--accent-slate);
+    margin-right: 0.4em;
+}
+
+.model-list {
+    list-style: none;
+    padding: 0;
+    margin: 1em 0;
+}
+
+.model-list li {
+    background: var(--surface-white);
+    padding: 1em 1.5em;
+    margin: 0.6em 0;
+    border-left: 4px solid var(--accent-slate);
+    border-radius: 6px;
+    font-size: 0.75em;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.model-list li:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+}
+
+.metric-highlight {
+    display: flex;
+    justify-content: center;
+    margin: 2em 0;
+}
+
+.metric-card {
+    background: var(--surface-white);
+    border: 3px solid var(--accent-slate);
+    border-radius: 12px;
+    padding: 2.5em 3em;
+    text-align: center;
+    min-width: 400px;
+    box-shadow: var(--shadow-lg);
+}
+
+.metric-label {
+    font-weight: 600;
+    font-size: 0.85em;
+    color: var(--text-muted);
+    margin-bottom: 0.6em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.metric-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5em;
+    font-weight: 700;
+    margin: 0.5em 0;
+    color: var(--ink);
+}
+
+.old-value {
+    color: var(--text-muted);
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.new-value {
+    color: var(--accent-slate);
+}
+
+.metric-desc {
+    font-size: 0.7em;
+    color: var(--text-muted);
+    margin: 0.6em 0;
+}
+
+.metric-improve {
+    font-size: 0.8em;
+    color: var(--accent-slate);
+    font-weight: 600;
+    margin-top: 0.8em;
+}
+
+/* ========================================
+   7. Tables - Clean & Readable
+   ======================================== */
+
+.comparison-table, 
+.metrics-table, 
+.entity-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.65em;
+    margin: 1.5em 0;
+    box-shadow: var(--shadow-md);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--surface-white);
+}
+
+.comparison-table th, 
+.metrics-table th, 
+.entity-table th {
+    background: var(--accent-slate);
+    color: var(--surface-white);
+    padding: 1em 1.2em;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 0.9em;
+}
+
+.comparison-table td, 
+.metrics-table td, 
+.entity-table td {
+    padding: 1em 1.2em;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--ink);
+}
+
+.comparison-table tbody tr:last-child td,
+.metrics-table tbody tr:last-child td,
+.entity-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.comparison-table tbody tr:hover, 
+.metrics-table tbody tr:hover {
+    background: var(--bg-soft);
+}
+
+.winner {
+    background: rgba(60, 90, 120, 0.08);
+    font-weight: 600;
+    color: var(--accent-slate);
+}
+
+.highlight-col {
+    background: var(--accent-slate);
+    color: var(--surface-white);
+}
+
+.category-row {
+    background: var(--bg-soft);
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.category-row td {
+    padding: 0.8em 1.2em;
+}
+
+.best-row {
+    background: rgba(60, 90, 120, 0.05);
+    border-left: 4px solid var(--accent-slate);
+}
+
+.subtitle-comparison {
+    font-size: 0.85em;
+    color: var(--text-muted);
+    font-style: italic;
+    font-family: 'Inter', sans-serif;
+    margin-top: -0.5em;
+    margin-bottom: 1.5em;
+}
+
+/* ========================================
+   8. Entity Tags & Color Coding
+   ======================================== */
+
+.entity-types {
+    margin-top: 2em;
+}
+
+.entity-types h4 {
+    margin-bottom: 1em;
+    font-size: 1.1em;
+}
+
+.entity-types h4 i {
+    color: var(--accent-slate);
+    margin-right: 0.4em;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6em;
+}
+
+.tag {
+    padding: 0.6em 1.2em;
+    border-radius: 6px;
+    font-size: 0.65em;
+    font-weight: 600;
+    color: var(--surface-white);
+    box-shadow: var(--shadow-sm);
+}
+
+.tag-symptom { background: var(--entity-symptom); }
+.tag-disease { background: var(--entity-disease); }
+.tag-drug { background: var(--entity-drug); }
+.tag-test { background: var(--entity-test); }
+.tag-anatomy { background: var(--entity-anatomy); }
+.tag-duration { background: var(--entity-duration); }
+.tag-other { background: var(--entity-other); }
+
+/* Entity highlighting in text */
+.entity-highlight {
+    padding: 0.2em 0.5em;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.entity-symptom-text {
+    background: rgba(200, 90, 84, 0.12);
+    color: var(--entity-symptom);
+    border-bottom: 2px solid var(--entity-symptom);
+}
+
+.entity-disease-text {
+    background: rgba(212, 135, 75, 0.12);
+    color: var(--entity-disease);
+    border-bottom: 2px solid var(--entity-disease);
+}
+
+.entity-drug-text {
+    background: rgba(123, 104, 166, 0.12);
+    color: var(--entity-drug);
+    border-bottom: 2px solid var(--entity-drug);
+}
+
+.entity-duration-text {
+    background: rgba(184, 141, 79, 0.12);
+    color: var(--entity-duration);
+    border-bottom: 2px solid var(--entity-duration);
+}
+
+/* ========================================
+   9. Correction Methods
+   ======================================== */
+
+.two-approaches {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 2em;
+    margin: 2.5em 0;
+}
+
+.approach-card {
+    background: var(--surface-white);
+    border: 2px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 2.5em;
+    flex: 1;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
+
+.approach-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-slate);
+}
+
+.approach-icon {
+    font-size: 3.5em;
+    color: var(--accent-slate);
+    margin-bottom: 0.6em;
+}
+
+.approach-card h3 {
+    font-size: 1.2em;
+    margin-bottom: 0.8em;
+    color: var(--ink);
+}
+
+.approach-card p {
+    font-size: 0.75em;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.vs {
+    font-size: 1.8em;
+    font-weight: 600;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+}
+
+.method-section {
+    margin: 2em 0;
+}
+
+.method-section h3 {
+    margin-bottom: 1.2em;
+}
+
+.method-section h3 i {
+    color: var(--accent-slate);
+    margin-right: 0.5em;
+}
+
+.method-list {
+    font-size: 0.8em;
+    line-height: 1.8;
+}
+
+.code-example {
+    background: #1E2227;
+    color: #E8E6E3;
+    padding: 1.5em;
+    border-radius: 8px;
+    margin-top: 1.5em;
+    text-align: left;
+    box-shadow: var(--shadow-md);
+}
+
+.code-example h4 {
+    color: var(--surface-white);
+    margin-bottom: 0.8em;
+    font-size: 0.9em;
+}
+
+.code-example h4 i {
+    color: var(--accent-slate);
+    margin-right: 0.4em;
+}
+
+.code-example pre {
+    margin: 0;
+    font-size: 0.5em;
+    line-height: 1.7;
+    overflow-x: auto;
+}
+
+.code-example code {
+    font-family: 'SF Mono', 'Monaco', monospace;
+}
+
+.code-ref {
+    font-size: 0.65em;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 0.8em;
+}
+
+.code-ref i {
+    margin-right: 0.3em;
+}
+
+.pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2em;
+    margin-top: 2em;
+}
+
+.pros, .cons {
+    padding: 1.8em;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+}
+
+.pros {
+    background: rgba(60, 90, 120, 0.05);
+    border: 2px solid rgba(60, 90, 120, 0.2);
+}
+
+.cons {
+    background: rgba(154, 123, 92, 0.05);
+    border: 2px solid rgba(154, 123, 92, 0.2);
+}
+
+.pros h4 {
+    color: var(--accent-slate);
+    margin-bottom: 1em;
+    font-size: 1.1em;
+}
+
+.cons h4 {
+    color: var(--accent-warm);
+    margin-bottom: 1em;
+    font-size: 1.1em;
+}
+
+.pros h4 i,
+.cons h4 i {
+    margin-right: 0.5em;
+}
+
+.pros ul, .cons ul {
+    font-size: 0.75em;
+    margin: 0;
+    padding-left: 1.5em;
+}
+
+.pros li, .cons li {
+    margin-bottom: 0.7em;
+}
+
+/* ========================================
+   10. Demo Components
+   ======================================== */
+
+.demo-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5em;
+    margin: 2.5em 0;
+}
+
+.demo-card {
+    background: var(--surface-white);
+    border: 2px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 2.5em;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
+
+.demo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.demo-icon {
+    font-size: 3.5em;
+    color: var(--accent-slate);
+    margin-bottom: 0.8em;
+}
+
+.demo-card h3 {
+    font-size: 1.2em;
+    margin-bottom: 0.6em;
+}
+
+.demo-card p {
+    font-size: 0.75em;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.demo-flow {
+    margin: 2.5em 0;
+}
+
+.demo-flow h3 {
+    margin-bottom: 1.5em;
+}
+
+.demo-flow h3 i {
+    color: var(--accent-slate);
+    margin-right: 0.5em;
+}
+
+.flow-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8em;
+}
+
+.flow-step {
+    background: var(--accent-slate);
+    color: var(--surface-white);
+    padding: 1em 2em;
+    border-radius: 8px;
+    font-size: 0.7em;
+    font-weight: 600;
+    min-width: 280px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.flow-arrow {
+    font-size: 1.5em;
+    color: var(--text-muted);
+}
+
+.output-format {
+    margin-top: 2em;
+}
+
+.output-format h4 {
+    margin-bottom: 0.8em;
+}
+
+.output-format h4 i {
+    color: var(--accent-slate);
+    margin-right: 0.4em;
+}
+
+.output-format ul {
+    font-size: 0.75em;
+}
+
+.demo-container {
+    background: var(--surface-white);
+    border: 2px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 2.5em;
+    margin: 1.5em 0;
+    box-shadow: var(--shadow-md);
+}
+
+.demo-controls, 
+.recording-controls {
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+/* Buttons - refined */
+.btn-primary, 
+.btn-success, 
+.btn-secondary, 
+.btn-record, 
+.btn-stop {
+    padding: 0.9em 1.8em;
+    font-size: 0.7em;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 0.5em;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary {
+    background: var(--accent-slate);
+    color: var(--surface-white);
+}
+
+.btn-primary:hover {
+    background: var(--accent-slate-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-success {
+    background: var(--accent-slate);
+    color: var(--surface-white);
+}
+
+.btn-success:hover {
+    background: var(--accent-slate-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    background: var(--text-muted);
+    color: var(--surface-white);
+}
+
+.btn-secondary:hover {
+    background: var(--ink);
+}
+
+.btn-record {
+    background: var(--accent-slate);
+    color: var(--surface-white);
+    font-size: 0.8em;
+    padding: 1.2em 2.5em;
+}
+
+.btn-record:hover {
+    background: var(--accent-slate-hover);
+    transform: scale(1.05);
+}
+
+.btn-stop {
+    background: var(--text-muted);
+    color: var(--surface-white);
+}
+
+.btn-stop:hover {
+    background: var(--ink);
+}
+
+button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.progress-container {
+    margin-top: 1.5em;
+    font-size: 0.8em;
+    color: var(--accent-slate);
+}
+
+.recording-status {
+    margin-top: 1.5em;
+    font-size: 0.75em;
+    font-weight: 600;
+    color: var(--accent-slate);
+}
+
+.waveform-container {
+    margin: 2em 0;
+    padding: 3em;
+    background: var(--bg-soft);
+    border-radius: 12px;
+}
+
+.waveform-animation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
+    height: 100px;
+}
+
+.waveform-animation .bar {
+    width: 8px;
+    background: var(--accent-slate);
+    border-radius: 4px;
+    animation: wave 1s ease-in-out infinite;
+}
+
+.waveform-animation .bar:nth-child(2) { animation-delay: 0.1s; }
+.waveform-animation .bar:nth-child(3) { animation-delay: 0.2s; }
+.waveform-animation .bar:nth-child(4) { animation-delay: 0.3s; }
+.waveform-animation .bar:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes wave {
+    0%, 100% { height: 20px; }
+    50% { height: 80px; }
+}
+
+.demo-output {
+    margin-top: 2.5em;
+}
+
+.output-text {
+    background: var(--bg-soft);
+    padding: 1.8em;
+    border-radius: 8px;
+    font-size: 0.7em;
+    line-height: 1.9;
+    text-align: left;
+    margin: 1.5em 0;
+    border: 1px solid var(--border-subtle);
+}
+
+.output-text.highlighted {
+    background: var(--surface-white);
+}
+
+.demo-note {
+    margin-top: 2em;
+    padding: 1.2em;
+    background: #FFF8F0;
+    border-radius: 6px;
+    font-size: 0.65em;
+    border-left: 4px solid var(--accent-warm);
+}
+
+.demo-note i {
+    color: var(--accent-warm);
+    margin-right: 0.5em;
+}
+
+/* ========================================
+   11. Results & Contributions
+   ======================================== */
+
+.contributions {
+    margin: 2em 0;
+}
+
+.contributions h3 {
+    margin-bottom: 1.2em;
+}
+
+.contributions h3 i {
+    color: var(--accent-slate);
+    margin-right: 0.5em;
+}
+
+.contribution-list {
+    font-size: 0.8em;
+    line-height: 1.8;
+}
+
+.contribution-list li {
+    margin-bottom: 1em;
+}
+
+.results-summary {
+    margin: 2.5em 0;
+}
+
+.results-summary h3 {
+    margin-bottom: 1.5em;
+}
+
+.results-summary h3 i {
+    color: var(--accent-slate);
+    margin-right: 0.5em;
+}
+
+.result-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2em;
+    margin-top: 1.5em;
+}
+
+.result-card {
+    background: var(--surface-white);
+    border: 2px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 2em;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
+
+.result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-slate);
+}
+
+.result-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 3em;
+    font-weight: 700;
+    color: var(--accent-slate);
+    margin-bottom: 0.3em;
+}
+
+.result-label {
+    font-size: 0.7em;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.4em;
+}
+
+.result-desc {
+    font-size: 0.65em;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.publication {
+    margin-top: 2.5em;
+    padding: 1.2em 2em;
+    background: var(--surface-white);
+    border: 2px solid var(--accent-slate);
+    border-left: 6px solid var(--accent-slate);
+    color: var(--ink);
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.85em;
+    box-shadow: var(--shadow-sm);
+}
+
+.publication i {
+    color: var(--accent-slate);
+    margin-right: 0.5em;
+}
+
+/* ========================================
+   12. Future Work & Limitations
+   ======================================== */
+
+.limitation-list, 
+.future-list {
+    font-size: 0.75em;
+    line-height: 1.8;
+}
+
+.limitation-list li,
+.future-list li {
+    margin-bottom: 0.8em;
+}
+
+.vision-box {
+    background: var(--surface-white);
+    border: 2px solid var(--accent-slate);
+    padding: 2em 2.5em;
+    border-radius: 12px;
+    margin-top: 2.5em;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+}
+
+.vision-box h4 {
+    color: var(--accent-slate);
+    margin-bottom: 1em;
+    font-size: 1.3em;
+}
+
+.vision-box h4 i {
+    margin-right: 0.5em;
+}
+
+.vision-box p {
+    font-size: 0.75em;
+    line-height: 1.8;
+    color: var(--ink);
+}
+
+/* ========================================
+   13. Ending Slide
+   ======================================== */
+
+.ending-slide {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.ending-slide h1 {
+    font-size: 3.5em;
+    margin-bottom: 1.5em;
+    color: var(--ink);
+}
+
+.resources {
+    margin: 2.5em 0;
+    width: 100%;
+    max-width: 800px;
+}
+
+.resources h3 {
+    margin-bottom: 1.5em;
+    font-size: 1.5em;
+}
+
+.resources h3 i {
+    color: var(--accent-slate);
+    margin-right: 0.5em;
+}
+
+.resource-list {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.resource-list li {
+    font-size: 0.7em;
+    margin: 1em 0;
+    padding: 1em 1.5em;
+    background: var(--surface-white);
+    border-left: 4px solid var(--accent-slate);
+    border-radius: 6px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.resource-list li:hover {
+    transform: translateX(5px);
+    box-shadow: var(--shadow-md);
+}
+
+.resource-list li i {
+    margin-right: 0.6em;
+    color: var(--accent-slate);
+}
+
+.resource-list a {
+    color: var(--accent-slate);
+    font-weight: 600;
+}
+
+.qna-section {
+    margin-top: 3em;
+    padding: 2.5em 3em;
+    background: var(--surface-white);
+    border: 2px solid var(--border-subtle);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+}
+
+.qna-section h2 {
+    color: var(--accent-slate);
+    margin-bottom: 0.5em;
+    font-size: 2em;
+}
+
+.qna-section h2 i {
+    margin-right: 0.4em;
+}
+
+.qna-section p {
+    font-size: 0.85em;
+    color: var(--text-muted);
+}
+
+/* ========================================
+   14. Slide Number & Progress Bar
+   ======================================== */
+
+.reveal .slide-number {
+    background: rgba(60, 90, 120, 0.1);
+    color: var(--accent-slate);
+    font-size: 0.6em;
+    font-weight: 600;
+    padding: 0.5em 0.8em;
+    border-radius: 4px;
+}
+
+.reveal .progress {
+    background: rgba(60, 90, 120, 0.1);
+    height: 4px;
+}
+
+.reveal .progress span {
+    background: var(--accent-slate);
+}
+
+/* ========================================
+   15. Responsive Design for 16:9
+   ======================================== */
+
+@media screen and (max-width: 1200px) {
+    .reveal {
+        font-size: 24px;
+    }
+    
+    .two-column, 
+    .pipeline-details, 
+    .demo-types, 
+    .pros-cons, 
+    .result-cards {
+        gap: 1.5em;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .two-column, 
+    .pipeline-details, 
+    .demo-types, 
+    .pros-cons, 
+    .result-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .pipeline {
+        flex-direction: column;
+    }
+    
+    .pipeline-arrow {
+        transform: rotate(90deg);
+    }
+    
+    .two-approaches {
+        flex-direction: column;
+    }
+}
+
+/* ========================================
+   16. Print Styles
+   ======================================== */
+
+@media print {
+    .reveal .controls,
+    .reveal .progress,
+    .reveal .slide-number {
+        display: none !important;
+    }
+    
+    .reveal section {
+        page-break-after: always;
+    }
+}
+
+/* ========================================
+   17. 16:9 Fit Pass
+   Keep every slide inside the projection frame.
+   ======================================== */
+
+.reveal .slides section {
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+/* Content slides use a compact rhythm so dense slides remain readable
+   without being clipped by the 900px projection frame. */
+.reveal .slides section:not(.title-slide):not(.ending-slide) {
+    font-size: 0.82em;
+}
+
+.reveal .slides section:not(.title-slide):not(.ending-slide) p {
+    line-height: 1.35;
+}
+
+.reveal .slides section:not(.title-slide):not(.ending-slide) li {
+    line-height: 1.3;
+    margin-bottom: 0.28em;
+}
+
+.reveal section > h2:first-child {
+    margin-top: 0;
+    margin-bottom: 0.45em;
+}
+
+.reveal .two-column,
+.reveal .pipeline-details,
+.reveal .pros-cons,
+.reveal .result-cards,
+.reveal .demo-types {
+    gap: 1.15em;
+    margin-top: 0.65em;
+}
+
+.reveal .pipeline {
+    margin: 1em 0;
+    padding: 0.5em 0;
+}
+
+.reveal .pipeline-step {
+    min-width: 105px;
+    padding: 0.8em 0.7em;
+}
+
+.reveal .step-icon {
+    font-size: 1.5em;
+    margin-bottom: 0.2em;
+}
+
+.reveal .pipeline-arrow {
+    font-size: 1.4em;
+}
+
+.reveal .pipeline-details {
+    margin-top: 0.8em;
+}
+
+.reveal .detail-box,
+.reveal .result-box,
+.reveal .demo-container {
+    padding: 1em 1.2em;
+}
+
+.reveal .detail-box p {
+    margin: 0.25em 0;
+}
+
+.reveal .comparison-table,
+.reveal .metrics-table,
+.reveal .entity-table {
+    margin: 0.7em 0;
+    font-size: 0.56em;
+}
+
+.reveal .comparison-table th,
+.reveal .metrics-table th,
+.reveal .entity-table th,
+.reveal .comparison-table td,
+.reveal .metrics-table td,
+.reveal .entity-table td {
+    padding: 0.55em 0.8em;
+}
+
+.reveal .metric-card {
+    padding: 1.2em 2em;
+}
+
+.reveal .metric-value {
+    font-size: 2em;
+}
+
+.reveal .metric-highlight {
+    margin: 0.8em 0;
+}
+
+.reveal .entity-types {
+    margin-top: 0.8em;
+}
+
+.reveal .tags {
+    gap: 0.35em;
+}
+
+.reveal .tag {
+    padding: 0.35em 0.7em;
+    font-size: 0.55em;
+}
+
+.reveal .two-approaches {
+    gap: 1em;
+    margin: 1em 0;
+}
+
+.reveal .approach-card {
+    padding: 1.2em;
+}
+
+.reveal .approach-icon {
+    font-size: 2.2em;
+    margin-bottom: 0.3em;
+}
+
+.reveal .method-section {
+    margin: 0.8em 0;
+}
+
+.reveal .code-example {
+    padding: 0.8em 1em;
+    margin-top: 0.7em;
+}
+
+.reveal .pros,
+.reveal .cons {
+    padding: 1em 1.2em;
+}
+
+.reveal .pros li,
+.reveal .cons li {
+    margin-bottom: 0.35em;
+}
+
+.reveal .demo-card {
+    padding: 1.2em;
+}
+
+.reveal .demo-icon {
+    font-size: 2.2em;
+    margin-bottom: 0.3em;
+}
+
+.reveal .flow-diagram {
+    gap: 0.3em;
+}
+
+.reveal .flow-step {
+    padding: 0.55em 1.2em;
+    min-width: 220px;
+}
+
+.reveal .flow-arrow {
+    font-size: 1em;
+}
+
+/* Demo flow is a horizontal process on the 16:9 canvas. */
+.reveal .flow-diagram {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45em;
+    width: 100%;
+}
+
+.reveal .flow-step {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 190px;
+    padding: 0.8em 0.55em;
+    font-size: 0.58em;
+    line-height: 1.25;
+}
+
+.reveal .flow-arrow {
+    flex: 0 0 auto;
+    font-size: 1.35em;
+    line-height: 1;
+}
+
+.reveal .contributions,
+.reveal .results-summary {
+    margin: 0.8em 0;
+}
+
+.reveal .contribution-list li {
+    margin-bottom: 0.45em;
+}
+
+.reveal .result-card {
+    padding: 1em;
+}
+
+.reveal .result-value {
+    font-size: 2.2em;
+}
+
+.reveal .publication,
+.reveal .vision-box {
+    margin-top: 1em;
+    padding: 0.9em 1.2em;
+}
+
+.reveal .resource-list li {
+    margin: 0.55em 0;
+    padding: 0.65em 1em;
+}
+
+.reveal .resources {
+    margin: 1em 0;
+}
+
+.reveal .qna-section {
+    margin-top: 1em;
+    padding: 1.2em 1.5em;
+}
+
+/* ========================================
+   18. Presentation Balance Pass
+   Larger type, intentional whitespace and
+   varied backgrounds for a 16:9 projector.
+   ======================================== */
+
+:root {
+    --bg-navy: #172A3A;
+    --bg-blue: #DCEAF2;
+    --bg-sand: #F3EBDD;
+    --bg-mint: #E4F0EC;
+    --accent-coral: #D66B5D;
+}
+
+.reveal {
+    font-size: 24px;
+    background: var(--bg-soft);
+}
+
+.reveal .slides section {
+    padding: 54px 74px 48px;
+    background: var(--bg-soft);
+    border-radius: 4px;
+}
+
+.reveal .slides section:not(.title-slide):not(.ending-slide) {
+    font-size: 0.96em;
+}
+
+.reveal .slides section:nth-child(3n + 1):not(.title-slide):not(.ending-slide) {
+    background: linear-gradient(135deg, #F7F5F1 0%, #EAF1F4 100%);
+}
+
+.reveal .slides section:nth-child(3n + 2) {
+    background: linear-gradient(135deg, #F7F5F1 0%, var(--bg-sand) 100%);
+}
+
+.reveal .slides section:nth-child(3n) {
+    background: linear-gradient(135deg, #F7F5F1 0%, var(--bg-mint) 100%);
+}
+
+.reveal .slides section:not(.title-slide):not(.ending-slide)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 11px;
+    height: 100%;
+    background: var(--accent-slate);
+    opacity: 0.9;
+}
+
+.reveal .slides section:nth-child(3n + 2)::before {
+    background: var(--accent-warm);
+}
+
+.reveal .slides section:nth-child(3n)::before {
+    background: var(--entity-anatomy);
+}
+
+.reveal .slides section > h2:first-child {
+    font-size: 1.9em;
+    margin-bottom: 0.8em;
+    padding-right: 1.5em;
+}
+
+.reveal .slides section > h2:first-child::after {
+    content: '';
+    display: block;
+    width: 72px;
+    height: 4px;
+    background: var(--accent-coral);
+    margin-top: 0.35em;
+    border-radius: 5px;
+}
+
+.reveal .two-column,
+.reveal .pipeline-details,
+.reveal .pros-cons,
+.reveal .result-cards,
+.reveal .demo-types {
+    gap: 2em;
+    margin-top: 1.15em;
+}
+
+.reveal .column,
+.reveal .detail-box,
+.reveal .approach-card,
+.reveal .demo-card,
+.reveal .result-card {
+    min-height: 190px;
+}
+
+.reveal .column {
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(60, 90, 120, 0.14);
+    border-radius: 12px;
+    padding: 1.25em 1.45em;
+}
+
+.reveal .highlight-box,
+.reveal .question-box,
+.reveal .conclusion-box,
+.reveal .warning-box {
+    margin-top: 1.5em;
+    padding: 1.15em 1.5em;
+}
+
+.reveal .pipeline {
+    margin: 2em 0 1.6em;
+    padding: 1em 0;
+}
+
+.reveal .pipeline-step {
+    min-width: 125px;
+    padding: 1.1em 0.9em;
+}
+
+.reveal .step-icon {
+    font-size: 1.9em;
+}
+
+.reveal .pipeline-details {
+    margin-top: 1.3em;
+}
+
+.reveal .detail-box {
+    padding: 1.25em 1.5em;
+}
+
+.reveal .comparison-table,
+.reveal .metrics-table,
+.reveal .entity-table {
+    font-size: 0.65em;
+    margin: 1.1em 0;
+}
+
+.reveal .comparison-table th,
+.reveal .metrics-table th,
+.reveal .entity-table th,
+.reveal .comparison-table td,
+.reveal .metrics-table td,
+.reveal .entity-table td {
+    padding: 0.75em 0.95em;
+}
+
+.reveal .metric-card {
+    padding: 1.8em 2.5em;
+}
+
+.reveal .metric-value {
+    font-size: 2.35em;
+}
+
+.reveal .metric-arrow {
+    display: inline-block;
+    margin: 0 0.2em;
+    color: var(--deck-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.55em;
+    vertical-align: middle;
+}
+
+.reveal .corrected-value {
+    color: var(--deck-coral);
+}
+
+.reveal .metric-highlight {
+    margin: 1.4em 0;
+}
+
+.reveal .two-approaches {
+    gap: 1.8em;
+    margin: 1.8em 0;
+}
+
+.reveal .approach-card,
+.reveal .demo-card,
+.reveal .result-card {
+    padding: 1.8em;
+}
+
+.reveal .result-card {
+    min-height: 175px;
+}
+
+.reveal .result-value {
+    font-size: 2.7em;
+}
+
+.reveal .pros,
+.reveal .cons {
+    padding: 1.4em 1.6em;
+}
+
+.reveal .vision-box,
+.reveal .publication {
+    margin-top: 1.6em;
+    padding: 1.3em 1.8em;
+}
+
+.reveal .title-slide {
+    background:
+        radial-gradient(circle at 18% 20%, rgba(74, 123, 167, 0.18), transparent 26%),
+        radial-gradient(circle at 84% 76%, rgba(214, 107, 93, 0.18), transparent 28%),
+        linear-gradient(135deg, #F7F5F1 0%, #DCEAF2 100%);
+}
+
+.reveal .ending-slide {
+    background:
+        radial-gradient(circle at 80% 25%, rgba(61, 139, 124, 0.18), transparent 30%),
+        linear-gradient(135deg, #E4F0EC 0%, #F3EBDD 100%);
+}
+
+/* Metrics comparison chart */
+.metrics-chart {
+    position: relative;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(60, 90, 120, 0.14);
+    border-radius: 14px;
+    padding: 1.25em 1.6em 1em;
+    margin: 1em 0 0.8em;
+    box-shadow: var(--shadow-md);
+}
+
+.chart-legend {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.2em;
+    color: var(--text-muted);
+    font-size: 0.62em;
+    margin-bottom: 0.7em;
+}
+
+.chart-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.legend-dot.bert { background: var(--accent-slate); }
+.legend-dot.seq { background: var(--accent-warm); }
+
+.chart-grid-lines {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    margin-left: 210px;
+    color: var(--text-muted);
+    font-size: 0.53em;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 0.35em;
+}
+
+.chart-grid-lines span:not(:first-child) { text-align: center; }
+.chart-grid-lines span:last-child { text-align: right; }
+
+.metric-bars {
+    padding-top: 0.65em;
+}
+
+.metric-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: center;
+    gap: 1em;
+    margin: 0.55em 0;
+}
+
+.metric-model {
+    color: var(--ink);
+    font-size: 0.68em;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.metric-model b {
+    color: var(--accent-slate);
+    margin-left: 0.35em;
+    font-weight: 700;
+}
+
+.seq-row .metric-model b { color: var(--accent-warm); }
+
+.metric-track {
+    height: 22px;
+    background: repeating-linear-gradient(
+        to right,
+        rgba(60, 90, 120, 0.08) 0,
+        rgba(60, 90, 120, 0.08) 1px,
+        transparent 1px,
+        transparent 20%
+    );
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.metric-track span {
+    display: block;
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #587A99, var(--accent-slate));
+    animation: grow-bar 0.8s ease-out both;
+}
+
+.seq-row .metric-track span {
+    background: linear-gradient(90deg, #C49B6A, var(--accent-warm));
+}
+
+.metric-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    color: var(--text-muted);
+    font-size: 0.58em;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0.9em 0 0.55em;
+}
+
+.metric-divider::before,
+.metric-divider::after {
+    content: '';
+    height: 1px;
+    background: var(--border-subtle);
+    flex: 1;
+}
+
+.chart-caption {
+    text-align: right;
+    font-size: 0.58em;
+    color: var(--text-muted);
+    margin: 0.8em 0 0;
+}
+
+@keyframes grow-bar {
+    from { transform: scaleX(0); transform-origin: left; }
+    to { transform: scaleX(1); transform-origin: left; }
+}
+
+/* ========================================
+   19. Unified Visual System
+   Midnight editorial theme for the whole deck.
+   ======================================== */
+
+:root {
+    --deck-ink: #F4F1EA;
+    --deck-muted: #AEBBC6;
+    --deck-navy: #101D2A;
+    --deck-navy-2: #172B3B;
+    --deck-panel: rgba(255, 255, 255, 0.085);
+    --deck-line: rgba(224, 235, 238, 0.18);
+    --deck-coral: #F47C68;
+    --deck-mint: #65D0B0;
+    --deck-gold: #E8BA72;
+}
+
+.reveal {
+    color: var(--deck-ink);
+    background: var(--deck-navy);
+    font-family: 'Inter', sans-serif;
+}
+
+.reveal .slides section,
+.reveal .slides section:nth-child(3n + 1):not(.title-slide):not(.ending-slide),
+.reveal .slides section:nth-child(3n + 2),
+.reveal .slides section:nth-child(3n),
+.reveal .title-slide,
+.reveal .ending-slide {
+    background:
+        radial-gradient(circle at 90% 5%, rgba(101, 208, 176, 0.12), transparent 25%),
+        radial-gradient(circle at 8% 95%, rgba(244, 124, 104, 0.1), transparent 28%),
+        linear-gradient(135deg, var(--deck-navy) 0%, var(--deck-navy-2) 100%);
+    color: var(--deck-ink);
+}
+
+.reveal .slides section::before,
+.reveal .slides section:nth-child(3n + 2)::before,
+.reveal .slides section:nth-child(3n)::before {
+    width: 7px;
+    background: var(--deck-coral);
+    opacity: 1;
+}
+
+.reveal .slides section:nth-child(3n)::before {
+    background: var(--deck-mint);
+}
+
+.reveal .slides section:nth-child(3n + 2)::before {
+    background: var(--deck-gold);
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal strong {
+    color: var(--deck-ink);
+}
+
+.reveal h1,
+.reveal h2 {
+    letter-spacing: -0.035em;
+}
+
+.reveal h2 {
+    font-size: 1.95em;
+    margin-bottom: 0.7em;
+}
+
+.reveal h2::after {
+    width: 56px;
+    height: 3px;
+    background: var(--deck-coral);
+    margin-top: 0.32em;
+}
+
+.reveal h3,
+.reveal h4 {
+    color: #DCE8EA;
+}
+
+.reveal p,
+.reveal li {
+    color: var(--deck-muted);
+}
+
+.reveal a {
+    color: var(--deck-mint);
+}
+
+.reveal .title-slide {
+    text-align: left;
+    align-items: flex-start;
+    padding-left: 110px;
+    justify-content: center;
+    background:
+        radial-gradient(circle at 78% 25%, rgba(101, 208, 176, 0.2), transparent 26%),
+        radial-gradient(circle at 88% 78%, rgba(244, 124, 104, 0.22), transparent 30%),
+        linear-gradient(115deg, #0B1722 0%, #173447 100%);
+}
+
+.title-slide::after {
+    content: 'MEDICAL AI  /  SPEECH + NLP';
+    position: absolute;
+    right: 8%;
+    bottom: 9%;
+    color: rgba(220, 232, 234, 0.5);
+    font-size: 0.58em;
+    letter-spacing: 0.18em;
+}
+
+.title-slide h1 {
+    color: #FFFFFF;
+    font-size: 3.8em;
+    max-width: 850px;
+}
+
+.title-slide h2 {
+    color: var(--deck-mint);
+    font-family: 'Inter', sans-serif;
+    font-size: 1.2em;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+.title-slide .subtitle {
+    color: var(--deck-muted);
+    font-size: 0.92em;
+}
+
+.title-slide .medical-icon {
+    color: var(--deck-coral);
+    margin: 0.8em 0;
+}
+
+.title-slide .medical-icon i {
+    color: var(--deck-coral);
+}
+
+.title-slide .author,
+.title-slide .date {
+    color: var(--deck-muted);
+}
+
+.reveal .column,
+.reveal .detail-box,
+.reveal .result-box,
+.reveal .approach-card,
+.reveal .demo-card,
+.reveal .result-card,
+.reveal .metrics-chart,
+.reveal .demo-container,
+.reveal .qna-section,
+.reveal .vision-box {
+    background: var(--deck-panel);
+    border: 1px solid var(--deck-line);
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.16);
+    color: var(--deck-ink);
+}
+
+.reveal .column h3 {
+    border-bottom-color: var(--deck-line);
+}
+
+.reveal .column h3 i,
+.reveal .model-info h3 i,
+.reveal .result-box h3 i,
+.reveal .demo-flow h3 i,
+.reveal .contributions h3 i,
+.reveal .results-summary h3 i,
+.reveal .entity-types h4 i {
+    color: var(--deck-coral);
+}
+
+.reveal .highlight-box,
+.reveal .publication {
+    background: rgba(101, 208, 176, 0.1);
+    border-color: var(--deck-mint);
+    border-left-color: var(--deck-mint);
+    color: var(--deck-ink);
+}
+
+.reveal .highlight-box i,
+.reveal .publication i {
+    color: var(--deck-mint);
+}
+
+.reveal .question-box,
+.reveal .warning-box {
+    background: rgba(244, 124, 104, 0.1);
+    border-color: rgba(244, 124, 104, 0.4);
+    border-left-color: var(--deck-coral);
+}
+
+.reveal .question-box h3,
+.reveal .warning-box i {
+    color: var(--deck-coral);
+}
+
+.reveal .conclusion-box {
+    background: rgba(101, 208, 176, 0.1);
+    border-color: rgba(101, 208, 176, 0.45);
+}
+
+.reveal .conclusion-box h4,
+.reveal .highlight {
+    color: var(--deck-mint);
+}
+
+.reveal .model-list li {
+    background: var(--deck-panel);
+    border-left-color: var(--deck-mint);
+    color: var(--deck-muted);
+}
+
+.reveal .pipeline-step {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--deck-line);
+    color: var(--deck-ink);
+}
+
+.reveal .pipeline-step.highlight-step,
+.reveal .flow-step {
+    background: linear-gradient(135deg, #2A6070, #24505F);
+    border-color: var(--deck-mint);
+}
+
+.reveal .step-icon,
+.reveal .pipeline-arrow,
+.reveal .flow-arrow {
+    color: var(--deck-mint);
+}
+
+.reveal .step-desc,
+.reveal .detail-box p,
+.reveal .note,
+.reveal .subtitle-comparison,
+.reveal .chart-caption {
+    color: var(--deck-muted);
+}
+
+.reveal .comparison-table,
+.reveal .metrics-table,
+.reveal .entity-table {
+    background: rgba(255, 255, 255, 0.055);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+}
+
+.reveal .comparison-table th,
+.reveal .metrics-table th,
+.reveal .entity-table th {
+    background: #23495A;
+}
+
+.reveal .comparison-table td,
+.reveal .metrics-table td,
+.reveal .entity-table td {
+    border-bottom-color: var(--deck-line);
+    color: var(--deck-muted);
+}
+
+.reveal .comparison-table td strong,
+.reveal .metrics-table td strong {
+    color: var(--deck-ink);
+}
+
+.reveal .winner,
+.reveal .best-row,
+.reveal .category-row {
+    background: rgba(101, 208, 176, 0.1);
+}
+
+.reveal .winner {
+    color: var(--deck-mint);
+}
+
+.reveal .tag {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.reveal .pros {
+    background: rgba(101, 208, 176, 0.1);
+    border-color: rgba(101, 208, 176, 0.38);
+}
+
+.reveal .cons {
+    background: rgba(244, 124, 104, 0.1);
+    border-color: rgba(244, 124, 104, 0.38);
+}
+
+.reveal .pros h4 { color: var(--deck-mint); }
+.reveal .cons h4 { color: var(--deck-coral); }
+
+.reveal .code-example {
+    background: #0A141E;
+    border: 1px solid var(--deck-line);
+}
+
+.reveal .code-example h4 {
+    color: var(--deck-mint);
+}
+
+.reveal .btn-primary,
+.reveal .btn-success,
+.reveal .btn-record {
+    background: var(--deck-coral);
+    color: #211719;
+}
+
+.reveal .btn-primary:hover,
+.reveal .btn-success:hover,
+.reveal .btn-record:hover {
+    background: #FF947F;
+}
+
+.reveal .btn-stop,
+.reveal .btn-secondary {
+    background: #3B5260;
+}
+
+.reveal .waveform-container {
+    background: #0A141E;
+}
+
+.reveal .waveform-animation .bar {
+    background: var(--deck-mint);
+}
+
+.reveal .output-text {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: var(--deck-line);
+    color: var(--deck-ink);
+}
+
+.reveal .result-value {
+    color: var(--deck-mint);
+}
+
+.reveal .vision-box h4,
+.reveal .qna-section h2 {
+    color: var(--deck-mint);
+}
+
+.reveal .resource-list li {
+    background: var(--deck-panel);
+    border-left-color: var(--deck-coral);
+}
+
+.reveal .resource-list li i {
+    color: var(--deck-coral);
+}
+
+.reveal .reveal .slide-number,
+.reveal .slide-number {
+    background: rgba(101, 208, 176, 0.14);
+    color: var(--deck-mint);
+}
+
+.reveal .progress {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.reveal .progress span {
+    background: var(--deck-coral);
+}
+
+/* ========================================
+   20. Title Slide Repair
+   Stable alignment and no decorative overlap.
+   ======================================== */
+
+.reveal .slides section.title-slide {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow: visible;
+    padding: 150px 12% 70px 9%;
+    text-align: left;
+}
+
+.reveal .slides section.title-slide::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 8px;
+    background: var(--deck-coral);
+    opacity: 1;
+}
+
+.reveal .slides section.title-slide::after {
+    content: '';
+    position: absolute;
+    right: 9%;
+    top: 50%;
+    width: 250px;
+    height: 250px;
+    border: 1px solid rgba(101, 208, 176, 0.35);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    box-shadow:
+        0 0 0 28px rgba(101, 208, 176, 0.05),
+        0 0 0 58px rgba(244, 124, 104, 0.04);
+    pointer-events: none;
+}
+
+.reveal .slides section.title-slide h1,
+.reveal .slides section.title-slide h2,
+.reveal .slides section.title-slide .subtitle,
+.reveal .slides section.title-slide .medical-icon,
+.reveal .slides section.title-slide .author,
+.reveal .slides section.title-slide .date {
+    position: relative;
+    z-index: 1;
+    width: min(760px, 72%);
+    max-width: 760px;
+}
+
+.reveal .slides section.title-slide h1 {
+    margin: 0 0 0.18em;
+    font-size: 2.75em;
+    line-height: 1.05;
+    white-space: normal;
+    max-width: 820px;
+}
+
+.reveal .slides section.title-slide h2 {
+    margin: 0 0 0.35em;
+    font-size: 1.18em;
+    line-height: 1.25;
+}
+
+.reveal .slides section.title-slide .subtitle {
+    margin: 0;
+    font-size: 0.9em;
+    line-height: 1.45;
+}
+
+.reveal .slides section.title-slide .medical-icon {
+    display: flex;
+    gap: 0.7em;
+    margin: 1.25em 0 1em;
+    font-size: 1.8em;
+}
+
+.reveal .slides section.title-slide .medical-icon i:first-child {
+    color: var(--deck-coral);
+}
+
+.reveal .slides section.title-slide .medical-icon i:last-child {
+    color: var(--deck-mint);
+}
+
+.reveal .slides section.title-slide .author {
+    margin: 0;
+    color: var(--deck-ink);
+    font-size: 0.72em;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.reveal .slides section.title-slide .date {
+    margin: 0.25em 0 0;
+    color: var(--deck-muted);
+    font-size: 0.62em;
+}
+
+.reveal .slides section.title-slide .institution-lockup {
+    position: absolute;
+    top: 42px;
+    left: 9%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    width: auto;
+    color: rgba(244, 247, 246, 0.86);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.48em;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: 0.055em;
+    text-align: left;
+}
+
+.reveal .slides section.title-slide .institution-lockup img {
+    display: block;
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+}
+
+@media screen and (max-width: 900px) {
+    .reveal .slides section.title-slide {
+        padding: 115px 8% 55px;
+    }
+
+    .reveal .slides section.title-slide::after {
+        right: -80px;
+        width: 190px;
+        height: 190px;
+    }
+
+    .reveal .slides section.title-slide h1,
+    .reveal .slides section.title-slide h2,
+    .reveal .slides section.title-slide .subtitle,
+    .reveal .slides section.title-slide .medical-icon,
+    .reveal .slides section.title-slide .author,
+    .reveal .slides section.title-slide .date {
+        width: 88%;
+    }
+
+    .reveal .slides section.title-slide .institution-lockup {
+        left: 8%;
+        top: 28px;
+        font-size: 0.42em;
+    }
+
+    .reveal .slides section.title-slide .institution-lockup img {
+        width: 46px;
+        height: 46px;
+    }
+}
+
+/* ========================================
+   21. Contrast Safety Pass
+   Keep text readable on every themed panel.
+   ======================================== */
+
+.reveal .slides section p,
+.reveal .slides section li,
+.reveal .slides section td,
+.reveal .slides section .detail-box p,
+.reveal .slides section .note,
+.reveal .slides section .subtitle-comparison,
+.reveal .slides section .chart-caption,
+.reveal .slides section .result-desc,
+.reveal .slides section .step-desc,
+.reveal .slides section .metric-desc {
+    color: #D3DEE2;
+}
+
+.reveal .slides section strong,
+.reveal .slides section td strong,
+.reveal .slides section .metric-model,
+.reveal .slides section .result-label,
+.reveal .slides section .detail-box h4,
+.reveal .slides section .model-list li strong {
+    color: #F4F7F6;
+}
+
+.reveal .slides section .column,
+.reveal .slides section .detail-box,
+.reveal .slides section .result-box,
+.reveal .slides section .approach-card,
+.reveal .slides section .demo-card,
+.reveal .slides section .result-card,
+.reveal .slides section .metrics-chart,
+.reveal .slides section .demo-container,
+.reveal .slides section .qna-section,
+.reveal .slides section .vision-box {
+    background: rgba(10, 24, 35, 0.72);
+    border-color: rgba(220, 235, 238, 0.22);
+}
+
+.reveal .slides section .model-list li {
+    background: rgba(10, 24, 35, 0.72);
+    border-right: 1px solid rgba(220, 235, 238, 0.12);
+}
+
+.reveal .slides section .highlight-box,
+.reveal .slides section .conclusion-box,
+.reveal .slides section .publication {
+    color: #E8F5F0;
+    background: rgba(28, 82, 78, 0.46);
+    border-color: rgba(101, 208, 176, 0.58);
+}
+
+.reveal .slides section .question-box,
+.reveal .slides section .warning-box {
+    color: #FFF1EC;
+    background: rgba(103, 47, 45, 0.48);
+    border-color: rgba(244, 124, 104, 0.62);
+}
+
+.reveal .slides section .highlight-box p,
+.reveal .slides section .conclusion-box p,
+.reveal .slides section .publication strong,
+.reveal .slides section .question-box p,
+.reveal .slides section .warning-box p {
+    color: #E8F5F0;
+}
+
+.reveal .slides section .comparison-table,
+.reveal .slides section .metrics-table,
+.reveal .slides section .entity-table {
+    background: rgba(10, 24, 35, 0.78);
+}
+
+.reveal .slides section .comparison-table tbody tr:hover,
+.reveal .slides section .metrics-table tbody tr:hover {
+    background: rgba(101, 208, 176, 0.12);
+}
+
+.reveal .slides section code {
+    color: #F9D49A;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.reveal .slides section .code-example code {
+    color: #DDEBE8;
+    background: transparent;
+}
+
+.reveal .slides section .metric-track {
+    background-color: rgba(230, 241, 242, 0.14);
+}
+
+.reveal .slides section .chart-grid-lines,
+.reveal .slides section .chart-legend,
+.reveal .slides section .metric-divider {
+    color: #BFD0D5;
+}
+
+/* Grouped Precision / Recall / F1 chart */
+.grouped-chart { min-height: 300px; }
+
+.grouped-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-evenly;
+    height: 220px;
+    padding: 0 8% 0.4em;
+    background: repeating-linear-gradient(to top, transparent 0, transparent calc(20% - 1px), rgba(220, 235, 238, 0.12) calc(20% - 1px), rgba(220, 235, 238, 0.12) 20%);
+    border-bottom: 1px solid var(--deck-line);
+}
+
+.bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 25%;
+    height: 100%;
+    justify-content: flex-end;
+    gap: 0.6em;
+}
+
+.bar-pair {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.4em;
+    height: 100%;
+}
+
+.bar-group > strong {
+    color: var(--deck-ink);
+    font-size: 0.68em;
+}
+
+.bar {
+    position: relative;
+    display: block;
+    width: 34px;
+    min-height: 16px;
+    border-radius: 6px 6px 0 0;
+    animation: grow-bar 0.8s ease-out both;
+}
+
+.bar.bert { background: linear-gradient(180deg, #65D0B0, #2E8F85); }
+.bar.seq { background: linear-gradient(180deg, #F49A7E, #B95755); }
+
+.bar b {
+    position: absolute;
+    top: -1.4em;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--deck-ink);
+    font-size: 0.55em;
+    white-space: nowrap;
+}
+
+.highlight-group {
+    padding: 0.5em 1em;
+    border: 1px solid rgba(101, 208, 176, 0.3);
+    border-radius: 10px;
+    background: rgba(101, 208, 176, 0.08);
+}
+
+.benchmark-subheading {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78em;
+    color: var(--deck-ink);
+    margin: 0.55em 0 0.35em;
+}
+
+.benchmark-subheading i {
+    color: var(--deck-mint);
+    margin-right: 0.35em;
+}
+
+.benchmark-table {
+    margin-top: 0.35em;
+    margin-bottom: 0.65em;
+}
+
+.matched-entities-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+    margin-bottom: 0.7em;
+}
+
+.matched-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3em 0.8em;
+    padding: 0.7em 1em;
+    border: 1px solid var(--deck-line);
+    border-radius: 8px;
+    background: rgba(10, 24, 35, 0.72);
+    font-size: 0.62em;
+}
+
+.matched-card strong { color: var(--deck-ink); }
+.matched-card span { color: var(--deck-muted); text-align: right; }
+.matched-card b { color: var(--deck-coral); }
+.matched-card small { color: var(--deck-muted); grid-column: 1 / -1; }
+
+/* Plain-language metric cards for presentation readability */
+.metric-explainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.1em;
+    margin: 1.2em 0 1em;
+}
+
+.metric-explainer-card {
+    min-height: 220px;
+    padding: 1.15em 1.25em;
+    border: 1px solid var(--deck-line);
+    border-radius: 12px;
+    background: rgba(10, 24, 35, 0.72);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+}
+
+.metric-explainer-card h3 {
+    color: var(--deck-mint);
+    font-family: 'Inter', sans-serif;
+    font-size: 1em;
+    margin-bottom: 0.5em;
+}
+
+.metric-explainer-card p {
+    min-height: 3.1em;
+    color: var(--deck-muted);
+    font-size: 0.62em;
+    line-height: 1.4;
+    margin-bottom: 0.8em;
+}
+
+.primary-metric {
+    border-color: rgba(101, 208, 176, 0.52);
+    background: rgba(28, 82, 78, 0.38);
+}
+
+.model-score {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0.55em 0;
+    padding: 0.55em 0.7em;
+    border-radius: 6px;
+    font-size: 0.62em;
+    overflow: hidden;
+}
+
+.model-score::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: var(--score-width);
+    opacity: 0.22;
+}
+
+.model-score span,
+.model-score strong {
+    position: relative;
+    z-index: 1;
+}
+
+.phobert-score {
+    --score-width: 70%;
+    background: rgba(101, 208, 176, 0.1);
+    color: var(--deck-ink);
+}
+
+.phobert-score::before { background: var(--deck-mint); }
+.phobert-score strong { color: var(--deck-mint); }
+
+.xlm-score {
+    --score-width: 65%;
+    background: rgba(244, 124, 104, 0.1);
+    color: var(--deck-ink);
+}
+
+.xlm-score::before { background: var(--deck-coral); }
+.xlm-score strong { color: var(--deck-coral); }
+
+.metric-verdict {
+    margin-top: 0.7em;
+    color: var(--deck-mint);
+    font-size: 0.58em;
+    font-weight: 600;
+    text-align: center;
+}
+
+@media screen and (max-width: 900px) {
+    .grouped-bars {
+        padding-left: 2%;
+        padding-right: 2%;
+    }
+
+    .bar {
+        width: 26px;
+    }
+
+    .matched-entities-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .metric-explainer {
+        grid-template-columns: 1fr;
+    }
+}

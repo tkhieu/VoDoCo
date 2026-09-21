@@ -1,0 +1,231 @@
+{
+  "description": "Sample results data for VietMed-NER demo",
+  "asr_models": [
+    {
+      "name": "Whisper-Small-Vietnamese",
+      "wer": 29.6,
+      "confidence": 0.92
+    },
+    {
+      "name": "XLSR-53-Viet",
+      "wer": 29.6,
+      "confidence": 0.89
+    },
+    {
+      "name": "w2v2-Viet",
+      "wer": 31.2,
+      "confidence": 0.87
+    }
+  ],
+  "ner_models": {
+    "bert_based": [
+      {
+        "name": "bert-base-multilingual-cased",
+        "precision": 85.3,
+        "recall": 82.1,
+        "f1_score": 83.7,
+        "slue_score": 81.5
+      },
+      {
+        "name": "XLM-RoBERTa-large",
+        "precision": 87.2,
+        "recall": 84.8,
+        "f1_score": 86.0,
+        "slue_score": 84.2
+      },
+      {
+        "name": "PhoBERT-base",
+        "precision": 84.1,
+        "recall": 81.5,
+        "f1_score": 82.8,
+        "slue_score": 80.9
+      }
+    ],
+    "seq2seq": [
+      {
+        "name": "mBART-large-50",
+        "precision": 78.5,
+        "recall": 75.2,
+        "f1_score": 76.8,
+        "slue_score": 74.6
+      },
+      {
+        "name": "mT5-base",
+        "precision": 77.9,
+        "recall": 74.8,
+        "f1_score": 76.3,
+        "slue_score": 74.1
+      }
+    ]
+  },
+  "correction_methods": {
+    "model_based": {
+      "accuracy": 82.4,
+      "coverage": "high",
+      "speed": "fast"
+    },
+    "rule_based": {
+      "accuracy": 79.8,
+      "coverage": "medium",
+      "speed": "medium"
+    },
+    "hybrid": {
+      "accuracy": 85.1,
+      "coverage": "high",
+      "speed": "medium"
+    }
+  },
+  "entity_types": [
+    "SYMPTOM",
+    "DISEASE",
+    "DRUG",
+    "TEST",
+    "ANATOMY",
+    "DURATION",
+    "FREQUENCY",
+    "DOSAGE",
+    "TREATMENT",
+    "PROCEDURE",
+    "MEDICAL_CONDITION",
+    "LAB_VALUE",
+    "BODY_PART",
+    "MEDICAL_DEVICE",
+    "HEALTHCARE_UNIT",
+    "DATE",
+    "AGE",
+    "GENDER"
+  ],
+  "sample_texts": [
+    {
+      "id": 1,
+      "text": "bệnh nhân bị đau đầu và sốt cao đã ba ngày",
+      "entities": [
+        {
+          "text": "đau đầu",
+          "type": "SYMPTOM",
+          "start": 16,
+          "end": 23,
+          "confidence": 0.94
+        },
+        {
+          "text": "sốt cao",
+          "type": "SYMPTOM",
+          "start": 27,
+          "end": 34,
+          "confidence": 0.91
+        },
+        {
+          "text": "ba ngày",
+          "type": "DURATION",
+          "start": 39,
+          "end": 46,
+          "confidence": 0.88
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "bác sĩ kê đơn thuốc paracetamol uống hai lần một ngày",
+      "entities": [
+        {
+          "text": "paracetamol",
+          "type": "DRUG",
+          "start": 20,
+          "end": 31,
+          "confidence": 0.96
+        },
+        {
+          "text": "hai lần một ngày",
+          "type": "FREQUENCY",
+          "start": 37,
+          "end": 53,
+          "confidence": 0.89
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "cần làm xét nghiệm máu và chụp X-quang ngực",
+      "entities": [
+        {
+          "text": "xét nghiệm máu",
+          "type": "TEST",
+          "start": 8,
+          "end": 22,
+          "confidence": 0.93
+        },
+        {
+          "text": "chụp X-quang",
+          "type": "TEST",
+          "start": 26,
+          "end": 38,
+          "confidence": 0.92
+        },
+        {
+          "text": "ngực",
+          "type": "ANATOMY",
+          "start": 39,
+          "end": 43,
+          "confidence": 0.87
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "bệnh nhân được chẩn đoán viêm phổi và cần nhập viện",
+      "entities": [
+        {
+          "text": "viêm phổi",
+          "type": "DISEASE",
+          "start": 26,
+          "end": 35,
+          "confidence": 0.95
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "đau bụng dữ dội kéo dài hơn năm giờ",
+      "entities": [
+        {
+          "text": "đau bụng dữ dội",
+          "type": "SYMPTOM",
+          "start": 0,
+          "end": 15,
+          "confidence": 0.92
+        },
+        {
+          "text": "hơn năm giờ",
+          "type": "DURATION",
+          "start": 24,
+          "end": 35,
+          "confidence": 0.86
+        }
+      ]
+    }
+  ],
+  "pipeline_metrics": {
+    "asr_to_text": {
+      "average_latency_ms": 250,
+      "wer": 29.6
+    },
+    "text_to_ner": {
+      "average_latency_ms": 180,
+      "f1_score": 86.0
+    },
+    "end_to_end": {
+      "average_latency_ms": 430,
+      "accuracy": 82.4
+    }
+  },
+  "dataset_statistics": {
+    "total_duration_hours": 16,
+    "unlabeled_medical_hours": 1000,
+    "unlabeled_general_hours": 1200,
+    "num_speakers": 142,
+    "num_unique_medical_terms": 3847,
+    "num_entity_types": 18,
+    "num_icd10_disease_groups": 21,
+    "num_accents": 3
+  }
+}
