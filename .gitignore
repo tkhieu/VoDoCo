@@ -8,3 +8,16 @@
 .venv/
 __pycache__/
 *.py[cod]
+
+# Demo runtime assets, credentials, environments and generated builds.
+/.local/
+/services/inference/.venv/
+/apps/web/node_modules/
+/apps/web/dist/
+/apps/web/dist-server/
+**/.pytest_cache/
+**/.ruff_cache/
+**/*.egg-info/
+.env
+.env.*
+!.env.example

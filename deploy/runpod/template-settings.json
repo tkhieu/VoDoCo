@@ -1,0 +1,18 @@
+{
+  "category": "NVIDIA",
+  "name": "VoDoCo medical audio demo",
+  "isPublic": false,
+  "isServerless": false,
+  "containerDiskInGb": 32,
+  "volumeInGb": 0,
+  "volumeMountPath": "/workspace",
+  "dockerEntrypoint": [],
+  "dockerStartCmd": [],
+  "ports": ["8000/http"],
+  "env": {
+    "INFERENCE_SERVICE_TOKEN": "{{ RUNPOD_SECRET_vodoco_inference_token }}",
+    "VODOCO_MODEL_ROOT": "/opt/vodoco/models",
+    "VODOCO_MODEL_MANIFEST": "/opt/vodoco/model-manifest.json",
+    "VODOCO_TEMP_DIR": "/tmp/vodoco-inference"
+  }
+}

@@ -1,0 +1,12 @@
+entrypoint = "apps/web/server/index.ts"
+modules = ["nodejs-24"]
+run = "npm --prefix apps/web ci && npm --prefix apps/web run build && npm --prefix apps/web start"
+
+[deployment]
+build = "npm --prefix apps/web ci && npm --prefix apps/web run build"
+run = "npm --prefix apps/web start"
+deploymentTarget = "cloudrun"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
