@@ -1,0 +1,29 @@
+import { Fragment, useMemo, useState } from 'react';
+import { ChevronRight } from 'lucide-react';
+import { Button, Notice } from '../components/ui';
+import { labels, mapEntities, type MappedEntity } from '../lib/entities';
+import { modelName, type Model, type Schema, type Source } from '../lib/api';
+import type { Slot } from '../lib/session';
+
+export function Transcript({ text, entities, selected, onSelect, prefix }: { text: string; entities: Schema['Entity'][]; selected: string | null; onSelect: (id: string) => void; prefix: string }) {
+  const mapped = useMemo(() => mapEntities(text, entities).filter(entity => entity.utf16Start !== null).sort((a, b) => a.utf16Start! - b.utf16Start!), [text, entities]);
+  let cursor = 0;
+  return <div className="transcript" aria-label="Văn bản phiên âm">{mapped.map(entity => { const preceding = text.slice(cursor, entity.utf16Start!); cursor = entity.utf16End!; return <Fragment key={entity.id}>{preceding}<button id={`${prefix}-span-${entity.id}`} className={`entity-highlight entity-${entity.label} ${selected === entity.id ? 'entity-selected' : ''}`} onClick={() => onSelect(entity.id)} aria-label={`${entity.text}, ${labels[entity.label]}`} aria-pressed={selected === entity.id}>{entity.text}</button></Fragment>; })}{text.slice(cursor)}</div>;
+}
+export function EntityPanel({ text, slot, source, model, status, retry, resume, selected, onSelect, prefix, comparison = false }: { text: string; slot: Slot; source: Source; model: Model; status?: Schema['ModelStatus']; retry: () => void; resume: () => void; selected: string | null; onSelect: (id: string) => void; prefix: string; comparison?: boolean }) {
+  const [filter, setFilter] = useState('all');
+  const entities = useMemo(() => mapEntities(text, slot.state === 'succeeded' ? slot.result?.entities ?? [] : []), [text, slot]);
+  const kinds = [...new Set(entities.map(entity => entity.label))];
+  const visible = filter === 'all' ? entities : entities.filter(entity => entity.label === filter);
+  const detail: MappedEntity | undefined = entities.find(entity => entity.id === selected);
+  const count = slot.state === 'succeeded' ? entities.length : null;
+  return <section className="panel entity-panel" aria-label={`${modelName[model]}: thực thể dự đoán`}><div className="panel-heading"><h2>{comparison ? modelName[model] : `Thực thể dự đoán${count === null ? '' : ` · ${count}`}`}</h2>{comparison && <span className="badge">{model === 'xlmr' ? 'Baseline' : 'Fine-tuned'}</span>}</div>
+    <div className="entity-tools"><span className="metadata">Nguồn: {source === 'raw' ? 'ASR gốc' : 'Bản rà soát'}{comparison && count !== null ? ` · ${count} occurrences` : ''}</span><label className="sr-only" htmlFor={`${prefix}-filter`}>Lọc thực thể theo loại</label><select id={`${prefix}-filter`} value={filter} onChange={event => setFilter(event.target.value)}><option value="all">Tất cả</option>{kinds.map(label => <option value={label} key={label}>{labels[label]}</option>)}</select></div>
+    {slot.state === 'stale' ? <Notice>Văn bản đã thay đổi. Cập nhật thực thể để tiếp tục. Danh sách và highlight cũ được ẩn. Vẫn có thể xuất TXT.</Notice> : slot.state === 'loading' ? <Notice>Đang nhận diện… Kết quả của model còn lại vẫn được giữ.</Notice> : slot.state === 'paused' ? <Notice error>{slot.message}<Button onClick={resume}>Tiếp tục kiểm tra lượt này</Button></Notice> : slot.state === 'failed' ? <Notice error>{slot.message || 'Chưa nhận diện được thực thể. Bản phiên âm và audio vẫn được giữ.'}<Button onClick={retry} disabled={status?.status !== 'ready'}>Thử nhận diện lại</Button></Notice> : slot.state === 'unavailable' && status?.status !== 'ready' ? <Notice>{status?.status === 'missing' ? `Chưa nạp checkpoint ${modelName[model]}` : status?.status === 'loading' ? 'Đang nạp mô hình…' : status?.error?.message || 'Chưa kết nối được mô hình.'} Không lấy kết quả model khác thay vào.</Notice> : slot.state === 'unavailable' ? <Notice>Chưa chạy nhận diện trên bản này.<Button onClick={retry}>Nhận diện thực thể</Button></Notice> : null}
+    {slot.state === 'succeeded' && entities.length === 0 && <Notice>Model chưa nhận diện được thực thể trong bản này. Không có thực thể dự đoán không có nghĩa là không có bệnh.</Notice>}
+    {slot.state === 'succeeded' && entities.some(entity => entity.utf16Start === null) && <p className="metadata">Một số thực thể chưa có vị trí chính xác trong văn bản. Chỉ hiển thị trong danh sách; không nhảy audio.</p>}
+    <ul className="entity-list">{visible.map(entity => <li key={entity.id}><button id={`${prefix}-row-${entity.id}`} className={`entity-row ${selected === entity.id ? 'row-selected' : ''}`} onClick={() => { onSelect(entity.id); requestAnimationFrame(() => { const span = document.getElementById(`${prefix}-span-${entity.id}`); if (span) { span.focus({ preventScroll: true }); span.scrollIntoView({ block: 'nearest', behavior: 'instant' }); } }); }} aria-pressed={selected === entity.id}><span>{entity.text}</span><span className={`entity-label entity-${entity.label}`}>{labels[entity.label]}</span><ChevronRight aria-hidden="true" /></button></li>)}</ul>
+    {slot.state === 'succeeded' && entities.length > 0 && visible.length === 0 && <p className="metadata">Không có thực thể thuộc loại đang lọc.</p>}
+    {detail && <div className="entity-detail" aria-live="polite"><h3>Chi tiết thực thể</h3><strong>{detail.text}</strong><dl><dt>Loại model trả về</dt><dd>{detail.label}</dd><dt>Mô hình</dt><dd>{modelName[model]}</dd><dt>Nguồn / phiên bản</dt><dd>{source === 'raw' ? 'ASR gốc' : 'Bản rà soát'} · {slot.result?.revision}</dd><dt>Vị trí Unicode code point</dt><dd>{detail.utf16Start === null ? 'Chưa có vị trí chính xác trong văn bản.' : `[${detail.start}, ${detail.end})`}</dd>{detail.score !== undefined && <><dt>Điểm model</dt><dd>{detail.score.toFixed(4)} · Không phải độ chính xác đã kiểm chứng.</dd></>}</dl></div>}
+  </section>;
+}

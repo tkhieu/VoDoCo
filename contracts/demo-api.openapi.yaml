@@ -1,0 +1,593 @@
+openapi: 3.1.0
+info:
+  title: VoDoCo demo inference API
+  version: 1.0.0
+  description: BFF maps /api/v1 to /v1. Service credentials stay server-side. Exact
+    Unicode text and code-point offsets; correction OFF.
+security:
+- ServiceToken: []
+paths:
+  /health/live:
+    get:
+      operationId: liveness
+      security: []
+      responses:
+        '200':
+          description: Process live
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    const: ok
+                required:
+                - status
+                additionalProperties: false
+  /v1/models:
+    get:
+      operationId: models
+      responses:
+        '200':
+          description: Actual model readiness
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelsResponse'
+        '401': &id002
+          description: Invalid service token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/audio-jobs/{job_id}:
+    put:
+      operationId: submitAudio
+      parameters:
+      - &id003
+        name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - &id004
+        name: X-Job-Token
+        in: header
+        required: true
+        schema: &id001
+          type: string
+          pattern: ^[a-f0-9]{64}$
+        description: Browser-generated 256-bit random capability, lowercase hex. Never
+          log or put in URLs.
+      - name: ner_model
+        in: query
+        required: true
+        schema: &id014
+          type: string
+          enum:
+          - phobert
+          - xlmr
+      - name: X-Session-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Input-Sha256
+        in: header
+        required: true
+        schema: *id001
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '202':
+          description: Verified EOF queued, or identical receiving/existing descriptor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400': &id005
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401': *id002
+        '404': &id006
+          description: Job unavailable or wrong capability
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409': &id007
+          description: Job identity conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413': &id008
+          description: Body exceeds limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '415': &id009
+          description: Unsupported media
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422': &id010
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429': &id011
+          description: Admission busy; Retry-After header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503': &id012
+          description: Service/model unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/ner-jobs/{job_id}:
+    put:
+      operationId: submitNer
+      parameters:
+      - *id003
+      - *id004
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NerRequest'
+      responses:
+        '202':
+          description: Accepted or existing matching identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400': *id005
+        '401': *id002
+        '404': *id006
+        '409': *id007
+        '413': *id008
+        '415': *id009
+        '422': *id010
+        '429': *id011
+        '503': *id012
+  /v1/jobs/{job_id}:
+    get:
+      operationId: getJob
+      parameters:
+      - *id003
+      - *id004
+      responses:
+        '200':
+          description: Receiving/queued/running/terminal state; partial results preserved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '401': *id002
+        '404': *id006
+components:
+  securitySchemes:
+    ServiceToken:
+      type: http
+      scheme: bearer
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        code: &id013
+          type: string
+        stage: *id013
+        model: *id014
+        retryable:
+          type: boolean
+        message: *id013
+      required:
+      - code
+      - stage
+      - retryable
+      - message
+      additionalProperties: false
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ApiError'
+      required:
+      - error
+      additionalProperties: false
+    ModelIdentity:
+      type: object
+      properties:
+        logical_id:
+          type: string
+          enum:
+          - asr
+          - phobert
+          - xlmr
+        repo_id:
+          anyOf:
+          - *id013
+          - type: 'null'
+        revision:
+          anyOf:
+          - *id013
+          - type: 'null'
+        checkpoint_sha256:
+          anyOf:
+          - *id001
+          - type: 'null'
+        tokenizer: *id013
+        label_map_sha256:
+          anyOf:
+          - *id001
+          - type: 'null'
+        device: *id013
+        dtype: *id013
+      required:
+      - logical_id
+      - repo_id
+      - revision
+      - checkpoint_sha256
+      - tokenizer
+      - label_map_sha256
+      - device
+      - dtype
+      additionalProperties: false
+    ModelStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - loading
+          - ready
+          - missing
+          - error
+        identity:
+          anyOf:
+          - $ref: '#/components/schemas/ModelIdentity'
+          - type: 'null'
+        token_limit:
+          anyOf:
+          - type: integer
+            minimum: 1
+          - type: 'null'
+        supports_offsets:
+          type: boolean
+        error:
+          anyOf:
+          - $ref: '#/components/schemas/ApiError'
+          - type: 'null'
+      required:
+      - status
+      - identity
+      - token_limit
+      - supports_offsets
+      - error
+      additionalProperties: false
+    ModelsResponse:
+      type: object
+      properties:
+        api_version:
+          const: '1'
+        models:
+          type: object
+          properties:
+            asr:
+              $ref: '#/components/schemas/ModelStatus'
+            phobert:
+              $ref: '#/components/schemas/ModelStatus'
+            xlmr:
+              $ref: '#/components/schemas/ModelStatus'
+          required:
+          - asr
+          - phobert
+          - xlmr
+          additionalProperties: false
+        limits:
+          type: object
+          properties:
+            upload_bytes:
+              const: 10485760
+            upload_seconds:
+              const: 30
+            record_seconds:
+              const: 10
+            text_body_bytes:
+              const: 32768
+          required:
+          - upload_bytes
+          - upload_seconds
+          - record_seconds
+          - text_body_bytes
+          additionalProperties: false
+      required:
+      - api_version
+      - models
+      - limits
+      additionalProperties: false
+    Entity:
+      type: object
+      properties:
+        id: *id013
+        text: *id013
+        label:
+          type: string
+          enum:
+          - AGE
+          - DATETIME
+          - DIAGNOSTICS
+          - DISEASESYMTOM
+          - DRUGCHEMICAL
+          - FOODDRINK
+          - GENDER
+          - LOCATION
+          - MEDDEVICETECHNIQUE
+          - OCCUPATION
+          - ORGAN
+          - ORGANIZATION
+          - PERSONALCARE
+          - PREVENTIVEMED
+          - SURGERY
+          - TRANSPORTATION
+          - TREATMENT
+          - UNITCALIBRATOR
+        start:
+          anyOf:
+          - type: integer
+            minimum: 0
+          - type: 'null'
+        end:
+          anyOf:
+          - type: integer
+            minimum: 0
+          - type: 'null'
+        offset_unit:
+          const: unicode_codepoint
+        score:
+          type: number
+          minimum: 0
+          maximum: 1
+      required:
+      - id
+      - text
+      - label
+      - start
+      - end
+      - offset_unit
+      additionalProperties: false
+    NerResult:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - succeeded
+          - failed
+        source: &id016
+          type: string
+          enum:
+          - raw
+          - review
+        revision:
+          type: integer
+          minimum: 0
+        text_sha256: *id001
+        model:
+          anyOf:
+          - $ref: '#/components/schemas/ModelIdentity'
+          - type: 'null'
+        entities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Entity'
+        error:
+          anyOf:
+          - $ref: '#/components/schemas/ApiError'
+          - type: 'null'
+        duration_ms: &id015
+          type: number
+          minimum: 0
+      required:
+      - status
+      - source
+      - revision
+      - text_sha256
+      - model
+      - entities
+      - error
+      - duration_ms
+      additionalProperties: false
+    AudioMetadata:
+      type: object
+      properties:
+        duration_seconds: *id015
+        original_sample_rate:
+          type: integer
+          minimum: 1
+        sample_rate:
+          const: 16000
+        original_channels:
+          type: integer
+          minimum: 1
+        channels:
+          const: 1
+        format: *id013
+      required:
+      - duration_seconds
+      - original_sample_rate
+      - sample_rate
+      - original_channels
+      - channels
+      - format
+      additionalProperties: false
+    AsrResult:
+      type: object
+      properties:
+        raw_text: *id013
+        text_sha256: *id001
+        model:
+          $ref: '#/components/schemas/ModelIdentity'
+        generation_settings:
+          type: object
+          properties: {}
+          required: []
+          additionalProperties: true
+        postprocessing:
+          const: strip_surrounding_whitespace
+        duration_ms: *id015
+      required:
+      - raw_text
+      - text_sha256
+      - model
+      - generation_settings
+      - postprocessing
+      - duration_ms
+      additionalProperties: false
+    JobResult:
+      type: object
+      properties:
+        audio:
+          anyOf:
+          - $ref: '#/components/schemas/AudioMetadata'
+          - type: 'null'
+        asr:
+          anyOf:
+          - $ref: '#/components/schemas/AsrResult'
+          - type: 'null'
+        ner:
+          type: object
+          properties:
+            phobert:
+              $ref: '#/components/schemas/NerResult'
+            xlmr:
+              $ref: '#/components/schemas/NerResult'
+          required: []
+          additionalProperties: false
+        source: *id016
+        revision:
+          type: integer
+          minimum: 0
+        text_sha256:
+          anyOf:
+          - *id001
+          - type: 'null'
+      required:
+      - audio
+      - asr
+      - ner
+      - source
+      - revision
+      - text_sha256
+      additionalProperties: false
+    Job:
+      type: object
+      properties:
+        api_version:
+          const: '1'
+        job_id:
+          type: string
+          format: uuid
+        session_id:
+          type: string
+          format: uuid
+        kind:
+          type: string
+          enum:
+          - audio
+          - ner
+        status:
+          type: string
+          enum:
+          - receiving
+          - queued
+          - running
+          - succeeded
+          - partial
+          - failed
+        stage:
+          type: string
+          enum:
+          - receiving
+          - queued
+          - decoding
+          - transcribing
+          - recognizing
+          - finished
+        created_at:
+          type: string
+          format: date-time
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+        input_sha256: *id001
+        result:
+          anyOf:
+          - $ref: '#/components/schemas/JobResult'
+          - type: 'null'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+      required:
+      - api_version
+      - job_id
+      - session_id
+      - kind
+      - status
+      - stage
+      - created_at
+      - expires_at
+      - input_sha256
+      - result
+      - errors
+      additionalProperties: false
+    NerRequest:
+      type: object
+      properties:
+        session_id:
+          type: string
+          format: uuid
+        source: *id016
+        revision:
+          type: integer
+          minimum: 0
+        text:
+          type: string
+          minLength: 1
+        text_sha256: *id001
+        models:
+          type: array
+          items: *id014
+          minItems: 1
+          maxItems: 2
+          uniqueItems: true
+      required:
+      - session_id
+      - source
+      - revision
+      - text
+      - text_sha256
+      - models
+      additionalProperties: false
