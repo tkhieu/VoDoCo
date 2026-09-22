@@ -4,6 +4,90 @@ Start, demo, stop and recover the password-protected VoDoCo demo. Every command 
 
 Never place the demo password, the service token, the registry token or provider account keys in this repository, in a shell history on a shared machine, or in a screenshot. Never copy raw patient data into the demo.
 
+## Docker Compose + Cloudflare Tunnel (`vodoco.hieutk.dev`)
+
+This is the normal self-hosted demo path. Cloudflare is the only ingress, the web BFF is the only tunnel origin, and inference stays on an isolated Docker network. No host port is published.
+
+### One-time local prerequisites
+
+1. Keep the prepared model release at `.local/vodoco-models/release`. Its `manifest.json` must match `services/inference/model-manifest.json`.
+2. Put one owner-approved, non-patient sample at `.local/vodoco-samples/demo.wav`. This ignored path is mounted read-only and is never copied into an image.
+3. Create the internal service credential:
+
+   ```sh
+   umask 077
+   printf 'INFERENCE_SERVICE_TOKEN=' > .env.service.local
+   openssl rand -hex 32 >> .env.service.local
+   ```
+
+4. If the host differs from this workstation, create an ignored `.env` containing only the non-secret Compose substitutions that need changing:
+
+   ```dotenv
+   VODOCO_PUBLIC_ORIGIN=https://vodoco.hieutk.dev
+   NVIDIA_DRIVER_LIBRARY_DIR=/usr/lib64
+   NVIDIA_DRIVER_VERSION=610.57.04
+   VODOCO_UID=1000
+   VODOCO_GID=1000
+   ```
+
+   This workstation uses the values above. Keep the service token only in `.env.service.local`, not in `.env`.
+
+The Compose inference target mounts weights instead of baking them into another image. It uses the locally proven `/dev/nvidia0`, `/dev/nvidiactl`, `/dev/nvidia-uvm` and versioned driver-library mapping because this host has no NVIDIA Docker runtime or CDI registration.
+
+### One-time Cloudflare owner setup
+
+Do this in the Cloudflare dashboard; never paste account credentials or the tunnel token into chat or Git.
+
+1. Confirm `hieutk.dev` is an active Cloudflare zone.
+2. Create a Cloudflare Access self-hosted application for `vodoco.hieutk.dev` and an owner-approved Allow policy. A Tunnel provides transport, not audience authentication; publishing without Access violates this demo's password-protected authorization boundary.
+3. Create a remotely managed tunnel such as `vodoco-local`.
+4. Add one **Published application** route:
+   - Hostname: `vodoco.hieutk.dev`
+   - Service: `http://web:3000`
+   - HTTP Host Header: `vodoco.hieutk.dev`
+   - No path filter, no TLS-verification override, and no route to inference
+5. Copy the tunnel token directly to `.local/vodoco-secrets/cloudflare-tunnel-token`, then set the directory to mode `0700` and the file to `0600`.
+
+The connector image is pinned to `cloudflare/cloudflared:2026.9.1` by digest. Anyone holding the tunnel token can run another connector, so rotate it after suspected exposure.
+
+### Start and stop
+
+After the one-time prerequisites, the complete stack starts with:
+
+```sh
+docker compose up -d
+docker compose ps
+```
+
+The first start builds the web image and the weightless inference runtime image. Normal subsequent starts reuse them. Wait until `inference`, `web`, and `cloudflared` are healthy, then authenticate through Cloudflare Access at:
+
+```text
+https://vodoco.hieutk.dev
+```
+
+Inspect bounded logs without exposing environment files:
+
+```sh
+docker compose logs --tail=100 inference web cloudflared
+```
+
+Stop the stack and release GPU ownership with:
+
+```sh
+docker compose down --timeout 20
+```
+
+Do not add `ports:` to the Compose services. A direct host port would bypass Cloudflare Access.
+
+### Failure boundaries
+
+- `cloudflared` health proves an active Cloudflare edge connection, not that the hostname route or Access policy is correct.
+- Web `/healthz` proves the BFF process is alive.
+- Inference `/health/live` proves the ASGI process is alive; authenticated `/v1/models` is the model-readiness surface.
+- An unauthenticated HTTP `200` from `https://vodoco.hieutk.dev` is a deployment failure. Cloudflare Access must challenge or deny before the app is reachable.
+- Keep Cloudflare cache rules away from `/api/*`; the BFF returns `Cache-Control: no-store`.
+
+
 ## 0. Clearing the owner gates, in order
 
 Only three things below are genuinely owner-only: the licence decision, the choice of registry, and the spend ceiling plus shutdown deadline. Everything else is account access, and an implementer can execute it once the owner is signed in on the working machine (or once a live browser session is available).
@@ -27,7 +111,7 @@ Two facts to keep in mind when pushing:
 - `leduckhai/VietMed-NER` (XLM-R) declares no licence and publishes none; only the attestation above covers it. `leduckhai/MultiMed-ST` declares MIT in its model-card metadata but publishes no licence text at the path its README links to (verified 404), so no MIT text is reproduced.
 - Public redistribution, weights in Git, and cloud spend remain unauthorised. Do not widen the audience without revisiting the XLM-R terms with its authors.
 
-**Alternative that avoids model distribution entirely:** keep the weights on this workstation and expose the local inference service through a tunnel, publishing only the web app. The weights then never leave the owner's machine. Two consequences must be accepted first: the workstation must stay powered and online for the demo window, and the BFF currently rejects non-RunPod upstreams, so allowing an allowlisted tunnel origin is a small, testable configuration change rather than a ready path.
+The local Cloudflare path is implemented by `compose.yaml`: only the web BFF is tunneled, inference remains private, and the weights stay on this workstation. The workstation must remain powered and online for the demo window.
 
 ### 0.2 Create one private registry and one read-only pull credential
 

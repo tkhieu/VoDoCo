@@ -57,9 +57,11 @@ export function readConfig(env: NodeJS.ProcessEnv = process.env): ProxyConfig {
   const upstream = env.INFERENCE_BASE_URL ? new URL(env.INFERENCE_BASE_URL) : null;
   if (upstream) {
     const localUpstream = local && !preview && upstream.protocol === 'http:' && Object.hasOwn(LOOPBACK, upstream.hostname);
+    const composeUpstream = env.INFERENCE_COMPOSE_SERVICE === '1' && !preview
+      && upstream.protocol === 'http:' && upstream.hostname === 'inference' && upstream.port === '8000';
     const podUpstream = upstream.protocol === 'https:' && /^[a-z0-9-]+-8000\.proxy\.runpod\.net$/.test(upstream.hostname) && !upstream.port;
-    if ((!localUpstream && !podUpstream) || upstream.username || upstream.password || upstream.pathname !== '/' || upstream.search || upstream.hash) {
-      throw new Error('INFERENCE_BASE_URL must be the fixed RunPod HTTPS origin or a local development service');
+    if ((!localUpstream && !composeUpstream && !podUpstream) || upstream.username || upstream.password || upstream.pathname !== '/' || upstream.search || upstream.hash) {
+      throw new Error('INFERENCE_BASE_URL must be the fixed Compose, RunPod, or local development origin');
     }
   }
   const token = env.INFERENCE_SERVICE_TOKEN || '';

@@ -13,12 +13,11 @@ RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen --no-dev --no-ins
 COPY services/inference/src ./src
 RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen --no-dev --no-editable --python /usr/bin/python3.12
 
-FROM base AS runtime
+FROM base AS runtime-core
 RUN useradd --create-home --uid 10001 vodoco && mkdir -p /tmp/vodoco-inference \
     && chown 10001:10001 /tmp/vodoco-inference
 WORKDIR /opt/vodoco/inference
 COPY --from=build /opt/vodoco/inference/.venv ./.venv
-COPY --chmod=u=rX,go=rX .local/vodoco-models/release/ /opt/vodoco/models/
 COPY --chmod=0444 services/inference/model-manifest.json /opt/vodoco/model-manifest.json
 COPY --chmod=0444 services/inference/THIRD_PARTY_NOTICES.md /opt/vodoco/THIRD_PARTY_NOTICES.md
 COPY --chmod=u=rX,go=rX services/inference/licenses/ /opt/vodoco/licenses/
@@ -33,3 +32,6 @@ EXPOSE 8000
 HEALTHCHECK --interval=15s --timeout=3s --start-period=10s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/live',timeout=2).read()"
 CMD ["python", "-m", "uvicorn", "vodoco_inference.app:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--no-access-log"]
+
+FROM runtime-core AS runtime
+COPY --chmod=u=rX,go=rX .local/vodoco-models/release/ /opt/vodoco/models/

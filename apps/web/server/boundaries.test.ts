@@ -1,6 +1,6 @@
 import { createServer, request as httpRequest, type RequestListener, type Server } from 'node:http';
 import { afterEach, expect, it } from 'vitest';
-import { createApp, type ProxyConfig } from './index.js';
+import { createApp, readConfig, type ProxyConfig } from './index.js';
 
 const servers: Server[] = [];
 
@@ -47,6 +47,27 @@ afterEach(async () => {
     server.close((error) => error ? reject(error) : resolve());
     server.closeAllConnections();
   })));
+});
+
+it('allows only the exact Compose inference service when explicitly enabled', () => {
+  const base = {
+    APP_ORIGIN: 'https://vodoco.hieutk.dev',
+    INFERENCE_COMPOSE_SERVICE: '1',
+    INFERENCE_SERVICE_TOKEN: 's'.repeat(32),
+  };
+  expect(readConfig({ ...base, INFERENCE_BASE_URL: 'http://inference:8000' }).upstream?.origin)
+    .toBe('http://inference:8000');
+  expect(() => readConfig({ ...base, INFERENCE_COMPOSE_SERVICE: undefined, INFERENCE_BASE_URL: 'http://inference:8000' }))
+    .toThrow(/INFERENCE_BASE_URL/);
+  for (const upstream of [
+    'http://inference:8001',
+    'http://other:8000',
+    'https://inference:8000',
+    'http://inference:8000/path',
+    'http://user:password@inference:8000',
+  ]) {
+    expect(() => readConfig({ ...base, INFERENCE_BASE_URL: upstream })).toThrow(/INFERENCE_BASE_URL/);
+  }
 });
 
 it('denies the entire preview API even with a configured inference credential', async () => {

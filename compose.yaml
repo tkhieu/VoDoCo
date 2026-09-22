@@ -1,0 +1,161 @@
+name: vodoco
+
+services:
+  inference:
+    image: vodoco-inference:compose
+    build:
+      context: .
+      dockerfile: deploy/runpod/Dockerfile
+      target: runtime-core
+    user: "${VODOCO_UID:-1000}:${VODOCO_GID:-1000}"
+    env_file:
+      - path: .env.service.local
+        required: true
+    environment:
+      VODOCO_MODEL_ROOT: /opt/vodoco/models
+      VODOCO_MODEL_MANIFEST: /opt/vodoco/model-manifest.json
+      VODOCO_TEMP_DIR: /tmp/vodoco-inference
+    expose:
+      - "8000"
+    devices:
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-uvm:/dev/nvidia-uvm
+    volumes:
+      - type: bind
+        source: ./.local/vodoco-models/release
+        target: /opt/vodoco/models
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${NVIDIA_DRIVER_LIBRARY_DIR:-/usr/lib64}/libcuda.so.${NVIDIA_DRIVER_VERSION:-610.57.04}
+        target: /usr/lib/x86_64-linux-gnu/libcuda.so.1
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${NVIDIA_DRIVER_LIBRARY_DIR:-/usr/lib64}/libnvidia-ptxjitcompiler.so.${NVIDIA_DRIVER_VERSION:-610.57.04}
+        target: /usr/lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so.1
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${NVIDIA_DRIVER_LIBRARY_DIR:-/usr/lib64}/libnvidia-gpucomp.so.${NVIDIA_DRIVER_VERSION:-610.57.04}
+        target: /usr/lib/x86_64-linux-gnu/libnvidia-gpucomp.so.${NVIDIA_DRIVER_VERSION:-610.57.04}
+        read_only: true
+        bind:
+          create_host_path: false
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=128m,mode=1777
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 20s
+    restart: unless-stopped
+    networks:
+      - inference_backend
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  web:
+    image: vodoco-web:compose
+    build:
+      context: .
+      dockerfile: deploy/compose/web.Dockerfile
+    user: "${VODOCO_UID:-1000}:${VODOCO_GID:-1000}"
+    env_file:
+      - path: .env.service.local
+        required: true
+    environment:
+      PORT: "3000"
+      APP_ORIGIN: ${VODOCO_PUBLIC_ORIGIN:-https://vodoco.hieutk.dev}
+      INFERENCE_BASE_URL: http://inference:8000
+      INFERENCE_COMPOSE_SERVICE: "1"
+      DEMO_SAMPLE_APPROVED: "1"
+      DEMO_SAMPLE_PATH: samples/demo.wav
+      DEMO_SAMPLE_PROVENANCE: ${DEMO_SAMPLE_PROVENANCE:-Owner-approved password-protected research-demo sample.}
+    expose:
+      - "3000"
+    volumes:
+      - type: bind
+        source: ./.local/vodoco-samples/demo.wav
+        target: /opt/vodoco/samples/demo.wav
+        read_only: true
+        bind:
+          create_host_path: false
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=32m,mode=1777
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      inference:
+        condition: service_healthy
+        restart: true
+    restart: unless-stopped
+    networks:
+      - tunnel_origin
+      - inference_backend
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  cloudflared:
+    image: cloudflare/cloudflared:2026.9.1@sha256:b269e8abd07a5bf6f3f4be65d5050b2174eca89c56a0241a8ff32a16aec454e4
+    user: "${VODOCO_UID:-1000}:${VODOCO_GID:-1000}"
+    command: ["tunnel", "--no-autoupdate", "--loglevel", "info", "--metrics", "127.0.0.1:20241", "run", "--token-file", "/run/secrets/cloudflare_tunnel_token"]
+    secrets:
+      - cloudflare_tunnel_token
+    depends_on:
+      web:
+        condition: service_healthy
+        restart: true
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=16m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    networks:
+      - tunnel_egress
+      - tunnel_origin
+    healthcheck:
+      test: ["CMD", "cloudflared", "tunnel", "--metrics", "127.0.0.1:20241", "ready"]
+      interval: 10s
+      timeout: 3s
+      start_period: 20s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+secrets:
+  cloudflare_tunnel_token:
+    file: ./.local/vodoco-secrets/cloudflare-tunnel-token
+
+networks:
+  tunnel_egress: {}
+  tunnel_origin:
+    internal: true
+  inference_backend:
+    internal: true
