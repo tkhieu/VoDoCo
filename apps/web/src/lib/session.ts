@@ -1,4 +1,4 @@
-import { capability, errorMessage, HttpError, request, sha256, terminal, type Model, type Schema, type Source } from './api';
+import { capability, errorMessage, HttpError, nerModels, request, sha256, terminal, type Model, type Schema, type Source } from './api';
 
 export type Slot = { state: 'unavailable' | 'stale' | 'loading' | 'succeeded' | 'failed' | 'paused'; result?: Schema['NerResult']; message?: string; jobId?: string };
 export type Review = { text: string; revision: number; hash: string | null; confirmed: boolean };
@@ -11,7 +11,7 @@ export type Session = {
   slots: Record<Source, Record<Model, Slot>>;
 };
 type Attempt = { id: string; token: string; session: string; kind: 'audio' | 'ner'; source: Source; revision: number; hash: string; models: Model[]; identities: Partial<Record<Model, Schema['ModelIdentity']>>; controller: AbortController; started: number; epoch: number };
-const emptySlots = (): Record<Model, Slot> => ({ phobert: { state: 'unavailable' }, xlmr: { state: 'unavailable' } });
+const emptySlots = (): Record<Model, Slot> => Object.fromEntries(nerModels.map(model => [model, { state: 'unavailable' }])) as Record<Model, Slot>;
 function freshSession(): Session {
   return { id: crypto.randomUUID(), createdAt: new Date().toISOString(), model: 'phobert', view: 'review', source: 'raw', audio: null, metadata: null, asr: null, review: null, rawConfirmed: false, audioState: 'idle', stage: null, message: null, slots: { raw: emptySlots(), review: emptySlots() } };
 }
@@ -28,7 +28,7 @@ export class SessionController {
   private listeners = new Set<() => void>();
   private attempts = new Map<string, Attempt>();
   private audioAttempt: string | null = null;
-  models: Schema['ModelsResponse'] | null = null;
+  models: Schema['ModelsResponseV2'] | null = null;
   subscribe = (listener: () => void) => { this.listeners.add(listener); return () => { this.listeners.delete(listener); }; };
   getSnapshot = () => this.value;
   private update(patch: Partial<Session>) { this.value = { ...this.value, ...patch }; this.listeners.forEach(listener => listener()); }
@@ -55,7 +55,7 @@ export class SessionController {
   edit(text: string) {
     if (!this.value.review) return;
     this.attempts.forEach(attempt => { if (attempt.source === 'review') attempt.controller.abort(); });
-    this.update({ review: { text, revision: this.value.review.revision + 1, hash: null, confirmed: false }, slots: { ...this.value.slots, review: { phobert: { state: 'stale' }, xlmr: { state: 'stale' } } } });
+    this.update({ review: { text, revision: this.value.review.revision + 1, hash: null, confirmed: false }, slots: { ...this.value.slots, review: Object.fromEntries(nerModels.map(model => [model, { state: 'stale' }])) as Record<Model, Slot> } });
   }
   confirm(confirmed: boolean) {
     if (this.value.source === 'review' && this.value.review) this.update({ review: { ...this.value.review, confirmed } });

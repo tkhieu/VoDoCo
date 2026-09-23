@@ -1,9 +1,10 @@
 openapi: 3.1.0
 info:
   title: VoDoCo demo inference API
-  version: 1.0.0
-  description: BFF maps /api/v1 to /v1. Service credentials stay server-side. Exact
-    Unicode text and code-point offsets; correction OFF.
+  version: 2.0.0
+  description: BFF maps /api/v1 and /api/v2 to their matching service paths.
+    Service credentials stay server-side. Exact Unicode text and code-point offsets;
+    correction OFF.
 security:
 - ServiceToken: []
 paths:
@@ -40,6 +41,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /v2/models:
+    get:
+      operationId: modelsV2
+      responses:
+        '200':
+          description: Actual readiness for the extensible demo model set
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelsResponseV2'
+        '401': *id002
   /v1/audio-jobs/{job_id}:
     put:
       operationId: submitAudio
@@ -68,6 +80,7 @@ paths:
           enum:
           - phobert
           - xlmr
+          - vihealthbert-ner-seed2024
       - name: X-Session-Id
         in: header
         required: true
@@ -223,6 +236,7 @@ components:
           - asr
           - phobert
           - xlmr
+          - vihealthbert-ner-seed2024
         repo_id:
           anyOf:
           - *id013
@@ -302,6 +316,50 @@ components:
           - asr
           - phobert
           - xlmr
+          additionalProperties: false
+        limits:
+          type: object
+          properties:
+            upload_bytes:
+              const: 10485760
+            upload_seconds:
+              const: 30
+            record_seconds:
+              const: 10
+            text_body_bytes:
+              const: 32768
+          required:
+          - upload_bytes
+          - upload_seconds
+          - record_seconds
+          - text_body_bytes
+          additionalProperties: false
+      required:
+      - api_version
+      - models
+      - limits
+      additionalProperties: false
+    ModelsResponseV2:
+      type: object
+      properties:
+        api_version:
+          const: '2'
+        models:
+          type: object
+          properties:
+            asr:
+              $ref: '#/components/schemas/ModelStatus'
+            phobert:
+              $ref: '#/components/schemas/ModelStatus'
+            xlmr:
+              $ref: '#/components/schemas/ModelStatus'
+            vihealthbert-ner-seed2024:
+              $ref: '#/components/schemas/ModelStatus'
+          required:
+          - asr
+          - phobert
+          - xlmr
+          - vihealthbert-ner-seed2024
           additionalProperties: false
         limits:
           type: object
@@ -480,6 +538,8 @@ components:
             phobert:
               $ref: '#/components/schemas/NerResult'
             xlmr:
+              $ref: '#/components/schemas/NerResult'
+            vihealthbert-ner-seed2024:
               $ref: '#/components/schemas/NerResult'
           required: []
           additionalProperties: false

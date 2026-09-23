@@ -4,7 +4,7 @@ import { Download, Info, Plus, X } from 'lucide-react';
 import { Button, Dialog, Notice } from './components/ui';
 import { AudioInput } from './features/AudioInput';
 import { Workspace } from './features/Workspace';
-import { errorMessage, modelName, request, type Schema } from './lib/api';
+import { errorMessage, modelName, nerModels, request, type Schema } from './lib/api';
 import { SessionController, type Session } from './lib/session';
 import { download } from './lib/export';
 
@@ -17,21 +17,21 @@ function ExportAction({ session, className = '' }: { session: Session; className
   const slot = session.slots[source][session.model];
   return <div className={className}><Dialog open={open} onOpenChange={value => { setOpen(value); setMessage(null); }} trigger={<Button variant={slot.state === 'stale' ? 'outline' : 'default'} disabled={!session.asr}><Download />Xuất kết quả</Button>} title="Xuất kết quả" description="Không kèm audio. Giữ nguồn văn bản, phiên bản và trạng thái rà soát."><fieldset className="export-options"><legend>Định dạng</legend><label><input type="radio" name={`format-${className}`} checked={format === 'txt'} onChange={() => setFormat('txt')} />TXT · bản văn bản đang xem</label><label><input type="radio" name={`format-${className}`} checked={format === 'json'} onChange={() => setFormat('json')} />JSON · toàn bộ phiên</label></fieldset><p className="metadata">Nguồn: {source === 'raw' ? 'ASR gốc' : 'Bản rà soát'} · phiên bản {source === 'review' ? session.review?.revision : 0} · {modelName[session.model]}. TXT giữ nguyên văn bản; nguồn, model và trạng thái rà soát nằm trong tên tệp. JSON giữ đầy đủ provenance.</p>{slot.state !== 'succeeded' && <Notice>Thực thể {slot.state === 'stale' ? 'chưa cập nhật theo bản sửa' : 'chưa sẵn sàng'}. Vẫn có thể tải văn bản; JSON không gắn thực thể cũ vào bản mới.</Notice>}{message && <Notice error={failed}>{message}</Notice>}<div className="dialog-actions"><Button onClick={() => setOpen(false)}>Đóng</Button><Button variant="default" onClick={() => { try { download(session, format); setFailed(false); setMessage('Đã bắt đầu tải xuống. Kiểm tra mục tải xuống của trình duyệt; ứng dụng không xác nhận tệp đã được lưu.'); } catch { setFailed(true); setMessage('Không thể tải xuống kết quả. Phiên làm việc và các chỉnh sửa vẫn được giữ nguyên. Hãy thử tải lại.'); } }}><Download />Tải xuống</Button></div></Dialog></div>;
 }
-function ModelInfo({ models, error, refresh }: { models: Schema['ModelsResponse'] | null; error: string | null; refresh: () => void }) {
-  return <Popover.Root><Popover.Trigger asChild><Button variant="ghost"><Info /><span>Thông tin mô hình</span></Button></Popover.Trigger><Popover.Portal><Popover.Content className="model-popover" sideOffset={8} collisionPadding={16}><h2>Thông tin mô hình</h2>{error && <Notice error>{error}</Notice>}{(['asr', 'phobert', 'xlmr'] as const).map(id => { const model = models?.models[id]; const identity = model?.identity; return <section key={id}><h3>{id === 'asr' ? 'Whisper-small' : modelName[id]}</h3><p className="metadata">{model?.status === 'ready' ? 'Đã sẵn sàng' : model?.status === 'missing' ? 'Chưa nạp checkpoint' : model?.status === 'error' ? 'Lỗi nạp mô hình' : 'Đang kiểm tra / nạp mô hình'}</p>{model?.error && <p>{model.error.message}</p>}{identity && <dl><dt>Nguồn</dt><dd>{identity.repo_id ?? 'Checkpoint fine-tuned'}</dd><dt>Revision / SHA-256</dt><dd>{identity.revision ?? identity.checkpoint_sha256 ?? 'Chưa cung cấp'}</dd><dt>Tokenizer</dt><dd>{identity.tokenizer}</dd><dt>Thiết bị / kiểu dữ liệu</dt><dd>{identity.device} · {identity.dtype}</dd><dt>Giới hạn NER</dt><dd>{model?.token_limit ?? 'Không áp dụng'}</dd></dl>}</section>; })}<p><strong>Sửa lỗi tự động: Tắt.</strong> Không có hiệu chỉnh văn bản ngầm.</p><Button onClick={refresh}>Kiểm tra lại mô hình</Button><Popover.Close asChild><Button className="dialog-close" variant="ghost" aria-label="Đóng thông tin mô hình"><X /></Button></Popover.Close></Popover.Content></Popover.Portal></Popover.Root>;
+function ModelInfo({ models, error, refresh }: { models: Schema['ModelsResponseV2'] | null; error: string | null; refresh: () => void }) {
+  return <Popover.Root><Popover.Trigger asChild><Button variant="ghost"><Info /><span>Thông tin mô hình</span></Button></Popover.Trigger><Popover.Portal><Popover.Content className="model-popover" sideOffset={8} collisionPadding={16}><h2>Thông tin mô hình</h2>{error && <Notice error>{error}</Notice>}{(['asr', ...nerModels] as const).map(id => { const model = models?.models[id]; const identity = model?.identity; return <section key={id}><h3>{id === 'asr' ? 'Whisper-small' : modelName[id]}</h3><p className="metadata">{model?.status === 'ready' ? 'Đã sẵn sàng' : model?.status === 'missing' ? 'Chưa nạp checkpoint' : model?.status === 'error' ? 'Lỗi nạp mô hình' : 'Đang kiểm tra / nạp mô hình'}</p>{model?.error && <p>{model.error.message}</p>}{identity && <dl><dt>Checkpoint</dt><dd><code title={identity.checkpoint_sha256 ?? 'Không có'}>{identity.checkpoint_sha256?.slice(0, 12) ?? 'Không có'}…</code></dd><dt>Thiết bị / dtype</dt><dd>{identity.device} · {identity.dtype}</dd><dt>Tokenizer</dt><dd>{identity.tokenizer}</dd>{model.token_limit && <><dt>Giới hạn token</dt><dd>{model.token_limit} · {model.supports_offsets ? 'Có offset kiểm chứng' : 'Chỉ danh sách thực thể'}</dd></>}</dl>}</section>; })}<Button variant="ghost" onClick={refresh}>Làm mới trạng thái</Button><Popover.Arrow /></Popover.Content></Popover.Portal></Popover.Root>;
 }
 export function App() {
   const [controller] = useState(() => new SessionController());
   const session = useSyncExternalStore(controller.subscribe, controller.getSnapshot);
   const [route, setRoute] = useState(location.pathname === '/workspace' ? 'workspace' : 'input');
-  const [models, setModels] = useState<Schema['ModelsResponse'] | null>(null);
+  const [models, setModels] = useState<Schema['ModelsResponseV2'] | null>(null);
   const [modelError, setModelError] = useState<string | null>(null);
   const [leaveOpen, setLeaveOpen] = useState(false);
   const main = useRef<HTMLElement>(null);
   const modelRequest = useRef(0);
   const refreshModels = useCallback(() => {
     const ticket = ++modelRequest.current;
-    void request<Schema['ModelsResponse']>('/api/v1/models').then(result => {
+    void request<Schema['ModelsResponseV2']>('/api/v2/models').then(result => {
       if (ticket !== modelRequest.current) return;
       controller.models = result; setModels(result); setModelError(null);
     }).catch(error => { if (ticket !== modelRequest.current) return; controller.models = null; setModels(null); setModelError(errorMessage(error)); });

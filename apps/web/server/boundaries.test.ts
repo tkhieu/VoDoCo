@@ -1,6 +1,6 @@
 import { createServer, request as httpRequest, type RequestListener, type Server } from 'node:http';
 import { afterEach, expect, it } from 'vitest';
-import { createApp, type ProxyConfig } from './index.js';
+import { createApp, readConfig, type ProxyConfig } from './index.js';
 
 const servers: Server[] = [];
 
@@ -49,11 +49,32 @@ afterEach(async () => {
   })));
 });
 
+it('allows only the exact Compose inference service when explicitly enabled', () => {
+  const base = {
+    APP_ORIGIN: 'https://vodoco.hieutk.dev',
+    INFERENCE_COMPOSE_SERVICE: '1',
+    INFERENCE_SERVICE_TOKEN: 's'.repeat(32),
+  };
+  expect(readConfig({ ...base, INFERENCE_BASE_URL: 'http://inference:8000' }).upstream?.origin)
+    .toBe('http://inference:8000');
+  expect(() => readConfig({ ...base, INFERENCE_COMPOSE_SERVICE: undefined, INFERENCE_BASE_URL: 'http://inference:8000' }))
+    .toThrow(/INFERENCE_BASE_URL/);
+  for (const upstream of [
+    'http://inference:8001',
+    'http://other:8000',
+    'https://inference:8000',
+    'http://inference:8000/path',
+    'http://user:password@inference:8000',
+  ]) {
+    expect(() => readConfig({ ...base, INFERENCE_BASE_URL: upstream })).toThrow(/INFERENCE_BASE_URL/);
+  }
+});
+
 it('denies the entire preview API even with a configured inference credential', async () => {
   let accesses = 0;
   const upstream = await listen((_req, res) => { accesses += 1; res.end('{}'); });
   const origin = await startProxy(upstream, true);
-  for (const path of ['/api/v1/models', '/api/sample', '/api/sample/audio']) {
+  for (const path of ['/api/v1/models', '/api/v2/models', '/api/sample', '/api/sample/audio']) {
     const response = await fetch(new URL(path, origin));
     expect(response.status).toBe(403);
     expect(await response.json()).toMatchObject({ error: { code: 'ORIGIN_DENIED' } });
@@ -126,6 +147,29 @@ it('never follows upstream redirects to another credential recipient', async () 
   expect(redirected).toBe(false);
 });
 
+it('forwards the exact ViHealthBERT audio model id and rejects near matches', async () => {
+  let accesses = 0;
+  let forwardedUrl = '';
+  const upstream = await listen((req, res) => {
+    accesses += 1;
+    forwardedUrl = req.url ?? '';
+    res.writeHead(202, { 'Content-Type': 'application/json' });
+    res.end('{"accepted":true}');
+  });
+  const origin = await startProxy(upstream);
+  const headers = {
+    Origin: origin.origin,
+    'Content-Type': 'application/octet-stream',
+    'X-Job-Token': 'a'.repeat(64),
+    'X-Input-Sha256': 'b'.repeat(64),
+    'X-Session-Id': '22222222-2222-4222-8222-222222222222',
+  };
+  const base = '/api/v1/audio-jobs/33333333-3333-4333-8333-333333333333?ner_model=';
+  expect(await requestStatus(new URL(`${base}vihealthbert-ner-seed2024`, origin), { method: 'PUT', headers, body: 'x' })).toBe(202);
+  expect(await requestStatus(new URL(`${base}vihealthbert-ner-seed2024-typo`, origin), { method: 'PUT', headers, body: 'x' })).toBe(400);
+  expect(accesses).toBe(1);
+  expect(forwardedUrl).toBe('/v1/audio-jobs/33333333-3333-4333-8333-333333333333?ner_model=vihealthbert-ner-seed2024');
+});
 it('bounds chunked audio by actual bytes and aborts the receiving upstream', async () => {
   let release!: () => void;
   const aborted = new Promise<void>((resolve) => { release = resolve; });

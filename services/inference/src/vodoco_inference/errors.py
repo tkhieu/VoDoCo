@@ -16,6 +16,6 @@ class InferenceError(Exception):
             "stage": self.stage, "retryable": self.retryable,
         }
         # The API's optional model field names NER models, not ASR.
-        if self.model in {"phobert", "xlmr"}:
+        if self.model in {"phobert", "xlmr", "vihealthbert-ner-seed2024"}:
             result["model"] = self.model
         return result

@@ -2,7 +2,7 @@ import { Fragment, useMemo, useState } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { Button, Notice } from '../components/ui';
 import { labels, mapEntities, type MappedEntity } from '../lib/entities';
-import { modelName, type Model, type Schema, type Source } from '../lib/api';
+import { modelName, modelRole, type Model, type Schema, type Source } from '../lib/api';
 import type { Slot } from '../lib/session';
 
 export function Transcript({ text, entities, selected, onSelect, prefix }: { text: string; entities: Schema['Entity'][]; selected: string | null; onSelect: (id: string) => void; prefix: string }) {
@@ -17,7 +17,7 @@ export function EntityPanel({ text, slot, source, model, status, retry, resume, 
   const visible = filter === 'all' ? entities : entities.filter(entity => entity.label === filter);
   const detail: MappedEntity | undefined = entities.find(entity => entity.id === selected);
   const count = slot.state === 'succeeded' ? entities.length : null;
-  return <section className="panel entity-panel" aria-label={`${modelName[model]}: thực thể dự đoán`}><div className="panel-heading"><h2>{comparison ? modelName[model] : `Thực thể dự đoán${count === null ? '' : ` · ${count}`}`}</h2>{comparison && <span className="badge">{model === 'xlmr' ? 'Baseline' : 'Fine-tuned'}</span>}</div>
+  return <section className="panel entity-panel" aria-label={`${modelName[model]}: thực thể dự đoán`}><div className="panel-heading"><h2>{comparison ? modelName[model] : `Thực thể dự đoán${count === null ? '' : ` · ${count}`}`}</h2>{comparison && <span className="badge">{modelRole[model]}</span>}</div>
     <div className="entity-tools"><span className="metadata">Nguồn: {source === 'raw' ? 'ASR gốc' : 'Bản rà soát'}{comparison && count !== null ? ` · ${count} occurrences` : ''}</span><label className="sr-only" htmlFor={`${prefix}-filter`}>Lọc thực thể theo loại</label><select id={`${prefix}-filter`} value={filter} onChange={event => setFilter(event.target.value)}><option value="all">Tất cả</option>{kinds.map(label => <option value={label} key={label}>{labels[label]}</option>)}</select></div>
     {slot.state === 'stale' ? <Notice>Văn bản đã thay đổi. Cập nhật thực thể để tiếp tục. Danh sách và highlight cũ được ẩn. Vẫn có thể xuất TXT.</Notice> : slot.state === 'loading' ? <Notice>Đang nhận diện… Kết quả của model còn lại vẫn được giữ.</Notice> : slot.state === 'paused' ? <Notice error>{slot.message}<Button onClick={resume}>Tiếp tục kiểm tra lượt này</Button></Notice> : slot.state === 'failed' ? <Notice error>{slot.message || 'Chưa nhận diện được thực thể. Bản phiên âm và audio vẫn được giữ.'}<Button onClick={retry} disabled={status?.status !== 'ready'}>Thử nhận diện lại</Button></Notice> : slot.state === 'unavailable' && status?.status !== 'ready' ? <Notice>{status?.status === 'missing' ? `Chưa nạp checkpoint ${modelName[model]}` : status?.status === 'loading' ? 'Đang nạp mô hình…' : status?.error?.message || 'Chưa kết nối được mô hình.'} Không lấy kết quả model khác thay vào.</Notice> : slot.state === 'unavailable' ? <Notice>Chưa chạy nhận diện trên bản này.<Button onClick={retry}>Nhận diện thực thể</Button></Notice> : null}
     {slot.state === 'succeeded' && entities.length === 0 && <Notice>Model chưa nhận diện được thực thể trong bản này. Không có thực thể dự đoán không có nghĩa là không có bệnh.</Notice>}

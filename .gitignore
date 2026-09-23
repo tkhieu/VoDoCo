@@ -11,6 +11,7 @@ __pycache__/
 
 # Demo runtime assets, credentials, environments and generated builds.
 /.local/
+/vihealthbert-ner-seed2024/
 /services/inference/.venv/
 /apps/web/node_modules/
 /apps/web/dist/

@@ -177,6 +177,9 @@ td { font-variant-numeric: tabular-nums; }
   .transcript-panel { min-height: 440px; }
   .entity-tools select { max-width: 180px; }
 }
+@media (min-width: 1200px) {
+  .compare-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 @media (max-width: 479px) {
   .header-inner { gap: 8px; }
   .brand-group { gap: 8px; }

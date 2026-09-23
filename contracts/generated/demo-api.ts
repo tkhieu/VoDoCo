@@ -36,6 +36,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v2/models": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["modelsV2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/audio-jobs/{job_id}": {
         parameters: {
             query?: never;
@@ -92,7 +108,7 @@ export interface components {
             code: string;
             stage: string;
             /** @enum {string} */
-            model?: "phobert" | "xlmr";
+            model?: "phobert" | "xlmr" | "vihealthbert-ner-seed2024";
             retryable: boolean;
             message: string;
         };
@@ -101,7 +117,7 @@ export interface components {
         };
         ModelIdentity: {
             /** @enum {string} */
-            logical_id: "asr" | "phobert" | "xlmr";
+            logical_id: "asr" | "phobert" | "xlmr" | "vihealthbert-ner-seed2024";
             repo_id: string | null;
             revision: string | null;
             checkpoint_sha256: string | null;
@@ -125,6 +141,26 @@ export interface components {
                 asr: components["schemas"]["ModelStatus"];
                 phobert: components["schemas"]["ModelStatus"];
                 xlmr: components["schemas"]["ModelStatus"];
+            };
+            limits: {
+                /** @constant */
+                upload_bytes: 10485760;
+                /** @constant */
+                upload_seconds: 30;
+                /** @constant */
+                record_seconds: 10;
+                /** @constant */
+                text_body_bytes: 32768;
+            };
+        };
+        ModelsResponseV2: {
+            /** @constant */
+            api_version: "2";
+            models: {
+                asr: components["schemas"]["ModelStatus"];
+                phobert: components["schemas"]["ModelStatus"];
+                xlmr: components["schemas"]["ModelStatus"];
+                "vihealthbert-ner-seed2024": components["schemas"]["ModelStatus"];
             };
             limits: {
                 /** @constant */
@@ -187,6 +223,7 @@ export interface components {
             ner: {
                 phobert?: components["schemas"]["NerResult"];
                 xlmr?: components["schemas"]["NerResult"];
+                "vihealthbert-ner-seed2024"?: components["schemas"]["NerResult"];
             };
             /** @enum {string} */
             source: "raw" | "review";
@@ -221,7 +258,7 @@ export interface components {
             revision: number;
             text: string;
             text_sha256: string;
-            models: ("phobert" | "xlmr")[];
+            models: ("phobert" | "xlmr" | "vihealthbert-ner-seed2024")[];
         };
     };
     responses: never;
@@ -284,10 +321,39 @@ export interface operations {
             };
         };
     };
+    modelsV2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Actual readiness for the extensible demo model set */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelsResponseV2"];
+                };
+            };
+            /** @description Invalid service token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     submitAudio: {
         parameters: {
             query: {
-                ner_model: "phobert" | "xlmr";
+                ner_model: "phobert" | "xlmr" | "vihealthbert-ner-seed2024";
             };
             header: {
                 /** @description Browser-generated 256-bit random capability, lowercase hex. Never log or put in URLs. */

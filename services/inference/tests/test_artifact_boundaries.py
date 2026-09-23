@@ -2,6 +2,7 @@ import importlib.util
 import io
 import stat
 import zipfile
+from types import SimpleNamespace
 from pathlib import Path
 
 import pytest
@@ -55,6 +56,39 @@ def test_known_training_pickle_is_not_selected():
         selected = prepare.zip_members(archive)
         assert set(selected) == prepare.PHOBERT_ASSETS
         assert all("checkpoint-" not in member.filename for member in selected.values())
+
+
+def test_vihealthbert_directory_packages_only_runtime_assets(tmp_path):
+    expected = frozenset({
+        "model.safetensors", "config.json", "tokenizer_config.json", "vocab.txt",
+        "bpe.codes", "added_tokens.json", "special_tokens_map.json",
+    })
+    assert prepare.VIHEALTHBERT_ASSETS == expected
+    source = tmp_path / prepare.VIHEALTHBERT_ID
+    source.mkdir()
+    for name in expected:
+        (source / name).write_bytes(b"runtime")
+    (source / "training_args.bin").write_bytes(b"ignored")
+    destination = tmp_path / "release" / prepare.VIHEALTHBERT_ID
+    destination.parent.mkdir()
+    prepare.prepare_vihealthbert(SimpleNamespace(vihealthbert_dir=source), destination)
+    packaged = {path.name for path in destination.iterdir()}
+    assert packaged == expected
+    assert len(packaged) == 7
+    assert "training_args.bin" not in packaged
+
+
+def test_vihealthbert_directory_rejects_unknown_assets(tmp_path):
+    source = tmp_path / prepare.VIHEALTHBERT_ID
+    source.mkdir()
+    for name in prepare.VIHEALTHBERT_ASSETS:
+        (source / name).write_bytes(b"runtime")
+    (source / "unexpected.bin").write_bytes(b"unexpected")
+    with pytest.raises(ValueError):
+        prepare.prepare_vihealthbert(
+            SimpleNamespace(vihealthbert_dir=source),
+            tmp_path / "release",
+        )
 
 
 def test_runtime_assets_cannot_follow_symlinks_outside_release(tmp_path):

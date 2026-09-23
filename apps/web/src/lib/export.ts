@@ -1,5 +1,5 @@
 import type { Session, Slot } from './session';
-import type { Model, Schema, Source } from './api';
+import { nerModels, type Model, type Schema, type Source } from './api';
 import { mapEntities } from './entities';
 
 function identity(model: Schema['ModelIdentity'] | null) {
@@ -21,7 +21,7 @@ export function exportSession(session: Session, at = new Date().toISOString()) {
     const text = source === 'raw' ? session.asr?.raw_text ?? '' : session.review?.text ?? '';
     const revision = source === 'raw' ? 0 : session.review?.revision ?? 0;
     const hash = source === 'raw' ? session.asr?.text_sha256 ?? null : session.review?.hash ?? null;
-    return [source, Object.fromEntries((['phobert', 'xlmr'] as const).map(model => [model, exportSlot(session.slots[source][model], text, source, revision, hash, model)]))];
+    return [source, Object.fromEntries(nerModels.map(model => [model, exportSlot(session.slots[source][model], text, source, revision, hash, model)]))];
   });
   return {
     schema_version: '1', session_id: session.id, created_at: session.createdAt, exported_at: at,
