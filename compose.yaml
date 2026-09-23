@@ -29,20 +29,20 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: ${NVIDIA_DRIVER_LIBRARY_DIR:-/usr/lib64}/libcuda.so.${NVIDIA_DRIVER_VERSION:-610.57.04}
+        source: ${NVIDIA_DRIVER_LIBRARY_DIR:-/usr/lib64}/libcuda.so.${NVIDIA_DRIVER_VERSION:-615.71.09}
         target: /usr/lib/x86_64-linux-gnu/libcuda.so.1
         read_only: true
         bind:
           create_host_path: false
       - type: bind
-        source: ${NVIDIA_DRIVER_LIBRARY_DIR:-/usr/lib64}/libnvidia-ptxjitcompiler.so.${NVIDIA_DRIVER_VERSION:-610.57.04}
+        source: ${NVIDIA_DRIVER_LIBRARY_DIR:-/usr/lib64}/libnvidia-ptxjitcompiler.so.${NVIDIA_DRIVER_VERSION:-615.71.09}
         target: /usr/lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so.1
         read_only: true
         bind:
           create_host_path: false
       - type: bind
-        source: ${NVIDIA_DRIVER_LIBRARY_DIR:-/usr/lib64}/libnvidia-gpucomp.so.${NVIDIA_DRIVER_VERSION:-610.57.04}
-        target: /usr/lib/x86_64-linux-gnu/libnvidia-gpucomp.so.${NVIDIA_DRIVER_VERSION:-610.57.04}
+        source: ${NVIDIA_DRIVER_LIBRARY_DIR:-/usr/lib64}/libnvidia-gpucomp.so.${NVIDIA_DRIVER_VERSION:-615.71.09}
+        target: /usr/lib/x86_64-linux-gnu/libnvidia-gpucomp.so.${NVIDIA_DRIVER_VERSION:-615.71.09}
         read_only: true
         bind:
           create_host_path: false
