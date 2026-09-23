@@ -1,0 +1,13 @@
+# torch được cài riêng từ index cu128 trong setup_env.sh (RTX 50xx / Blackwell cần CUDA 12.8+)
+transformers>=4.41,<5
+datasets>=2.19,<4
+accelerate>=0.30
+safetensors
+seqeval
+jiwer
+pandas
+tabulate
+soundfile
+librosa
+ipykernel
+jupyterlab

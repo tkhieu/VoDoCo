@@ -119,118 +119,132 @@
 
             <!-- Slide 4: NER Model Comparison -->
             <section>
-                <h2>So sánh NER: PhoBERT vs XLM-RoBERTa</h2>
-                <h3 class="benchmark-subheading"><i class="fas fa-chart-column"></i> NER benchmark</h3>
+                <h2>So sánh NER: PhoBERT, XLM-RoBERTa và ViHealthBERT</h2>
+                <h3 class="benchmark-subheading"><i class="fas fa-chart-column"></i> NER benchmark trên VietMed-NER/test</h3>
                 <table class="comparison-table benchmark-table">
                     <thead>
                         <tr>
                             <th>Tiêu chí</th>
                             <th><i class="fas fa-code"></i> PhoBERT</th>
                             <th><i class="fas fa-code-branch"></i> XLM-RoBERTa</th>
+                            <th><i class="fas fa-heart-pulse"></i> ViHealthBERT</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Architecture</strong></td>
-                            <td>Encoder-only token classification</td>
-                            <td>Encoder-only token classification</td>
+                            <td><strong>Dữ liệu pretrain</strong></td>
+                            <td>Tiếng Việt, văn bản chung</td>
+                            <td>~100 ngôn ngữ</td>
+                            <td>Tiếng Việt, văn bản y tế</td>
                         </tr>
                         <tr>
-                            <td><strong>Dataset</strong></td>
-                            <td>VietMed-NER test</td>
-                            <td>VietMed-NER test</td>
+                            <td><strong>Số tham số</strong></td>
+                            <td>~135M</td>
+                            <td>277M</td>
+                            <td>134M</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cấu hình</strong></td>
+                            <td>Fine-tune: lr 3e-5, 8 epochs</td>
+                            <td>Checkpoint có sẵn</td>
+                            <td>Fine-tune: lr 3e-5, 8 epochs, wd 0.01</td>
                         </tr>
                         <tr>
                             <td><strong>Test examples</strong></td>
-                            <td>3,497 mẫu</td>
-                            <td>3,497 mẫu</td>
+                            <td>3.497 mẫu</td>
+                            <td>3.497 mẫu</td>
+                            <td>3.497 mẫu</td>
                         </tr>
                         <tr>
                             <td><strong>Precision</strong></td>
-                            <td>56.73%</td>
-                            <td>52.58%</td>
+                            <td>56,20%</td>
+                            <td>51,83%</td>
+                            <td>55,81%</td>
                         </tr>
                         <tr>
                             <td><strong>Recall</strong></td>
-                            <td>69.39%</td>
-                            <td>66.24%</td>
+                            <td>66,46%</td>
+                            <td>62,79%</td>
+                            <td class="winner">67,93%</td>
                         </tr>
                         <tr>
-                            <td><strong>Matched gold spans</strong></td>
-                            <td>5,786 / 8,338</td>
-                            <td>5,523 / 8,338</td>
+                            <td><strong>F1-score (micro)</strong></td>
+                            <td>60,90%</td>
+                            <td>56,79%</td>
+                            <td class="winner">61,28%</td>
                         </tr>
                         <tr>
-                            <td><strong>Đo như thế nào?</strong></td>
-                            <td>Khớp đúng span + nhãn entity</td>
-                            <td>Khớp đúng span + nhãn entity</td>
-                        </tr>
-                        <tr>
-                            <td><strong>F1-score</strong></td>
-                            <td class="winner">62.42%</td>
-                            <td>58.62%</td>
+                            <td><strong>F1 entity-only</strong></td>
+                            <td>≈62,42%</td>
+                            <td>58,65%</td>
+                            <td class="winner">62,74%</td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="conclusion-box">
                     <h4><i class="fas fa-trophy"></i> Tổng kết</h4>
                     <ul>
-                        <li>✅ <strong>PhoBERT:</strong> đúng tổng thể theo F1 <strong>62.42%</strong> (Precision 56.73%, Recall 69.39%)</li>
-                        <li>✅ <strong>XLM-RoBERTa:</strong> F1 <strong>58.62%</strong> (Precision 52.58%, Recall 66.24%)</li>
-                        <li>✅ PhoBERT cao hơn <strong>3.80 điểm F1</strong> trên cùng 3.497 mẫu test</li>
-                        <li>ℹ️ Đây là NER chạy trên <strong>reference text</strong>; chưa phải accuracy khi nhận transcript ASR</li>
+                        <li>✅ <strong>ViHealthBERT</strong> đạt F1 micro cao nhất <strong>61,28%</strong>, hơn PhoBERT <strong>0,37 điểm</strong> và XLM-RoBERTa <strong>4,49 điểm</strong>.</li>
+                        <li>✅ ViHealthBERT có <strong>Recall cao nhất 67,93%</strong>: phù hợp khi ưu tiên không bỏ sót entity y tế.</li>
+                        <li>ℹ️ ViHealthBERT được fine-tune từ pretrained model chuyên cho <strong>văn bản y tế tiếng Việt</strong>.</li>
+                        <li>ℹ️ Đây là benchmark trên <strong>reference text</strong>; retention khi nhận transcript ASR được đánh giá riêng.</li>
                     </ul>
                 </div>
                 <aside class="notes">
-                    Đây là benchmark chạy thật: hai model được chạy inference trên toàn bộ 3.497 mẫu test.
-                    Khi nói “tỉ lệ đúng”, dùng F1: PhoBERT 62.42%, XLM-RoBERTa 58.62%.
-                    Precision là tỷ lệ dự đoán entity đúng; recall là tỷ lệ entity thật được tìm thấy.
-                    Đây là reference text benchmark, còn kết quả khi đi qua ASR được trình bày riêng bằng entity retention.
+                    Đây là benchmark chạy inference trên cùng 3.497 mẫu test VietMed-NER.
+                    ViHealthBERT đạt F1 micro 61.28%, nhỉnh hơn PhoBERT 0.37 điểm và cao hơn XLM-RoBERTa 4.49 điểm.
+                    Recall 67.93% là cao nhất, cho thấy mô hình tìm lại được nhiều entity thật hơn.
+                    Điểm mạnh của ViHealthBERT là pretrained trên văn bản y tế tiếng Việt và được fine-tune với lr 3e-5, 8 epochs, weight decay 0.01.
+                    Đây là reference text benchmark, còn ảnh hưởng của ASR được đo bằng entity retention ở phần riêng.
                     Thời gian: 2.5 phút.
                 </aside>
             </section>
 
             <!-- Slide 5: Metrics Comparison -->
             <section>
-                <h2>So sánh chi tiết - Metrics</h2>
-                <p class="note"><i class="fas fa-database"></i> Benchmark được chạy trên 3.497 mẫu dữ liệu</p>
+                <h2>So sánh chi tiết - Metrics & Entity types</h2>
+                <p class="note"><i class="fas fa-database"></i> VietMed-NER/test · 3.497 mẫu · micro F1 theo cùng evaluator</p>
                 <div class="metric-explainer">
                     <div class="metric-explainer-card">
                         <h3>Precision</h3>
                         <p>Trong các entity dự đoán, bao nhiêu entity đúng?</p>
-                        <div class="model-score phobert-score"><span>PhoBERT</span><strong>56.73%</strong></div>
-                        <div class="model-score xlm-score"><span>XLM-RoBERTa</span><strong>52.58%</strong></div>
+                        <div class="model-score phobert-score"><span>PhoBERT</span><strong>56,20%</strong></div>
+                        <div class="model-score xlm-score"><span>XLM-RoBERTa</span><strong>51,83%</strong></div>
+                        <div class="model-score vihealthbert-score"><span>ViHealthBERT</span><strong>55,81%</strong></div>
                     </div>
                     <div class="metric-explainer-card">
                         <h3>Recall</h3>
                         <p>Trong các entity thật, mô hình tìm được bao nhiêu?</p>
-                        <div class="model-score phobert-score"><span>PhoBERT</span><strong>69.39%</strong></div>
-                        <div class="model-score xlm-score"><span>XLM-RoBERTa</span><strong>66.24%</strong></div>
+                        <div class="model-score phobert-score"><span>PhoBERT</span><strong>66,46%</strong></div>
+                        <div class="model-score xlm-score"><span>XLM-RoBERTa</span><strong>62,79%</strong></div>
+                        <div class="model-score vihealthbert-score"><span>ViHealthBERT</span><strong>67,93%</strong></div>
                     </div>
                     <div class="metric-explainer-card primary-metric">
-                        <h3>F1-score</h3>
+                        <h3>F1-score (micro)</h3>
                         <p>Cân bằng giữa Precision và Recall. Dùng để chọn model.</p>
-                        <div class="model-score phobert-score"><span>PhoBERT</span><strong>62.42%</strong></div>
-                        <div class="model-score xlm-score"><span>XLM-RoBERTa</span><strong>58.62%</strong></div>
-                        <div class="metric-verdict">PhoBERT cao hơn 3.80 điểm F1</div>
+                        <div class="model-score phobert-score"><span>PhoBERT</span><strong>60,90%</strong></div>
+                        <div class="model-score xlm-score"><span>XLM-RoBERTa</span><strong>56,79%</strong></div>
+                        <div class="model-score vihealthbert-score"><span>ViHealthBERT</span><strong>61,28%</strong></div>
+                        <div class="metric-verdict">ViHealthBERT cao hơn PhoBERT 0,37 điểm F1</div>
                     </div>
                 </div>
                 <div class="entity-types">
-                    <h4><i class="fas fa-tags"></i> 18 Entity Types</h4>
+                    <h4><i class="fas fa-tags"></i> Entity types nổi bật của ViHealthBERT</h4>
                     <div class="tags">
-                        <span class="tag tag-symptom">SYMPTOM</span>
-                        <span class="tag tag-disease">DISEASE</span>
-                        <span class="tag tag-drug">DRUG</span>
-                        <span class="tag tag-test">TEST</span>
-                        <span class="tag tag-anatomy">ANATOMY</span>
-                        <span class="tag tag-duration">DURATION</span>
-                        <span class="tag tag-other">+ 12 more types</span>
+                        <span class="tag tag-symptom">DISEASESYMTOM 66,90%</span>
+                        <span class="tag tag-test">MEDDEVICETECHNIQUE 24,78%</span>
+                        <span class="tag tag-drug">DRUGCHEMICAL 80,15%</span>
+                        <span class="tag tag-anatomy">DIAGNOSTICS 71,50%</span>
+                        <span class="tag tag-duration">DATETIME 74,05%</span>
+                        <span class="tag tag-other">OCCUPATION 92,03%</span>
                     </div>
+                    <p class="note"><strong>So với PhoBERT:</strong> tăng mạnh ở MEDDEVICETECHNIQUE (+4,94 điểm) và DISEASESYMTOM (+4,70 điểm); giảm ở LOCATION (-7,23 điểm) và GENDER (-5,80 điểm).</p>
                 </div>
                 <aside class="notes">
-                    Giải thích theo thứ tự: Precision là dự đoán đúng, Recall là tìm được entity thật, F1 là điểm cân bằng.
-                    PhoBERT đạt F1 62.42%, cao hơn XLM-RoBERTa 58.62%.
-                    18 entity types bao gồm: triệu chứng, bệnh, thuốc, xét nghiệm, v.v.
+                    Precision là tỷ lệ dự đoán đúng, Recall là tỷ lệ entity thật được tìm thấy, F1 là điểm cân bằng.
+                    ViHealthBERT đạt F1 micro 61.28%, cao nhất trong ba mô hình; entity-only F1 là 62.74%.
+                    Theo từng loại entity, ViHealthBERT cải thiện rõ nhất ở MEDDEVICETECHNIQUE và DISEASESYMTOM so với PhoBERT.
+                    Tuy nhiên LOCATION và GENDER giảm, cho thấy cần phân tích theo từng nhãn thay vì chỉ nhìn điểm tổng thể.
                     Thời gian: 2 phút.
                 </aside>
             </section>

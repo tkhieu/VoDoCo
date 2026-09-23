@@ -2813,6 +2813,15 @@ button:disabled {
 .xlm-score::before { background: var(--deck-coral); }
 .xlm-score strong { color: var(--deck-coral); }
 
+.vihealthbert-score {
+    --score-width: 72%;
+    background: rgba(118, 167, 255, 0.1);
+    color: var(--deck-ink);
+}
+
+.vihealthbert-score::before { background: #76A7FF; }
+.vihealthbert-score strong { color: #76A7FF; }
+
 .metric-verdict {
     margin-top: 0.7em;
     color: var(--deck-mint);
