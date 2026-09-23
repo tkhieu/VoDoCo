@@ -4,6 +4,18 @@ Observed on 2026-09-18 against the production client build, the Node BFF and the
 
 Raw per-run JSON, screenshots and the extraction probe are retained under the Git-ignored `.local/acceptance/` directory. Only redacted summaries belong in Git. The approved sample transcript is quoted in [`demo-readiness.md`](demo-readiness.md); this document refers to it by SHA-256.
 
+## ViHealthBERT extension — observed 2026-09-22
+
+The production Compose images were rebuilt and both `inference` and `web` reached healthy state. Authenticated `/v2/models` returned exactly `asr`, `phobert`, `xlmr` and `vihealthbert-ner-seed2024`; all four were `ready` on `cuda:0`, with ViHealthBERT correctly reporting `supports_offsets: false`. `/v1/models` remains the compatibility surface and returns only the original three model keys.
+
+A real approved-sample request traversed the production Node BFF and selected `vihealthbert-ner-seed2024`. The terminal job was `succeeded`, retained the exact model identity, returned four entities and did not reuse a PhoBERT/XLM-R result. Focused regression checks passed for exact model-ID forwarding, strict near-match rejection, independent browser result slots, export inclusion, 256/257-token enforcement, and runtime-only asset packaging. The existing comparison view intentionally remains the historically measured XLM-R/PhoBERT pair.
+
+The production UI rendered a third option labelled `ViHealthBERT NER · seed 2024`. Selecting it changed the readiness message to `ViHealthBERT NER đã sẵn sàng`, and the model-information popover showed the new checkpoint identity. The default remained PhoBERT.
+
+## Historical three-model acceptance — observed 2026-09-18
+
+The remaining acceptance evidence describes the original ASR/PhoBERT/XLM-R release unless explicitly superseded above.
+
 ## Surface under test
 
 | Component | Actual state |

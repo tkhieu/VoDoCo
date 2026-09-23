@@ -2,6 +2,18 @@
 
 Observed on 2026-09-18. Local three-model inference is verified. This is not evidence of a published Replit application or a GPU-enabled RunPod container.
 
+## ViHealthBERT extension — observed 2026-09-22
+
+The owner-provided `vihealthbert-ner-seed2024` export was packaged as seven inference-only files; `training_args.bin` was excluded. Its checkpoint SHA-256 is `5782557b853a348731b5bd4480087167624ba8457ecd243375b1b0d71fea2765`. The four-model release now contains 31 declared assets, and both manifest copies hash to `97f1eb811b8928bd925d4b04d807d9d6c5c717f0d11f5261cc0093ede90f8b8b`.
+
+The rebuilt Compose inference container loaded ASR, PhoBERT, XLM-R and ViHealthBERT on `cuda:0`. ViHealthBERT used the slow `PhobertTokenizer`, reported no validated offsets, loaded in 352.4 ms and returned four entities for the approved sample in 3.7 ms. The complete four-model preflight took 6.38 s, with peak allocated GPU memory 3,009,780,224 bytes and peak reserved memory 3,179,282,432 bytes (approximately 2.96 GiB). These are one-workstation measurements, not latency or accuracy guarantees.
+
+A separate real request traversed the production-built Node BFF, selected the exact `vihealthbert-ner-seed2024` identifier, completed ASR plus ViHealthBERT, returned four entities and preserved the model identity/device as `vihealthbert-ner-seed2024` on `cuda:0`. PhoBERT remains the default, and the historical two-model benchmark comparison remains XLM-R versus PhoBERT because no approved ViHealthBERT benchmark result was supplied.
+
+## Historical three-model baseline — observed 2026-09-18
+
+The remaining measurements in this document describe the original ASR/PhoBERT/XLM-R release unless explicitly superseded above.
+
 ## Approved inputs and artifact provenance
 
 The owner explicitly approved replaying `giai_doan_14_hoan_thien/audio.wav` in the password-protected research demo. The same owner confirmed that `phobert-best-seed.zip`, containing `seed_123_lr3e-05_ep8_wd0.05`, is the selected fine-tuned PhoBERT export. These decisions do not authorize public weights, paid resources, or a different checkpoint.
@@ -53,7 +65,7 @@ Use the locked service environment, not an unrelated research notebook environme
 
 ```sh
 uv sync --project services/inference --frozen --group dev
-python3 scripts/prepare_demo_models.py --phobert-zip "$PHOBERT_ZIP" --output .local/vodoco-models/release
+python3 scripts/prepare_demo_models.py --phobert-zip "$PHOBERT_ZIP" --vihealthbert-dir vihealthbert-ner-seed2024 --output .local/vodoco-models/release
 services/inference/.venv/bin/python -m vodoco_inference.preflight \
   --manifest services/inference/model-manifest.json \
   --model-root .local/vodoco-models/release \
