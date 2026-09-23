@@ -88,7 +88,7 @@ function rejectBody(req: Request, res: Response, status: number, code: string, m
 function proxy(req: Request, res: Response, config: ProxyConfig): void {
   const url = new URL(req.originalUrl, config.origin);
   const match = JOB_PATH.exec(url.pathname);
-  const isModels = url.pathname === '/api/v1/models';
+  const isModels = ['/api/v1/models', '/api/v2/models'].includes(url.pathname);
   if (!isModels && !match) {
     fail(res, 404, 'NOT_FOUND', 'Không tìm thấy API.');
     return;
@@ -102,7 +102,7 @@ function proxy(req: Request, res: Response, config: ProxyConfig): void {
   }
   const audio = kind === 'audio-jobs';
   const queryKeys = [...url.searchParams.keys()];
-  if (audio ? queryKeys.length !== 1 || queryKeys[0] !== 'ner_model' || !['phobert', 'xlmr'].includes(url.searchParams.get('ner_model') || '') : queryKeys.length !== 0) {
+  if (audio ? queryKeys.length !== 1 || queryKeys[0] !== 'ner_model' || !['phobert', 'xlmr', 'vihealthbert-ner-seed2024'].includes(url.searchParams.get('ner_model') || '') : queryKeys.length !== 0) {
     rejectBody(req, res, 400, 'BAD_REQUEST', 'Tham số yêu cầu không hợp lệ.');
     return;
   }

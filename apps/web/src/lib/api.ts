@@ -2,7 +2,22 @@ import type { components } from '../../../../contracts/generated/demo-api';
 export type Schema = components['schemas'];
 export type Model = Schema['NerRequest']['models'][number];
 export type Source = Schema['NerRequest']['source'];
-export const modelName: Record<Model, string> = { phobert: 'PhoBERT', xlmr: 'XLM-R' };
+export const nerModels = ['phobert', 'xlmr', 'vihealthbert-ner-seed2024'] as const satisfies readonly Model[];
+export const modelName: Record<Model, string> = {
+  phobert: 'PhoBERT',
+  xlmr: 'XLM-R',
+  'vihealthbert-ner-seed2024': 'ViHealthBERT NER',
+};
+export const modelOption: Record<Model, string> = {
+  phobert: 'PhoBERT fine-tuned',
+  xlmr: 'XLM-R baseline',
+  'vihealthbert-ner-seed2024': 'ViHealthBERT NER · seed 2024',
+};
+export const modelRole: Record<Model, string> = {
+  phobert: 'fine-tuned',
+  xlmr: 'baseline',
+  'vihealthbert-ner-seed2024': 'seed 2024',
+};
 export class HttpError extends Error {
   constructor(public status: number, public detail: Schema['ApiError'], public retryAfter: string | null = null) { super(detail.message); }
 }

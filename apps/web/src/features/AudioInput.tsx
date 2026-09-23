@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, CheckCircle2, Headphones, Mic, Square, Upload } from 'lucide-react';
 import { Button, Notice, TabContent, Tabs } from '../components/ui';
-import { modelName, type Model, type Schema } from '../lib/api';
+import { modelName, modelOption, nerModels, type Model, type Schema } from '../lib/api';
 import type { Session, SessionController } from '../lib/session';
 
-export function AudioInput({ session, controller, models, modelError, refreshModels, start }: { session: Session; controller: SessionController; models: Schema['ModelsResponse'] | null; modelError: string | null; refreshModels: () => void; start: () => void }) {
+export function AudioInput({ session, controller, models, modelError, refreshModels, start }: { session: Session; controller: SessionController; models: Schema['ModelsResponseV2'] | null; modelError: string | null; refreshModels: () => void; start: () => void }) {
   const [tab, setTab] = useState('upload');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -124,7 +124,7 @@ export function AudioInput({ session, controller, models, modelError, refreshMod
     {error && <Notice error>{error}</Notice>}
     <Button className="w-full" variant="default" disabled={!session.audio || !ready || busy || recording || active} onClick={start}><ArrowRight />{busy ? 'Đang đọc audio…' : 'Phiên âm và nhận diện'}</Button>
     <div className="model-readiness" aria-live="polite">{modelError ? <Notice error>{modelError}<Button variant="ghost" onClick={refreshModels}>Kiểm tra lại dịch vụ</Button></Notice> : !models || selected?.status === 'loading' || models.models.asr.status === 'loading' ? <p>Đang nạp mô hình… Chờ mô hình sẵn sàng trước khi bắt đầu.</p> : ready ? <p className="metadata inline-center"><CheckCircle2 />{modelName[session.model]} đã sẵn sàng · {session.audio ? 'Có thể bắt đầu xử lý' : 'Chọn audio để bắt đầu'}</p> : <Notice>{selected?.status === 'missing' ? `Chưa nạp checkpoint ${modelName[session.model]}` : selected?.error?.message || models.models.asr.error?.message || 'Mô hình chưa sẵn sàng.'}{session.model === 'phobert' && models.models.xlmr.status === 'ready' && <Button onClick={() => controller.selectModel('xlmr')}>Dùng XLM-R baseline</Button>}<Button variant="ghost" onClick={refreshModels}>Kiểm tra lại mô hình</Button></Notice>}</div>
-    {models && <label className="model-select">Model NER<select value={session.model} disabled={active} onChange={event => controller.selectModel(event.target.value as Model)}><option value="phobert">PhoBERT fine-tuned</option><option value="xlmr">XLM-R baseline</option></select></label>}
+    {models && <label className="model-select">Model NER<select value={session.model} disabled={active} onChange={event => controller.selectModel(event.target.value as Model)}>{nerModels.map(model => <option value={model} key={model}>{modelOption[model]}</option>)}</select></label>}
     </div>
     <div className="sample-shortcut"><span className="metadata">Chưa có file?</span><Button variant="ghost" disabled={!sample?.available || busy || recording || active} onClick={() => void selectSample()}><Headphones />Thử audio mẫu</Button></div>
     {(!sample?.available || sampleError) && <p className="metadata centered">{sampleError ? 'Không đọc được thông tin audio mẫu. Bạn vẫn có thể tải tệp hoặc ghi âm.' : sample === null ? 'Đang kiểm tra audio mẫu…' : 'Audio mẫu chưa được cấp quyền hoặc chưa được cấu hình. Bạn vẫn có thể tải tệp hoặc ghi âm.'}</p>}

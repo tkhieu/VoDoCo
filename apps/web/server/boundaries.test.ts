@@ -74,7 +74,7 @@ it('denies the entire preview API even with a configured inference credential', 
   let accesses = 0;
   const upstream = await listen((_req, res) => { accesses += 1; res.end('{}'); });
   const origin = await startProxy(upstream, true);
-  for (const path of ['/api/v1/models', '/api/sample', '/api/sample/audio']) {
+  for (const path of ['/api/v1/models', '/api/v2/models', '/api/sample', '/api/sample/audio']) {
     const response = await fetch(new URL(path, origin));
     expect(response.status).toBe(403);
     expect(await response.json()).toMatchObject({ error: { code: 'ORIGIN_DENIED' } });
@@ -147,6 +147,29 @@ it('never follows upstream redirects to another credential recipient', async () 
   expect(redirected).toBe(false);
 });
 
+it('forwards the exact ViHealthBERT audio model id and rejects near matches', async () => {
+  let accesses = 0;
+  let forwardedUrl = '';
+  const upstream = await listen((req, res) => {
+    accesses += 1;
+    forwardedUrl = req.url ?? '';
+    res.writeHead(202, { 'Content-Type': 'application/json' });
+    res.end('{"accepted":true}');
+  });
+  const origin = await startProxy(upstream);
+  const headers = {
+    Origin: origin.origin,
+    'Content-Type': 'application/octet-stream',
+    'X-Job-Token': 'a'.repeat(64),
+    'X-Input-Sha256': 'b'.repeat(64),
+    'X-Session-Id': '22222222-2222-4222-8222-222222222222',
+  };
+  const base = '/api/v1/audio-jobs/33333333-3333-4333-8333-333333333333?ner_model=';
+  expect(await requestStatus(new URL(`${base}vihealthbert-ner-seed2024`, origin), { method: 'PUT', headers, body: 'x' })).toBe(202);
+  expect(await requestStatus(new URL(`${base}vihealthbert-ner-seed2024-typo`, origin), { method: 'PUT', headers, body: 'x' })).toBe(400);
+  expect(accesses).toBe(1);
+  expect(forwardedUrl).toBe('/v1/audio-jobs/33333333-3333-4333-8333-333333333333?ner_model=vihealthbert-ner-seed2024');
+});
 it('bounds chunked audio by actual bytes and aborts the receiving upstream', async () => {
   let release!: () => void;
   const aborted = new Promise<void>((resolve) => { release = resolve; });

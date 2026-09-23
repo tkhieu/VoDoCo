@@ -5,6 +5,7 @@ import { SessionController } from './session';
 import { sha256, type Schema } from './api';
 
 const model: Schema['ModelIdentity'] = { logical_id: 'phobert', repo_id: null, revision: null, checkpoint_sha256: 'a'.repeat(64), tokenizer: 'test-tokenizer', label_map_sha256: 'b'.repeat(64), device: 'cuda:0', dtype: 'float32' };
+const vihealthModel: Schema['ModelIdentity'] = { ...model, logical_id: 'vihealthbert-ner-seed2024' };
 const entity: Schema['Entity'] = { id: 'occurrence-1', text: 'đau', label: 'DISEASESYMTOM', start: 2, end: 5, offset_unit: 'unicode_codepoint' };
 const ready: Schema['ModelStatus'] = { status: 'ready', identity: model, token_limit: 256, supports_offsets: true, error: null };
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
@@ -24,7 +25,7 @@ describe('exact Unicode occurrences', () => {
 
 it('late NER cannot recreate entities after another edit; export retains the new draft and immutable raw', async () => {
   const controller = new SessionController();
-  controller.models = { api_version: '1', models: { asr: { ...ready, identity: { ...model, logical_id: 'asr' } }, phobert: ready, xlmr: { ...ready, identity: { ...model, logical_id: 'xlmr' } } }, limits: { upload_bytes: 10485760, upload_seconds: 30, record_seconds: 10, text_body_bytes: 32768 } };
+  controller.models = { api_version: '2', models: { asr: { ...ready, identity: { ...model, logical_id: 'asr' } }, phobert: ready, xlmr: { ...ready, identity: { ...model, logical_id: 'xlmr' } }, 'vihealthbert-ner-seed2024': { ...ready, identity: vihealthModel, supports_offsets: false } }, limits: { upload_bytes: 10485760, upload_seconds: 30, record_seconds: 10, text_body_bytes: 32768 } };
   const raw = '😀 đau, đau'; const rawHash = await sha256(raw);
   let deliver!: (response: Response) => void;
   let received!: () => void;
@@ -66,10 +67,69 @@ it('late NER cannot recreate entities after another edit; export retains the new
   controller.reset();
 });
 
+
+it('routes the exact ViHealthBERT id and stores only its result slot', async () => {
+  const controller = new SessionController();
+  controller.models = { api_version: '2', models: { asr: { ...ready, identity: { ...model, logical_id: 'asr' } }, phobert: ready, xlmr: { ...ready, identity: { ...model, logical_id: 'xlmr' } }, 'vihealthbert-ner-seed2024': { ...ready, identity: vihealthModel, supports_offsets: false } }, limits: { upload_bytes: 10485760, upload_seconds: 30, record_seconds: 10, text_body_bytes: 32768 } };
+  controller.selectModel('vihealthbert-ner-seed2024');
+  const raw = 'Bệnh nhân đau đầu.';
+  const rawHash = await sha256(raw);
+  let requestedUrl = '';
+  vi.stubGlobal('fetch', vi.fn(async (url: string, options: RequestInit) => {
+    requestedUrl = url;
+    const id = url.split('/').pop()!.split('?')[0];
+    if (url.includes('/ner-jobs/')) {
+      const request: Schema['NerRequest'] = JSON.parse(options.body as string);
+      const job: Schema['Job'] = {
+        api_version: '1', job_id: id, session_id: request.session_id, kind: 'ner', status: 'succeeded', stage: 'finished',
+        created_at: new Date().toISOString(), expires_at: new Date().toISOString(), input_sha256: request.text_sha256,
+        result: {
+          audio: null, asr: null, source: request.source, revision: request.revision, text_sha256: request.text_sha256,
+          ner: { 'vihealthbert-ner-seed2024': { status: 'succeeded', source: request.source, revision: request.revision, text_sha256: request.text_sha256, model: { ...vihealthModel, checkpoint_sha256: 'c'.repeat(64) }, entities: [entity], error: null, duration_ms: 10 } },
+        },
+        errors: [],
+      };
+      return Response.json(job);
+    }
+    const inputHash = (options.headers as Record<string, string>)['X-Input-Sha256'];
+    const job: Schema['Job'] = {
+      api_version: '1', job_id: id, session_id: controller.getSnapshot().id, kind: 'audio', status: 'succeeded', stage: 'finished',
+      created_at: new Date().toISOString(), expires_at: new Date().toISOString(), input_sha256: inputHash,
+      result: {
+        audio: null,
+        asr: { raw_text: raw, text_sha256: rawHash, model: { ...model, logical_id: 'asr' }, generation_settings: { language: 'Vietnamese' }, postprocessing: 'strip_surrounding_whitespace', duration_ms: 10 },
+        ner: { 'vihealthbert-ner-seed2024': { status: 'succeeded', source: 'raw', revision: 0, text_sha256: rawHash, model: vihealthModel, entities: [entity], error: null, duration_ms: 10 } },
+        source: 'raw', revision: 0, text_sha256: rawHash,
+      },
+      errors: [],
+    };
+    return Response.json(job);
+  }));
+  controller.setAudio(new Blob(['audio']), 'clip.wav', 'Test-owned fixture', 1);
+  await controller.transcribe();
+  expect(requestedUrl).toContain('ner_model=vihealthbert-ner-seed2024');
+  const session = controller.getSnapshot();
+  expect(session.slots.raw['vihealthbert-ner-seed2024'].state).toBe('succeeded');
+  expect(session.slots.raw.phobert.state).toBe('unavailable');
+  const exported = exportSession(session);
+  expect(exported.selected_model).toBe('vihealthbert-ner-seed2024');
+  expect(exported.results.raw['vihealthbert-ner-seed2024']).toMatchObject({
+    state: 'succeeded',
+    model: { logical_id: 'vihealthbert-ner-seed2024' },
+    entities: [{ text: 'đau', start: null, end: null }],
+  });
+  controller.setSource('review');
+  controller.edit(`${raw} đã sửa`);
+  await controller.recognize('review', ['vihealthbert-ner-seed2024']);
+  expect(controller.getSnapshot().slots.review['vihealthbert-ner-seed2024'].state).toBe('failed');
+  expect(exportSession(controller.getSnapshot()).results.review['vihealthbert-ner-seed2024'].entities).toEqual([]);
+  controller.reset();
+});
+
 describe('immutable ASR and explicit NER recovery', () => {
   async function audioSession(status: Schema['Job']['status'] = 'running') {
     const controller = new SessionController();
-    controller.models = { api_version: '1', models: { asr: { ...ready, identity: { ...model, logical_id: 'asr' } }, phobert: ready, xlmr: { ...ready, identity: { ...model, logical_id: 'xlmr' } } }, limits: { upload_bytes: 10485760, upload_seconds: 30, record_seconds: 10, text_body_bytes: 32768 } };
+    controller.models = { api_version: '2', models: { asr: { ...ready, identity: { ...model, logical_id: 'asr' } }, phobert: ready, xlmr: { ...ready, identity: { ...model, logical_id: 'xlmr' } }, 'vihealthbert-ner-seed2024': { ...ready, identity: vihealthModel, supports_offsets: false } }, limits: { upload_bytes: 10485760, upload_seconds: 30, record_seconds: 10, text_body_bytes: 32768 } };
     const raw = '😀 đau, đau\n'; const hash = await sha256(raw);
     controller.setAudio(new Blob(['audio']), 'clip.wav', 'Test-owned fixture', 1);
     const job = (url: string, options: RequestInit): Schema['Job'] => ({
