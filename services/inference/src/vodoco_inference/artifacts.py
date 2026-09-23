@@ -7,7 +7,7 @@ from pathlib import Path, PurePosixPath
 
 from .errors import InferenceError
 
-MODEL_IDS = ("asr", "phobert", "xlmr")
+MODEL_IDS = ("asr", "phobert", "xlmr", "vihealthbert-ner-seed2024")
 BACKGROUND_LABELS = frozenset({"0", "O", "dum"})
 ENTITY_LABELS = frozenset({
     "AGE", "DATETIME", "DIAGNOSTICS", "DISEASESYMTOM", "DRUGCHEMICAL",

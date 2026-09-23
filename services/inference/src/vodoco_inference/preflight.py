@@ -1,4 +1,4 @@
-"""Run a real, offline CUDA ASR → PhoBERT/XLM-R readiness gate on approved audio."""
+"""Run a real, offline CUDA ASR and all configured NER models on approved audio."""
 
 import argparse
 import importlib.metadata
@@ -11,6 +11,7 @@ from pathlib import Path
 from .audio import decode_audio
 from .errors import InferenceError
 from .runtime import ModelRuntime
+from .schemas import NER_IDS
 
 
 def tokenizer_observation(tokenizer, text: str) -> dict:
@@ -61,12 +62,12 @@ def main(argv=None) -> int:
         runtime.load(lambda model_id, status: report["models"].__setitem__(model_id, status))
         report["load_measurements"] = runtime.load_measurements
         if not all(value["status"] == "ready" for value in report["models"].values()):
-            raise InferenceError("PREFLIGHT_MODELS_NOT_READY", "All three verified models must load on CUDA.", "loading")
+            raise InferenceError("PREFLIGHT_MODELS_NOT_READY", "All four verified models must load on CUDA.", "loading")
         audio = decode_audio(args.audio)
         report["audio"] = audio.metadata
         report["asr"] = runtime.transcribe(audio)
         text = report["asr"]["raw_text"]
-        for model_id in ("phobert", "xlmr"):
+        for model_id in NER_IDS:
             report["tokenizers"][model_id] = tokenizer_observation(runtime.tokenizers[model_id], text)
             result = runtime.recognize(text, model_id, "raw", 0)
             report["ner"][model_id] = result
@@ -76,7 +77,7 @@ def main(argv=None) -> int:
             }
         torch.cuda.synchronize()
         if not all(result["status"] == "succeeded" for result in report["ner"].values()):
-            raise InferenceError("PREFLIGHT_INFERENCE_FAILED", "Both NER models must complete the real ASR transcript.", "recognizing")
+            raise InferenceError("PREFLIGHT_INFERENCE_FAILED", "All NER models must complete the real ASR transcript.", "recognizing")
         report["status"] = "ready"
     except InferenceError as exc:
         report["error"] = exc.as_dict()

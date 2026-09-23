@@ -149,8 +149,16 @@ def create_app(*, service_token: str | None = None, supervisor: JobSupervisor | 
         return {"status": "ok"}
 
     @application.get("/v1/models")
-    async def models(request: Request):
-        return {"api_version": "1", "models": request.app.state.jobs.models,
+    async def models_v1(request: Request):
+        legacy = {model_id: request.app.state.jobs.models[model_id]
+                  for model_id in ("asr", "phobert", "xlmr")}
+        return {"api_version": "1", "models": legacy,
+                "limits": {"upload_bytes": UPLOAD_BYTES, "upload_seconds": 30,
+                           "record_seconds": 10, "text_body_bytes": TEXT_BODY_BYTES}}
+
+    @application.get("/v2/models")
+    async def models_v2(request: Request):
+        return {"api_version": "2", "models": request.app.state.jobs.models,
                 "limits": {"upload_bytes": UPLOAD_BYTES, "upload_seconds": 30,
                            "record_seconds": 10, "text_body_bytes": TEXT_BODY_BYTES}}
 

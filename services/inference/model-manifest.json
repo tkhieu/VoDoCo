@@ -5,7 +5,8 @@
     "runtime_source": "giai_doan_14_hoan_thien/multimed_audio_demo_colab.ipynb cells 6-7",
     "phobert_selection": "giai_doan_13_ner_finetune_phobert/NER_PhoBERT_RunAll.ipynb selected seed 123",
     "artifact_attestation": "Owner confirmed on 2026-09-18 that phobert-best-seed.zip is the selected fine-tuned seed_123_lr3e-05_ep8_wd0.05 checkpoint. On 2026-09-19 the owner additionally approved private-registry transfer, execution on one leased GPU and use inside a password-protected internal demo, accepting the AGPL-3.0 obligations of vinai/phobert-base-v2; see services/inference/THIRD_PARTY_NOTICES.md. Public redistribution of weights, weights in Git and cloud spend remain unapproved.",
-    "phobert_archive_sha256": "ed4d9557485c88b46d77f3d8d60381424c941b9435ad2d8f35ecf5b7a2c70e52"
+    "phobert_archive_sha256": "ed4d9557485c88b46d77f3d8d60381424c941b9435ad2d8f35ecf5b7a2c70e52",
+    "vihealthbert_attestation": "Owner-provided local vihealthbert-ner-seed2024 export approved for this password-protected demo. Source repository, revision and licence are not declared; public redistribution is not approved."
   },
   "models": {
     "asr": {
@@ -294,6 +295,76 @@
         "xlmr/special_tokens_map.json": "06e405a36dfe4b9604f484f6a1e619af1a7f7d09e34a8555eb0b77b66318067f",
         "xlmr/tokenizer.json": "3a56def25aa40facc030ea8b0b87f3688e4b3c39eb8b45d5702b3a1300fe2a20",
         "xlmr/tokenizer_config.json": "f90024142df07163e5e6c5b9a6ad7c8c68b22a9112af11e3db4559a9ff90f737"
+      }
+    },
+    "vihealthbert-ner-seed2024": {
+      "repo_id": null,
+      "revision": null,
+      "source_subfolder": "vihealthbert-ner-seed2024",
+      "model_path": "vihealthbert-ner-seed2024",
+      "tokenizer_path": "vihealthbert-ner-seed2024",
+      "weight_path": "vihealthbert-ner-seed2024/model.safetensors",
+      "checkpoint_sha256": "5782557b853a348731b5bd4480087167624ba8457ecd243375b1b0d71fea2765",
+      "tokenizer_identity": "PhobertTokenizer from owner-provided vihealthbert-ner-seed2024 export",
+      "token_limit": 256,
+      "id2label": {
+        "0": "0",
+        "1": "B-AGE",
+        "2": "B-DATETIME",
+        "3": "B-DIAGNOSTICS",
+        "4": "B-DISEASESYMTOM",
+        "5": "B-DRUGCHEMICAL",
+        "6": "B-FOODDRINK",
+        "7": "B-GENDER",
+        "8": "B-LOCATION",
+        "9": "B-MEDDEVICETECHNIQUE",
+        "10": "B-OCCUPATION",
+        "11": "B-ORGAN",
+        "12": "B-ORGANIZATION",
+        "13": "B-PERSONALCARE",
+        "14": "B-PREVENTIVEMED",
+        "15": "B-SURGERY",
+        "16": "B-TRANSPORTATION",
+        "17": "B-TREATMENT",
+        "18": "B-UNITCALIBRATOR",
+        "19": "I-AGE",
+        "20": "I-DATETIME",
+        "21": "I-DIAGNOSTICS",
+        "22": "I-DISEASESYMTOM",
+        "23": "I-DRUGCHEMICAL",
+        "24": "I-FOODDRINK",
+        "25": "I-GENDER",
+        "26": "I-LOCATION",
+        "27": "I-MEDDEVICETECHNIQUE",
+        "28": "I-OCCUPATION",
+        "29": "I-ORGAN",
+        "30": "I-ORGANIZATION",
+        "31": "I-PERSONALCARE",
+        "32": "I-PREVENTIVEMED",
+        "33": "I-SURGERY",
+        "34": "I-TRANSPORTATION",
+        "35": "I-TREATMENT",
+        "36": "I-UNITCALIBRATOR"
+      },
+      "label_map_sha256": "34f3521a4b14b90b5ac4873c3841b5452aef66903725eff13af53d1fec822248",
+      "dtype": "float32",
+      "required_assets": [
+        "vihealthbert-ner-seed2024/added_tokens.json",
+        "vihealthbert-ner-seed2024/bpe.codes",
+        "vihealthbert-ner-seed2024/config.json",
+        "vihealthbert-ner-seed2024/model.safetensors",
+        "vihealthbert-ner-seed2024/special_tokens_map.json",
+        "vihealthbert-ner-seed2024/tokenizer_config.json",
+        "vihealthbert-ner-seed2024/vocab.txt"
+      ],
+      "files": {
+        "vihealthbert-ner-seed2024/added_tokens.json": "956163bbe8b0625fcc779207447308285eab218ffe0551d3e0deeae5538da326",
+        "vihealthbert-ner-seed2024/bpe.codes": "9dfe53fb8abbddd3387da99641c36e00bee757a3679aad9cf0a7cdc4b30f6ef8",
+        "vihealthbert-ner-seed2024/config.json": "db1a41180020d1f5288214a2e2ac54ea8c4483be983956c022601d1f19f896ff",
+        "vihealthbert-ner-seed2024/model.safetensors": "5782557b853a348731b5bd4480087167624ba8457ecd243375b1b0d71fea2765",
+        "vihealthbert-ner-seed2024/special_tokens_map.json": "d05497f1da52c5e09554c0cd874037a083e1dc1b9cfd48034d1c717f1afc07a7",
+        "vihealthbert-ner-seed2024/tokenizer_config.json": "a1a55a92c1e0f1604c4c6ee537f17078ab3a0f6bec8bfd612f77b554a88ce305",
+        "vihealthbert-ner-seed2024/vocab.txt": "dffd7543c401fb6567253ae7c3313004532c33d062525250049c616544bad777"
       }
     },
     "phobert": {

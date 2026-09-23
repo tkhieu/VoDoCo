@@ -1,6 +1,6 @@
 # Third-party notices for the inference image
 
-Scope: the immutable inference image built from `deploy/runpod/Dockerfile`, which contains the three checkpoints below, their tokenizers and the Python environment. The web application ships separately; its font notice is `/noto-sans-OFL.txt` in the built site root.
+Scope: the immutable inference image built from `deploy/runpod/Dockerfile`, which contains the four checkpoints below, their tokenizers and the Python environment. The web application ships separately; its font notice is `/noto-sans-OFL.txt` in the built site root.
 
 This file is copied into the image at `/opt/vodoco/THIRD_PARTY_NOTICES.md`, and the licence texts it references are copied to `/opt/vodoco/licenses/`. Recorded 2026-09-19.
 
@@ -10,6 +10,8 @@ This file is copied into the image at `/opt/vodoco/THIRD_PARTY_NOTICES.md`, and 
 
 Recorded verbatim as given by the project owner on 2026-09-19. It authorises private-registry transfer, execution on one leased GPU, and use inside a password-protected internal demo. It does **not** authorise public redistribution of the weights, publication of weights into Git, or any cloud spend. The earlier 2026-09-18 attestation selecting `seed_123_lr3e-05_ep8_wd0.05` as the fine-tuned checkpoint is recorded in `services/inference/model-manifest.json`.
 
+The owner subsequently supplied `vihealthbert-ner-seed2024` and requested that it be added to this same password-protected demo. Its export does not identify an upstream repository, revision or licence. That request authorises local/private-demo use only; it does not establish permission for public redistribution.
+
 ## Inventory
 
 | Component | Upstream | Pinned revision | Declared licence | Obligation carried |
@@ -17,6 +19,7 @@ Recorded verbatim as given by the project owner on 2026-09-19. It authorises pri
 | ASR Whisper-small Vietnamese (`checkpoint-5000`) | `leduckhai/MultiMed-ST` | `fb15edd1dfc68810a7d0c75e6cfc73c3e5ed01c1` | HF model card metadata declares `license: mit` | MIT notice preservation |
 | PhoBERT fine-tuned, seed 123 | derived from `vinai/phobert-base-v2` | base tag `v2` | AGPL-3.0 | Notices, modification statement, licence copy, Corresponding Source offer |
 | XLM-R baseline | `leduckhai/VietMed-NER` | `cccffb7de14423114f7d4bafc9f736b9d866e446` | none declared | Owner attestation above; no upstream terms to reproduce |
+| ViHealthBERT NER, seed 2024 | owner-provided local export `vihealthbert-ner-seed2024` | none declared | none declared | Private-demo-only owner request; no public redistribution |
 
 Exact hashes, tokenizer identities, label maps and generation settings are in `services/inference/model-manifest.json`.
 
@@ -40,4 +43,4 @@ The self-hosted Noto Sans Variable assets are licensed under the SIL Open Font L
 
 ## Limits of this attestation
 
-Public redistribution of the weights, publication of weights into Git, redistribution outside the attested single-GPU password-protected demo, and cloud spend remain unapproved. If the audience or the deployment changes, revisit the XLM-R terms with its authors and confirm that the Corresponding Source channel is still reachable by the people interacting with the service.
+Public redistribution of the weights, publication of weights into Git, redistribution outside the attested single-GPU password-protected demo, and cloud spend remain unapproved. If the audience or the deployment changes, resolve the ViHealthBERT export's missing source/licence metadata, revisit the XLM-R terms with its authors, and confirm that the Corresponding Source channel is still reachable by the people interacting with the service.

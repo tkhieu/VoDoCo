@@ -136,8 +136,8 @@ class ModelRuntime:
                 tokenizer_path, use_fast=model_id == "xlmr", **local,
             )
             tokenizer.model_max_length = spec["token_limit"]
-            if model_id == "phobert" and tokenizer.is_fast:
-                raise InferenceError("TOKENIZER_MISMATCH", "The selected PhoBERT slow tokenizer is required.",
+            if model_id in {"phobert", "vihealthbert-ner-seed2024"} and tokenizer.is_fast:
+                raise InferenceError("TOKENIZER_MISMATCH", "The selected slow PhoBERT tokenizer is required.",
                                      "loading", model_id)
             if model_id == "xlmr" and not tokenizer.is_fast:
                 raise InferenceError("TOKENIZER_MISMATCH", "The pinned XLM-R fast tokenizer is required.",

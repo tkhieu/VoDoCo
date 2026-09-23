@@ -172,6 +172,30 @@ def test_json_unicode_hash_schema_and_byte_bounds(tmp_path):
     asyncio.run(scenario())
 
 
+def test_vihealthbert_is_an_exact_supported_model_id(tmp_path):
+    async def scenario():
+        async with client_for(tmp_path) as (client, manager):
+            legacy = (await client.get("/v1/models")).json()
+            assert legacy["api_version"] == "1"
+            assert set(legacy["models"]) == {"asr", "phobert", "xlmr"}
+            current = (await client.get("/v2/models")).json()
+            assert current["api_version"] == "2"
+            assert set(current["models"]) == {"asr", "phobert", "xlmr", "vihealthbert-ner-seed2024"}
+            text_job = await submit_text(client, models=["vihealthbert-ner-seed2024"])
+            assert text_job.status_code == 202
+            data = b"audio"
+            audio_job = await client.put(
+                f"/v1/audio-jobs/{uuid4()}?ner_model=vihealthbert-ner-seed2024",
+                headers=audio_headers(data),
+                content=data,
+            )
+            assert audio_job.status_code == 202
+            unknown = await submit_text(client, models=["vihealthbert-ner-seed2024-typo"])
+            assert unknown.status_code == 422
+            assert error("TEST", "test", model="vihealthbert-ner-seed2024")["model"] == "vihealthbert-ner-seed2024"
+    asyncio.run(scenario())
+
+
 def identity(model="asr"):
     return {"logical_id": model, "repo_id": None, "revision": None, "checkpoint_sha256": "1" * 64,
             "tokenizer": "test", "label_map_sha256": None, "device": "cuda:0", "dtype": "float32"}

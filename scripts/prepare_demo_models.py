@@ -25,6 +25,8 @@ PHOBERT_ASSETS = frozenset({
     "model.safetensors", "config.json", "tokenizer_config.json", "vocab.txt",
     "bpe.codes", "added_tokens.json", "special_tokens_map.json",
 })
+VIHEALTHBERT_ID = "vihealthbert-ner-seed2024"
+VIHEALTHBERT_ASSETS = PHOBERT_ASSETS
 IGNORED_TRAINING = frozenset({"training_args.bin"})
 CHECKPOINT_ASSETS = PHOBERT_ASSETS | IGNORED_TRAINING | {
     "scheduler.pt", "trainer_state.json", "optimizer.pt", "rng_state.pth",
@@ -99,8 +101,8 @@ def prepare_phobert(args, destination: Path) -> None:
                     copy_bounded(stream, destination / name, MAX_RUNTIME_ASSET)
     else:
         source = args.phobert_dir
-        if source.name != SELECTED_EXPORT or source.is_symlink() or not source.is_dir():
-            raise ValueError("Select the exact seed-123 root export directory, not a checkpoint")
+        if source.is_symlink() or not source.is_dir():
+            raise ValueError("Select the exact seed-123 export directory")
         for name in PHOBERT_ASSETS:
             path = asset_path(source, name)
             if not path.is_file():
@@ -109,11 +111,28 @@ def prepare_phobert(args, destination: Path) -> None:
                 copy_bounded(stream, destination / name, MAX_RUNTIME_ASSET)
 
 
+def prepare_vihealthbert(args, destination: Path) -> None:
+    source = args.vihealthbert_dir
+    if source.name != VIHEALTHBERT_ID or source.is_symlink() or not source.is_dir():
+        raise ValueError("Select the exact ViHealthBERT export directory")
+    entries = list(source.iterdir())
+    if any(path.is_symlink() or not path.is_file() for path in entries):
+        raise ValueError("ViHealthBERT export contains an unsupported entry")
+    names = {path.name for path in entries}
+    if not VIHEALTHBERT_ASSETS <= names or names - VIHEALTHBERT_ASSETS - IGNORED_TRAINING:
+        raise ValueError("ViHealthBERT export does not match the runtime asset allowlist")
+    destination.mkdir()
+    for name in VIHEALTHBERT_ASSETS:
+        with (source / name).open("rb") as stream:
+            copy_bounded(stream, destination / name, MAX_RUNTIME_ASSET)
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     selected = parser.add_mutually_exclusive_group(required=True)
     selected.add_argument("--phobert-zip", type=Path)
     selected.add_argument("--phobert-dir", type=Path)
+    parser.add_argument("--vihealthbert-dir", type=Path, required=True)
     parser.add_argument("--output", type=Path, default=REPO / ".local/vodoco-models/release")
     parser.add_argument("--manifest", type=Path, default=REPO / "services/inference/model-manifest.json")
     parser.add_argument("--asr-root", type=Path,
@@ -151,19 +170,22 @@ def main(argv=None) -> int:
                 if sha256_file(target) != digest:
                     raise ValueError(f"Pinned {model_id} artifact checksum mismatch")
         prepare_phobert(args, staging / "phobert")
-        spec = manifest["models"]["phobert"]
-        config = json.loads((staging / "phobert/config.json").read_text())
-        labels = validate_labels(config)
-        if labels != spec["id2label"] or canonical_hash(labels) != spec["label_map_sha256"]:
-            raise ValueError("Selected PhoBERT label map does not match the recorded export")
-        if config.get("model_type") != "roberta" or config.get("tokenizer_class") != "PhobertTokenizer":
-            raise ValueError("Selected export is not the expected PhoBERT classifier")
-        computed_files = {f"phobert/{name}": sha256_file(staging / "phobert" / name)
-                          for name in sorted(PHOBERT_ASSETS)}
-        if spec["files"] and computed_files != spec["files"]:
-            raise ValueError("Selected PhoBERT assets differ from the already pinned release")
-        spec["files"] = computed_files
-        spec["checkpoint_sha256"] = spec["files"]["phobert/model.safetensors"]
+        prepare_vihealthbert(args, staging / VIHEALTHBERT_ID)
+        for model_id, assets in (("phobert", PHOBERT_ASSETS),
+                                 (VIHEALTHBERT_ID, VIHEALTHBERT_ASSETS)):
+            spec = manifest["models"][model_id]
+            config = json.loads((staging / model_id / "config.json").read_text())
+            labels = validate_labels(config)
+            if labels != spec["id2label"] or canonical_hash(labels) != spec["label_map_sha256"]:
+                raise ValueError(f"Selected {model_id} label map does not match the recorded export")
+            if config.get("model_type") != "roberta" or config.get("tokenizer_class") != "PhobertTokenizer":
+                raise ValueError(f"Selected {model_id} export is not the expected classifier")
+            computed_files = {f"{model_id}/{name}": sha256_file(staging / model_id / name)
+                              for name in sorted(assets)}
+            if spec["files"] and computed_files != spec["files"]:
+                raise ValueError(f"Selected {model_id} assets differ from the pinned release")
+            spec["files"] = computed_files
+            spec["checkpoint_sha256"] = spec["files"][f"{model_id}/model.safetensors"]
         if args.phobert_zip:
             manifest["provenance"]["phobert_archive_sha256"] = sha256_file(args.phobert_zip)
         if args.source_attestation:

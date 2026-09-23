@@ -1,6 +1,7 @@
 from contextlib import nullcontext
 from pathlib import Path
 from types import SimpleNamespace
+import pytest
 
 from vodoco_inference.runtime import ModelRuntime, adapt_entities
 
@@ -47,17 +48,18 @@ class WordTokenizer:
         return {"input_ids": [1] + tokens + [2] if add_special_tokens else tokens}
 
 
-def test_256_includes_special_tokens_and_never_silently_truncates():
+@pytest.mark.parametrize("model_id", ["phobert", "vihealthbert-ner-seed2024"])
+def test_256_includes_special_tokens_and_never_silently_truncates(model_id):
     runtime = ModelRuntime(Path("unused"), Path("unused"))
-    runtime.model_statuses["phobert"]["status"] = "ready"
-    runtime.tokenizers["phobert"] = WordTokenizer()
+    runtime.model_statuses[model_id]["status"] = "ready"
+    runtime.tokenizers[model_id] = WordTokenizer()
     runtime._torch = SimpleNamespace(inference_mode=nullcontext, cuda=SimpleNamespace(synchronize=lambda: None))
     # The entity at the end proves the accepted boundary reaches inference intact.
-    runtime.pipelines["phobert"] = lambda text: [{
+    runtime.pipelines[model_id] = lambda text: [{
         "entity_group": "ORGAN", "word": text.split()[-1], "score": 0.9,
     }]
-    exact = runtime.recognize("x " * 253 + "tim", "phobert", "review", 4)
-    over = runtime.recognize("x " * 254 + "tim", "phobert", "review", 5)
+    exact = runtime.recognize("x " * 253 + "tim", model_id, "review", 4)
+    over = runtime.recognize("x " * 254 + "tim", model_id, "review", 5)
     assert exact["status"] == "succeeded" and exact["entities"][0]["text"] == "tim"
     assert over["status"] == "failed"
     assert over["error"]["code"] == "NER_INPUT_TOO_LONG"
