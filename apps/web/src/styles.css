@@ -91,6 +91,7 @@ summary { min-height: 44px; padding: 12px 0; }
 .model-select { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 14px; color: var(--color-muted); }
 select { min-height: 44px; max-width: 100%; border: 1px solid var(--color-control-border); border-radius: var(--radius-control); padding: 8px 12px; color: var(--color-ink); background: var(--color-surface); font-size: 16px; }
 .workspace { padding-block: 24px; display: grid; gap: 16px; }
+.workspace > * { min-width: 0; }
 .session-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
 .session-heading h1 { font-size: 24px; line-height: 32px; overflow-wrap: anywhere; text-wrap: wrap; }
 .session-heading p { margin-top: 4px; }
@@ -132,11 +133,13 @@ dd { margin: 0; overflow-wrap: anywhere; }
 .prediction-notice { margin-top: 16px; }
 .compare-transcript { margin-block: 16px; }
 .compare-transcript h2 { font-size: 14px; }
-.benchmark { margin-top: 16px; border-bottom: 1px solid var(--color-soft-border); }
+.benchmark { margin-top: 16px; border-bottom: 1px solid var(--color-soft-border); min-width: 0; max-width: 100%; }
 .benchmark summary { font-weight: 500; }
 .benchmark summary span { display: block; font-weight: 400; }
 .benchmark p { margin-block: 16px; }
 table { border-collapse: collapse; width: 100%; }
+.benchmark-table { width: 100%; max-width: 100%; overflow-x: auto; }
+.benchmark-table table { min-width: 920px; }
 caption { text-align: left; font-size: 14px; color: var(--color-muted); padding: 8px 0; }
 th, td { text-align: left; padding: 12px 8px; border-bottom: 1px solid var(--color-soft-border); }
 th { font-weight: 500; }
@@ -173,12 +176,9 @@ td { font-variant-numeric: tabular-nums; }
 }
 @media (min-width: 1024px) {
   .review-grid { grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr); }
-  .compare-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .compare-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .transcript-panel { min-height: 440px; }
   .entity-tools select { max-width: 180px; }
-}
-@media (min-width: 1200px) {
-  .compare-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 479px) {
   .header-inner { gap: 8px; }

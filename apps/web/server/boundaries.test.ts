@@ -1,8 +1,12 @@
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { createServer, request as httpRequest, type RequestListener, type Server } from 'node:http';
 import { afterEach, expect, it } from 'vitest';
 import { createApp, readConfig, type ProxyConfig } from './index.js';
 
 const servers: Server[] = [];
+const tempDirectories: string[] = [];
 
 async function listen(handler: RequestListener) {
   const server = createServer(handler);
@@ -47,6 +51,30 @@ afterEach(async () => {
     server.close((error) => error ? reject(error) : resolve());
     server.closeAllConnections();
   })));
+  await Promise.all(tempDirectories.splice(0).map(path => rm(path, { recursive: true, force: true })));
+});
+
+it('serves the app shell and approved sample from a hidden worktree path', async () => {
+  const hiddenRoot = await mkdtemp(join(tmpdir(), '.vodoco-web-'));
+  tempDirectories.push(hiddenRoot);
+  const staticDirectory = join(hiddenRoot, 'dist');
+  const samplePath = join(hiddenRoot, 'sample.wav');
+  await mkdir(staticDirectory);
+  await writeFile(join(staticDirectory, 'index.html'), '<!doctype html><title>VoDoCo test</title>');
+  await writeFile(samplePath, 'approved audio');
+  const config: ProxyConfig = {
+    port: 0, origin: new URL('http://127.0.0.1'), upstream: null, token: '', preview: false,
+    samplePath, sampleProvenance: 'test-owned sample', staticDirectory,
+  };
+  const origin = await listen(createApp(config));
+
+  config.origin = origin;
+  const shell = await fetch(origin);
+  expect(shell.status).toBe(200);
+  expect(await shell.text()).toContain('VoDoCo test');
+  const sample = await fetch(new URL('/api/sample/audio', origin));
+  expect(sample.status).toBe(200);
+  expect(await sample.text()).toBe('approved audio');
 });
 
 it('allows only the exact Compose inference service when explicitly enabled', () => {
@@ -147,12 +175,12 @@ it('never follows upstream redirects to another credential recipient', async () 
   expect(redirected).toBe(false);
 });
 
-it('forwards the exact ViHealthBERT audio model id and rejects near matches', async () => {
+it('forwards every exact six-model audio id and rejects near matches', async () => {
   let accesses = 0;
-  let forwardedUrl = '';
+  const forwardedUrls: string[] = [];
   const upstream = await listen((req, res) => {
     accesses += 1;
-    forwardedUrl = req.url ?? '';
+    forwardedUrls.push(req.url ?? '');
     res.writeHead(202, { 'Content-Type': 'application/json' });
     res.end('{"accepted":true}');
   });
@@ -165,10 +193,13 @@ it('forwards the exact ViHealthBERT audio model id and rejects near matches', as
     'X-Session-Id': '22222222-2222-4222-8222-222222222222',
   };
   const base = '/api/v1/audio-jobs/33333333-3333-4333-8333-333333333333?ner_model=';
-  expect(await requestStatus(new URL(`${base}vihealthbert-ner-seed2024`, origin), { method: 'PUT', headers, body: 'x' })).toBe(202);
+  const models = ['logreg', 'linear-svm', 'crf', 'xlmr', 'phobert', 'vihealthbert-ner-seed2024'];
+  for (const model of models) {
+    expect(await requestStatus(new URL(`${base}${model}`, origin), { method: 'PUT', headers, body: 'x' })).toBe(202);
+  }
   expect(await requestStatus(new URL(`${base}vihealthbert-ner-seed2024-typo`, origin), { method: 'PUT', headers, body: 'x' })).toBe(400);
-  expect(accesses).toBe(1);
-  expect(forwardedUrl).toBe('/v1/audio-jobs/33333333-3333-4333-8333-333333333333?ner_model=vihealthbert-ner-seed2024');
+  expect(accesses).toBe(6);
+  expect(forwardedUrls).toEqual(models.map(model => `/v1/audio-jobs/33333333-3333-4333-8333-333333333333?ner_model=${model}`));
 });
 it('bounds chunked audio by actual bytes and aborts the receiving upstream', async () => {
   let release!: () => void;

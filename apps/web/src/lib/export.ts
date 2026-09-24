@@ -28,7 +28,7 @@ export function exportSession(session: Session, at = new Date().toISOString()) {
     audio: session.audio ? { display_name: session.audio.name.replace(/^.*[\\/]/, ''), provenance: session.audio.provenance, duration_seconds: session.metadata?.duration_seconds ?? session.audio.duration, size_bytes: session.audio.blob.size, mime_type: session.audio.blob.type, decoded: session.metadata } : null,
     asr: session.asr ? { raw_text: session.asr.raw_text, text_sha256: session.asr.text_sha256, model: identity(session.asr.model), generation_settings: session.asr.generation_settings, postprocessing: session.asr.postprocessing, duration_ms: session.asr.duration_ms } : null,
     review: session.review ? { text: session.review.text, revision: session.review.revision, text_sha256: session.review.hash, confirmed_by_user: session.review.confirmed } : null,
-    raw_confirmed_by_user: session.rawConfirmed, selected_view: session.view, selected_source: selectedSource, selected_model: session.model,
+    raw_confirmed_by_user: session.rawConfirmed, selected_view: session.view, selected_source: selectedSource, selected_model: session.view === 'compare' ? null : session.model,
     results: Object.fromEntries(sources), correction: 'off',
   };
 }
@@ -38,13 +38,14 @@ export function currentText(session: Session): string {
 export function download(session: Session, format: 'txt' | 'json') {
   const content = format === 'txt' ? currentText(session) : JSON.stringify(exportSession(session), null, 2);
   const source = session.view === 'compare' ? 'raw' : session.source;
+  const model = session.view === 'compare' ? 'all-models' : session.model;
   const revision = source === 'review' ? session.review?.revision ?? 0 : 0;
   const confirmed = source === 'review' ? session.review?.confirmed : session.rawConfirmed;
   const blob = new Blob([content], { type: format === 'txt' ? 'text/plain;charset=utf-8' : 'application/json;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   try {
     const anchor = document.createElement('a');
-    anchor.href = url; anchor.download = `vodoco-${source}-r${revision}-${session.model}-${confirmed ? 'reviewed' : 'unreviewed'}.${format}`;
+    anchor.href = url; anchor.download = `vodoco-${source}-r${revision}-${model}-${confirmed ? 'reviewed' : 'unreviewed'}.${format}`;
     document.body.append(anchor); anchor.click(); anchor.remove();
   } finally { setTimeout(() => URL.revokeObjectURL(url), 60000); }
 }

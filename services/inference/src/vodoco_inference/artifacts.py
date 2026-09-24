@@ -6,8 +6,7 @@ import re
 from pathlib import Path, PurePosixPath
 
 from .errors import InferenceError
-
-MODEL_IDS = ("asr", "phobert", "xlmr", "vihealthbert-ner-seed2024")
+from .schemas import CLASSICAL_NER_IDS, CLASSICAL_TOKEN_LIMIT, MODEL_IDS
 BACKGROUND_LABELS = frozenset({"0", "O", "dum"})
 ENTITY_LABELS = frozenset({
     "AGE", "DATETIME", "DIAGNOSTICS", "DISEASESYMTOM", "DRUGCHEMICAL",
@@ -15,6 +14,15 @@ ENTITY_LABELS = frozenset({
     "ORGAN", "ORGANIZATION", "PERSONALCARE", "PREVENTIVEMED", "SURGERY",
     "TRANSPORTATION", "TREATMENT", "UNITCALIBRATOR",
 })
+CLASSICAL_LAYOUTS = {
+    "logreg": ("logreg", "logreg/model.npz",
+               frozenset({"logreg/config.json", "logreg/features.json", "logreg/model.npz"})),
+    "linear-svm": ("linear-svm", "linear-svm/model.npz",
+                   frozenset({"linear-svm/config.json", "linear-svm/features.json",
+                              "linear-svm/model.npz"})),
+    "crf": ("crf", "crf/model.crfsuite",
+            frozenset({"crf/config.json", "crf/model.crfsuite"})),
+}
 
 
 def sha256_file(path: Path) -> str:
@@ -74,6 +82,12 @@ def verify_model(root: Path, model_id: str, spec: dict) -> None:
         files = spec["files"]
         if not files or set(files) != set(spec["required_assets"]):
             raise ValueError("Incomplete manifest hashes")
+        if model_id in CLASSICAL_NER_IDS:
+            expected_model_path, expected_weight_path, expected_assets = CLASSICAL_LAYOUTS[model_id]
+            if (spec.get("model_path") != expected_model_path
+                    or spec.get("weight_path") != expected_weight_path
+                    or set(files) != expected_assets):
+                raise ValueError("Unexpected classical runtime asset layout")
         for relative, digest in files.items():
             if not isinstance(digest, str) or re.fullmatch(r"[a-f0-9]{64}", digest) is None:
                 raise ValueError("Invalid asset hash")
@@ -82,13 +96,28 @@ def verify_model(root: Path, model_id: str, spec: dict) -> None:
                 raise FileNotFoundError
             if sha256_file(path) != digest:
                 raise ValueError("Model asset hash mismatch")
-        config = json.loads(asset_path(root, spec["model_path"]).joinpath("config.json").read_text())
+        config_relative = f"{spec['model_path']}/config.json"
+        if config_relative not in files:
+            raise ValueError("Model config is not covered by manifest hashes")
+        config = json.loads(asset_path(root, config_relative).read_text())
         if model_id != "asr":
             labels = validate_labels(config)
             if labels != spec["id2label"] or canonical_hash(labels) != spec["label_map_sha256"]:
                 raise ValueError("Classifier manifest mismatch")
-            if spec["token_limit"] != 256:
-                raise ValueError("Unexpected NER token limit")
+            if model_id in CLASSICAL_NER_IDS:
+                expected_type = "crfsuite-v1" if model_id == "crf" else "linear-npz-v1"
+                if (spec.get("artifact_type") != expected_type
+                        or config.get("artifact_type") != expected_type
+                        or config.get("model_id") != model_id
+                        or not isinstance(config.get("metrics"), dict)
+                        or config.get("metrics") != spec.get("evaluation")
+                        or spec["token_limit"] != CLASSICAL_TOKEN_LIMIT):
+                    raise ValueError("Unexpected classical model configuration")
+                dataset = config.get("dataset", {})
+                if dataset.get("repo_id") != spec["repo_id"] or dataset.get("revision") != spec["revision"]:
+                    raise ValueError("Classical model provenance mismatch")
+            elif spec["token_limit"] != 256:
+                raise ValueError("Unexpected Transformer token limit")
         if files[spec["weight_path"]] != spec["checkpoint_sha256"]:
             raise ValueError("Checkpoint manifest mismatch")
     except FileNotFoundError as exc:

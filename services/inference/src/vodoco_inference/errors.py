@@ -1,6 +1,9 @@
 """Public errors contain deliberately bounded, operator-authored messages only."""
 
 
+from .schemas import NER_IDS
+
+
 class InferenceError(Exception):
     def __init__(self, code, message, stage, model=None, retryable=False):
         super().__init__(message)
@@ -16,6 +19,6 @@ class InferenceError(Exception):
             "stage": self.stage, "retryable": self.retryable,
         }
         # The API's optional model field names NER models, not ASR.
-        if self.model in {"phobert", "xlmr", "vihealthbert-ner-seed2024"}:
+        if self.model in NER_IDS:
             result["model"] = self.model
         return result

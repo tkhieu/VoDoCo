@@ -9,9 +9,10 @@ import time
 from pathlib import Path
 
 from .audio import decode_audio
+from .classical import tokenize_classical
 from .errors import InferenceError
 from .runtime import ModelRuntime
-from .schemas import NER_IDS
+from .schemas import CLASSICAL_NER_IDS, NER_IDS
 
 
 def tokenizer_observation(tokenizer, text: str) -> dict:
@@ -47,7 +48,10 @@ def main(argv=None) -> int:
               "cuda": None, "audio": None, "asr": None, "ner": {}, "error": None}
     started = time.monotonic()
     try:
-        for package in ("torch", "transformers", "tokenizers", "safetensors", "numpy", "sentencepiece"):
+        for package in (
+            "torch", "transformers", "tokenizers", "safetensors", "numpy",
+            "sentencepiece", "python-crfsuite",
+        ):
             report["versions"][package] = importlib.metadata.version(package)
         import torch
 
@@ -62,13 +66,30 @@ def main(argv=None) -> int:
         runtime.load(lambda model_id, status: report["models"].__setitem__(model_id, status))
         report["load_measurements"] = runtime.load_measurements
         if not all(value["status"] == "ready" for value in report["models"].values()):
-            raise InferenceError("PREFLIGHT_MODELS_NOT_READY", "All four verified models must load on CUDA.", "loading")
+            raise InferenceError(
+                "PREFLIGHT_MODELS_NOT_READY",
+                "All seven verified models must load on their required devices.",
+                "loading",
+            )
         audio = decode_audio(args.audio)
         report["audio"] = audio.metadata
         report["asr"] = runtime.transcribe(audio)
         text = report["asr"]["raw_text"]
         for model_id in NER_IDS:
-            report["tokenizers"][model_id] = tokenizer_observation(runtime.tokenizers[model_id], text)
+            if model_id in CLASSICAL_NER_IDS:
+                tokens = tokenize_classical(text)
+                report["tokenizers"][model_id] = {
+                    "class": "whitespace-nfc-lower-v1",
+                    "is_fast": False,
+                    "configured_token_limit": runtime.model_statuses[model_id]["token_limit"],
+                    "input_tokens": len(tokens),
+                    "offsets": "exact-unicode-codepoint-boundaries",
+                    "probe": None,
+                }
+            else:
+                report["tokenizers"][model_id] = tokenizer_observation(
+                    runtime.tokenizers[model_id], text,
+                )
             result = runtime.recognize(text, model_id, "raw", 0)
             report["ner"][model_id] = result
             report["tokenizers"][model_id]["entity_offsets"] = {

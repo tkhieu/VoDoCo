@@ -6,8 +6,28 @@ import { sha256, type Schema } from './api';
 
 const model: Schema['ModelIdentity'] = { logical_id: 'phobert', repo_id: null, revision: null, checkpoint_sha256: 'a'.repeat(64), tokenizer: 'test-tokenizer', label_map_sha256: 'b'.repeat(64), device: 'cuda:0', dtype: 'float32' };
 const vihealthModel: Schema['ModelIdentity'] = { ...model, logical_id: 'vihealthbert-ner-seed2024' };
-const entity: Schema['Entity'] = { id: 'occurrence-1', text: 'đau', label: 'DISEASESYMTOM', start: 2, end: 5, offset_unit: 'unicode_codepoint' };
-const ready: Schema['ModelStatus'] = { status: 'ready', identity: model, token_limit: 256, supports_offsets: true, error: null };
+const entity: Schema['Entity'] = { id: 'occurrence-1', text: 'đau', label: 'DISEASESYMTOM', start: 2, end: 5, offset_unit: 'unicode_codepoint', score: 0.9 };
+const readyFor = (logicalId: Schema['ModelIdentity']['logical_id'], supportsOffsets = true): Schema['ModelStatus'] => ({
+  status: 'ready',
+  identity: { ...model, logical_id: logicalId },
+  token_limit: logicalId === 'asr' ? null : logicalId === 'logreg' || logicalId === 'linear-svm' || logicalId === 'crf' ? 4096 : 256,
+  supports_offsets: supportsOffsets,
+  error: null,
+});
+const ready = readyFor('phobert');
+const modelResponse: Schema['ModelsResponseV2'] = {
+  api_version: '2',
+  models: {
+    asr: readyFor('asr', false),
+    logreg: readyFor('logreg'),
+    'linear-svm': readyFor('linear-svm'),
+    crf: readyFor('crf'),
+    xlmr: readyFor('xlmr'),
+    phobert: ready,
+    'vihealthbert-ner-seed2024': readyFor('vihealthbert-ner-seed2024', false),
+  },
+  limits: { upload_bytes: 10485760, upload_seconds: 30, record_seconds: 10, text_body_bytes: 32768 },
+};
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 
 describe('exact Unicode occurrences', () => {
@@ -25,7 +45,7 @@ describe('exact Unicode occurrences', () => {
 
 it('late NER cannot recreate entities after another edit; export retains the new draft and immutable raw', async () => {
   const controller = new SessionController();
-  controller.models = { api_version: '2', models: { asr: { ...ready, identity: { ...model, logical_id: 'asr' } }, phobert: ready, xlmr: { ...ready, identity: { ...model, logical_id: 'xlmr' } }, 'vihealthbert-ner-seed2024': { ...ready, identity: vihealthModel, supports_offsets: false } }, limits: { upload_bytes: 10485760, upload_seconds: 30, record_seconds: 10, text_body_bytes: 32768 } };
+  controller.models = modelResponse;
   const raw = '😀 đau, đau'; const rawHash = await sha256(raw);
   let deliver!: (response: Response) => void;
   let received!: () => void;
@@ -70,7 +90,7 @@ it('late NER cannot recreate entities after another edit; export retains the new
 
 it('routes the exact ViHealthBERT id and stores only its result slot', async () => {
   const controller = new SessionController();
-  controller.models = { api_version: '2', models: { asr: { ...ready, identity: { ...model, logical_id: 'asr' } }, phobert: ready, xlmr: { ...ready, identity: { ...model, logical_id: 'xlmr' } }, 'vihealthbert-ner-seed2024': { ...ready, identity: vihealthModel, supports_offsets: false } }, limits: { upload_bytes: 10485760, upload_seconds: 30, record_seconds: 10, text_body_bytes: 32768 } };
+  controller.models = modelResponse;
   controller.selectModel('vihealthbert-ner-seed2024');
   const raw = 'Bệnh nhân đau đầu.';
   const rawHash = await sha256(raw);
@@ -129,7 +149,7 @@ it('routes the exact ViHealthBERT id and stores only its result slot', async () 
 describe('immutable ASR and explicit NER recovery', () => {
   async function audioSession(status: Schema['Job']['status'] = 'running') {
     const controller = new SessionController();
-    controller.models = { api_version: '2', models: { asr: { ...ready, identity: { ...model, logical_id: 'asr' } }, phobert: ready, xlmr: { ...ready, identity: { ...model, logical_id: 'xlmr' } }, 'vihealthbert-ner-seed2024': { ...ready, identity: vihealthModel, supports_offsets: false } }, limits: { upload_bytes: 10485760, upload_seconds: 30, record_seconds: 10, text_body_bytes: 32768 } };
+    controller.models = modelResponse;
     const raw = '😀 đau, đau\n'; const hash = await sha256(raw);
     controller.setAudio(new Blob(['audio']), 'clip.wav', 'Test-owned fixture', 1);
     const job = (url: string, options: RequestInit): Schema['Job'] => ({

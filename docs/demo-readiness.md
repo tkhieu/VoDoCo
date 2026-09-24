@@ -1,6 +1,41 @@
 # VoDoCo demo readiness
 
-Observed on 2026-09-18. Local three-model inference is verified. This is not evidence of a published Replit application or a GPU-enabled RunPod container.
+Current local six-model evidence was observed on 2026-09-24. Historical three- and
+four-model evidence remains below and is labelled explicitly. This is not evidence of a
+published Replit application or a GPU-enabled RunPod container.
+
+## Six-model NER release — observed 2026-09-24
+
+The one-command preparation trained Logistic Regression, Linear SVM and CRF from the
+pinned VietMed-NER train split, verified both validation and test F1, reopened the safe
+runtime artifacts with prediction parity, and combined them with the four neural runtime
+exports. The release contains 39 declared assets. Its manifest and
+`services/inference/model-manifest.json` are byte-identical at SHA-256
+`0895b7f2307cb0ee3f3c0ff95838193ef4674a5eac565d61b18aa246ec980af9`.
+The current Python lock hash is
+`3289f97b95e517cbdd87b494c73cb757471208923e5b1b92fdf49caca9bdef8a`;
+the OpenAPI contract hash is
+`700800dfec9031de63d2fa91ad75bfddb6caa7c78c830b6a8a3dd7a03443ca0c`.
+
+Native preflight loaded the three classical models on `cpu` and ASR plus the three
+Transformer NER models on `cuda:0`. Peak GPU allocation was 3,009,780,224 bytes and peak
+reservation was 3,177,185,280 bytes. The complete cold preflight took 11.16 seconds.
+Classical load measurements allocated no GPU memory. All six NER passes succeeded on the
+approved sample transcript.
+
+Authenticated HTTP verification returned `asr`, `logreg`, `linear-svm`, `crf`, `xlmr`,
+`phobert`, `vihealthbert-ner-seed2024` in that order. The required sentence hash was
+`ed5eaba3fa1d2b5f38830a1647293053c1c959381b924f75f65b2b8a64601a16`.
+Every NER model returned three entities; classical and XLM-R offsets were exact source
+slices, slow-tokenizer offsets were unavailable, and classical scores were `null`.
+
+The production-built web app traversed the actual Node BFF and supervised inference
+service. A fresh worker completed the approved sample on its first submission. Browser
+verification measured three ordered columns at 1440 px and one 343 px column at a 390 px
+viewport, with no page-level horizontal overflow. All six panel completion announcements,
+six canonical benchmark rows, the source attribution and the independently scrollable
+benchmark region were present. Logistic Regression F1 rendered exactly as
+`56,22630504520268%`.
 
 ## ViHealthBERT extension — observed 2026-09-22
 
@@ -64,13 +99,21 @@ ASR is immutable after one surrounding-whitespace strip. Hashes are SHA-256 of e
 Use the locked service environment, not an unrelated research notebook environment:
 
 ```sh
-uv sync --project services/inference --frozen --group dev
-python3 scripts/prepare_demo_models.py --phobert-zip "$PHOBERT_ZIP" --vihealthbert-dir vihealthbert-ner-seed2024 --output .local/vodoco-models/release
-services/inference/.venv/bin/python -m vodoco_inference.preflight \
+uv run --project services/inference --frozen --group export \
+  python scripts/prepare_demo_models.py \
+  --phobert-zip "$PHOBERT_ZIP" \
+  --vihealthbert-dir "$VIHEALTHBERT_DIR" \
+  --dataset-dir do_an_may_hoc/data/vietmed-ner \
+  --output .local/vodoco-models/release
+uv run --project services/inference --frozen \
+  python -m vodoco_inference.preflight \
   --manifest services/inference/model-manifest.json \
   --model-root .local/vodoco-models/release \
   --audio giai_doan_14_hoan_thien/audio.wav \
   --report .local/vodoco-preflight.json
+INFERENCE_SERVICE_TOKEN="$INFERENCE_SERVICE_TOKEN" \
+  uv run --project services/inference --frozen python \
+  scripts/verify_six_model_demo.py --base-url http://127.0.0.1:8000
 ```
 
 Preparation deliberately refuses an existing output directory. Reuse the already verified release, or supply a new explicit release directory; do not delete research artifacts to make the command succeed. The private preflight report includes the approved transcript and is ignored by Git. Keep shared evidence redacted.
@@ -93,7 +136,8 @@ Outstanding external gates:
 
 - Replit Publishing access with native **Password protected** available, the intended published origin, and production-only service secrets.
 - RunPod account access, an approved private registry with push credentials and a read-only pull credential, actual single-GPU/region availability, and an explicit spend ceiling with a shutdown deadline. Model distribution clearance is no longer a gate: the owner granted it on 2026-09-19 for one private registry, one leased GPU and a password-protected internal demo, and that grant does not extend to public redistribution of weights.
-- GPU execution of the final immutable container is now verified locally. `docker run --gpus all` still fails with `failed to discover GPU vendor from CDI: no known GPU vendor found`, because this Docker exposes only `runc` runtimes and no CDI GPU specification; no daemon configuration was changed. Supplying the device nodes and driver libraries explicitly instead ran all three models on `cuda:0` inside the published image, authenticated, non-root and with read-only weights. The exact command and measurements are in [`demo-acceptance.md`](demo-acceptance.md). A Pod running the same digest must still confirm readiness on its own driver and GPU.
+- GPU execution of the historical three-model immutable container is verified locally. `docker run --gpus all` still fails with `failed to discover GPU vendor from CDI: no known GPU vendor found`, because this Docker exposes only `runc` runtimes and no CDI GPU specification; no daemon configuration was changed. Supplying the device nodes and driver libraries explicitly instead ran those three models on `cuda:0` inside that image, authenticated, non-root and with read-only weights. The exact command and measurements are in [`demo-acceptance.md`](demo-acceptance.md). The current six-model container and any Pod running its digest must still confirm readiness on their own driver and GPU.
 - Published HTTPS ingress, password bypass attempts, exactly-10-MiB traversal through both real proxies, provider cold start, public rollback and cost-safe shutdown remain unverified.
 
-No paid Pod, registry publication, Replit publication, commit or push has been performed by this implementation session.
+No paid Pod, registry publication, Replit publication or push was performed for this
+six-model verification. A local commit does not satisfy any external gate.

@@ -127,6 +127,34 @@ def prepare_vihealthbert(args, destination: Path) -> None:
             copy_bounded(stream, destination / name, MAX_RUNTIME_ASSET)
 
 
+def atomic_replace(path: Path, content: bytes) -> None:
+    descriptor, temporary_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    temporary = Path(temporary_name)
+    try:
+        mode = stat.S_IMODE(path.stat().st_mode) if path.exists() else 0o644
+        with os.fdopen(descriptor, "wb") as stream:
+            descriptor = -1
+            stream.write(content)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.chmod(temporary, mode)
+        os.replace(temporary, path)
+    finally:
+        if descriptor >= 0:
+            os.close(descriptor)
+        temporary.unlink(missing_ok=True)
+
+
+def publish_release(staging: Path, output: Path, manifest_path: Path, content: bytes) -> None:
+    original_manifest = manifest_path.read_bytes()
+    atomic_replace(manifest_path, content)
+    try:
+        os.rename(staging, output)
+    except BaseException:
+        atomic_replace(manifest_path, original_manifest)
+        raise
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     selected = parser.add_mutually_exclusive_group(required=True)
@@ -138,6 +166,11 @@ def main(argv=None) -> int:
     parser.add_argument("--asr-root", type=Path,
                         help="Pinned snapshot root containing asr/whisper-small-vietnamese")
     parser.add_argument("--xlmr-dir", type=Path, help="Pinned xlm-roberta-base-VietMed-NER directory")
+    parser.add_argument(
+        "--dataset-dir",
+        type=Path,
+        help="Optional local VietMed-NER parquet directory; otherwise downloads the pinned revision",
+    )
     parser.add_argument("--source-attestation", help="Optional owner-provided artifact provenance statement")
     args = parser.parse_args(argv)
     staging = None
@@ -145,23 +178,37 @@ def main(argv=None) -> int:
         if args.output.exists() or args.output.is_symlink():
             raise ValueError("Output already exists; choose a new release directory")
         manifest = copy.deepcopy(read_manifest(args.manifest))
-        snapshots = json.loads((REPO / "datasets/derived/correction/manifests/model-snapshots.json").read_text())
-        sources = {
-            "asr": args.asr_root or REPO / "experiments/002-vietmed-correction-training/models/sources/asr" / snapshots["asr"]["revision"],
-            "xlmr": args.xlmr_dir or REPO / "experiments/002-vietmed-correction-training/models/sources/ner" / snapshots["ner"]["revision"] / "xlm-roberta-base-VietMed-NER",
-        }
+        sources = {"asr": args.asr_root, "xlmr": args.xlmr_dir}
         args.output.parent.mkdir(parents=True, exist_ok=True)
         staging = Path(tempfile.mkdtemp(prefix=".prepare-", dir=args.output.parent))
-        for model_id, snapshot_id in (("asr", "asr"), ("xlmr", "ner")):
-            spec = manifest["models"][model_id]
-            recorded = snapshots[snapshot_id]
-            if spec["revision"] != recorded["revision"] or spec["repo_id"] != recorded["repo_id"]:
-                raise ValueError("Pinned source identity differs from release specification")
-            expected = {f"{model_id}/{name}": digest for name, digest in recorded["hashes"].items()}
-            if spec["files"] != expected:
-                raise ValueError("Release hashes differ from recorded pinned snapshot")
-            for name, digest in recorded["hashes"].items():
-                source = asset_path(sources[model_id], name)
+        for model_id in ("asr", "xlmr"):
+            model_spec = manifest["models"][model_id]
+            asset_names = {
+                relative.removeprefix(f"{model_id}/"): digest
+                for relative, digest in model_spec["files"].items()
+            }
+            if any(f"{model_id}/{name}" not in model_spec["files"] for name in asset_names):
+                raise ValueError("Pinned release asset has an unexpected prefix")
+            source_root = sources[model_id]
+            if source_root is None:
+                from huggingface_hub import snapshot_download
+
+                subfolder = "" if model_id == "asr" else f"{model_spec['source_subfolder']}/"
+                snapshot = Path(snapshot_download(
+                    repo_id=model_spec["repo_id"],
+                    revision=model_spec["revision"],
+                    allow_patterns=[f"{subfolder}{name}" for name in asset_names],
+                ))
+                source_root = snapshot if model_id == "asr" else snapshot / model_spec["source_subfolder"]
+            if source_root.is_symlink() or not source_root.is_dir():
+                raise ValueError(f"Pinned {model_id} source directory is invalid")
+            for name, digest in asset_names.items():
+                parts = PurePosixPath(name)
+                if "\\" in name or parts.is_absolute() or any(part in {"", ".", ".."} for part in name.split("/")):
+                    raise ValueError("Pinned source asset path is invalid")
+                source = source_root.joinpath(*parts.parts)
+                if not source.is_file():
+                    raise ValueError(f"Pinned {model_id} source asset is missing")
                 target = asset_path(staging, f"{model_id}/{name}")
                 target.parent.mkdir(parents=True, exist_ok=True)
                 # Copy then hash the actual packaged bytes, not a mutable source's earlier state.
@@ -190,21 +237,29 @@ def main(argv=None) -> int:
             manifest["provenance"]["phobert_archive_sha256"] = sha256_file(args.phobert_zip)
         if args.source_attestation:
             manifest["provenance"]["artifact_attestation"] = args.source_attestation
+        # Keep export-only dependencies out of service startup; this import is reached
+        # only by the explicit release preparation command.
+        from export_classical_ner import export_models  # noqa: E402
+
+        export_models(
+            args.dataset_dir,
+            staging,
+            manifest,
+            REPO / "do_an_may_hoc/results/model_comparison.json",
+        )
         for model_id, model_spec in manifest["models"].items():
             verify_model(staging, model_id, model_spec)
-        content = json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
-        (staging / "manifest.json").write_text(content, encoding="utf-8")
-        # No source modifications; only the generated release and requested manifest.
-        os.rename(staging, args.output)
+        content = (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        (staging / "manifest.json").write_bytes(content)
+        publish_release(staging, args.output, args.manifest, content)
         staging = None
-        args.manifest.write_text(content, encoding="utf-8")
         print(json.dumps({"status": "prepared", "models": {
             model_id: {"checkpoint_sha256": spec["checkpoint_sha256"],
                        "label_map_sha256": spec["label_map_sha256"], "assets": len(spec["files"])}
             for model_id, spec in manifest["models"].items()
         }}, indent=2))
         return 0
-    except (OSError, ValueError, KeyError, zipfile.BadZipFile, RuntimeError, InferenceError) as exc:
+    except (ImportError, OSError, ValueError, KeyError, zipfile.BadZipFile, RuntimeError, InferenceError) as exc:
         # Operator CLI reports a category without dumping private local paths.
         print(json.dumps({"status": "failed", "error": type(exc).__name__,
                           "message": "Model preparation failed; check selected export, pinned assets and output permissions."}), file=sys.stderr)
