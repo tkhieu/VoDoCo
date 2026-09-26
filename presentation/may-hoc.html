@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhận dạng thực thể y tế - Máy học</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/white.css">
+
+    <!-- Shared deck theme + deck-specific additions -->
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/may-hoc.css">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title -->
+            <section class="title-slide">
+                <div class="institution-lockup">
+                    <img src="assets/images/Logo_UIT_updated.svg" alt="Logo Trường Đại học Công nghệ Thông tin">
+                    <span>TRƯỜNG ĐẠI HỌC CÔNG NGHỆ THÔNG TIN<br>ĐẠI HỌC QUỐC GIA TP. HỒ CHÍ MINH</span>
+                </div>
+                <h1>Nhận dạng thực thể y tế</h1>
+                <h1>trong hội thoại tiếng Việt</h1>
+                <p class="deck-subtitle">So sánh 6 mô hình học máy trên VietMed-NER</p>
+                <div class="medical-icon">
+                    <i class="fas fa-heartbeat"></i>
+                    <i class="fas fa-diagram-project"></i>
+                </div>
+                <p class="author">Môn học: Máy học</p>
+                <p class="author">Giảng viên hướng dẫn: Đặng Văn Thìn</p>
+                <p class="author">Nhóm thực hiện: Nhóm 8</p>
+                <aside class="notes">
+                    Kính chào Thầy và các bạn. Nhóm 8 trình bày đồ án môn Máy học: nhận dạng thực thể y tế trong hội thoại tiếng Việt.
+                    Nhóm so sánh sáu mô hình, từ Logistic Regression, Linear SVM, CRF đến ba Transformer XLM-RoBERTa, PhoBERT và ViHealthBERT, trên bộ dữ liệu VietMed-NER.
+                    Giảng viên hướng dẫn: Thầy Đặng Văn Thìn.
+                    Thời gian: 30 giây.
+                </aside>
+            </section>
+
+            <!-- Slide 2: Bài toán -->
+            <section class="ml roomy">
+                <h2>Bài toán: gán nhãn chuỗi theo sơ đồ BIO</h2>
+                <div class="pipeline mini">
+                    <div class="pipeline-step">
+                        <div class="step-icon"><i class="fas fa-microphone-alt"></i></div>
+                        <div class="step-label">AUDIO</div>
+                        <div class="step-desc">Hội thoại y tế</div>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <div class="step-icon"><i class="fas fa-wave-square"></i></div>
+                        <div class="step-label">ASR</div>
+                        <div class="step-desc">Nhận dạng tiếng nói</div>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <div class="step-icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="step-label">TEXT</div>
+                        <div class="step-desc">Transcript âm tiết</div>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step focus">
+                        <div class="step-icon"><i class="fas fa-tags"></i></div>
+                        <div class="step-label">NER</div>
+                        <div class="step-desc">Phạm vi đồ án</div>
+                    </div>
+                </div>
+                <div class="ml-grid g-2">
+                    <div class="panel">
+                        <h3><i class="fas fa-right-to-bracket"></i>Đầu vào → đầu ra</h3>
+                        <ul>
+                            <li><strong>Đầu vào:</strong> câu tiếng Việt đã tách theo âm tiết</li>
+                            <li><strong>Đầu ra:</strong> một nhãn cho mỗi âm tiết</li>
+                            <li><strong>B-X</strong> mở đầu thực thể loại X, <strong>I-X</strong> nối tiếp, <strong>O</strong> ngoài thực thể</li>
+                            <li><strong>18 loại thực thể → 37 nhãn</strong> (18 × B/I + O)</li>
+                        </ul>
+                    </div>
+                    <div class="panel">
+                        <h3><i class="fas fa-font"></i>Ví dụ từ tập test</h3>
+                        <div class="bio-strip">
+                            <span class="bio-tok ent"><b>rong</b><small>B-DISEASESYMTOM</small></span>
+                            <span class="bio-tok ent"><b>huyết</b><small>I-DISEASESYMTOM</small></span>
+                            <span class="bio-tok"><b>như</b><small>O</small></span>
+                            <span class="bio-tok"><b>vậy</b><small>O</small></span>
+                            <span class="bio-tok"><b>…</b><small>O</small></span>
+                            <span class="bio-tok ent"><b>rong</b><small>B-DISEASESYMTOM</small></span>
+                            <span class="bio-tok ent"><b>kinh</b><small>I-DISEASESYMTOM</small></span>
+                        </div>
+                        <p class="small-note">Bệnh/triệu chứng, cơ quan, thuốc, thời gian, tuổi, nghề nghiệp, …</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Bài toán là nhận dạng thực thể có tên trong transcript hội thoại y tế. Đây là một khâu trong hệ thống âm thanh → ASR → văn bản → NER, dùng để hỗ trợ ghi chép hồ sơ y tế; đồ án này tập trung vào khâu NER.
+                    Mỗi âm tiết được gán một nhãn BIO: B-X là âm tiết đầu của thực thể loại X, I-X là âm tiết tiếp theo, O là ngoài thực thể. Có 18 loại thực thể, tức 37 nhãn.
+                    Ví dụ lấy từ tập test: "rong huyết" và "rong kinh" đều là DISEASESYMTOM.
+                    Đây là bài toán phân loại chuỗi; dữ liệu là văn bản, không phải bảng, ảnh hay video, nên EDA và tiền xử lý được thiết kế riêng cho văn bản.
+                    Thời gian: 45 giây.
+                </aside>
+            </section>
+
+            <!-- Slide 3: Bộ dữ liệu -->
+            <section class="ml roomy">
+                <h2>Bộ dữ liệu VietMed-NER</h2>
+                <div class="kpi-row">
+                    <div class="kpi"><b>9.267</b><span>câu (3 tập chính thức)</span></div>
+                    <div class="kpi gold"><b>216.599</b><span>âm tiết (token)</span></div>
+                    <div class="kpi coral"><b>22.974</b><span>thực thể được gán nhãn</span></div>
+                </div>
+                <div class="ml-grid" style="grid-template-columns: 1fr; gap: 0.6em;">
+                    <table class="comparison-table ml-table">
+                        <thead>
+                            <tr>
+                                <th>Tập</th>
+                                <th class="num">Số câu</th>
+                                <th class="num">Số token</th>
+                                <th class="num">Số thực thể</th>
+                                <th class="num">Câu không có thực thể</th>
+                                <th class="num">Độ dài TB / trung vị</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>train</strong></td><td class="num">4.616</td><td class="num">111.267</td><td class="num">11.747</td><td class="num">440</td><td class="num">24,1 / 26</td></tr>
+                            <tr><td><strong>validation</strong></td><td class="num">1.154</td><td class="num">27.657</td><td class="num">2.889</td><td class="num">105</td><td class="num">24,0 / 26</td></tr>
+                            <tr><td><strong>test</strong></td><td class="num">3.497</td><td class="num">77.675</td><td class="num">8.338</td><td class="num">353</td><td class="num">22,2 / 20</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="panel">
+                        <h3><i class="fas fa-user-pen"></i>Nguồn và gán nhãn</h3>
+                        <ul>
+                            <li>Transcript của <strong>VietMed</strong> (âm thanh y tế thật)</li>
+                            <li><strong>2 người gán nhãn</strong> độc lập, 1 người có nền y khoa</li>
+                            <li>Xung đột giải quyết qua thảo luận; <strong>2 người khác rà soát</strong> toàn bộ</li>
+                            <li>Loại dữ liệu: <strong>văn bản</strong> (không phải bảng/ảnh/video)</li>
+                        </ul>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Bộ dữ liệu leduckhai/VietMed-NER được xây dựng từ transcript của VietMed, bộ dữ liệu âm thanh y tế tiếng Việt thật.
+                    Có sẵn ba tập: train 4.616 câu, validation 1.154 câu, test 3.497 câu; tổng cộng 9.267 câu và 22.974 thực thể.
+                    Về gán nhãn: hai người gán nhãn độc lập, một người có nền tảng y khoa; xung đột được giải quyết qua thảo luận, sau đó hai người khác rà soát toàn bộ corpus nhiều lần.
+                    Lưu ý test có câu ngắn hơn: trung vị 20 âm tiết so với 26 ở train.
+                    Thời gian: 45 giây.
+                </aside>
+            </section>
+
+            <!-- Slide 4: EDA - mất cân bằng lớp -->
+            <section class="ml roomy">
+                <h2>EDA: mất cân bằng lớp rất nặng</h2>
+                <div class="ml-grid" style="grid-template-columns: 2.9fr 1fr;">
+                    <figure class="fig">
+                        <img src="assets/images/ml/fig_entity_distribution.png" alt="Phân bố thực thể theo loại và theo tập train, validation, test">
+                    </figure>
+                    <div>
+                        <div class="kpi"><b>78,5%</b><span>token train mang nhãn O</span></div>
+                        <div class="kpi coral" style="margin-top:0.6em"><b>≈ 600×</b><span>DISEASESYMTOM 2.975 so với TRANSPORTATION 5 (train)</span></div>
+                        <div class="kpi gold" style="margin-top:0.6em"><b>343 → 18</b><span>PREVENTIVEMED: train so với test (2,9% → 0,2% số thực thể)</span></div>
+                        <p class="small-note">ORGANIZATION và TRANSPORTATION có dưới 20 mẫu train.</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Mất cân bằng lớp rất nặng. Khoảng 78,5% token ở train mang nhãn O. Ở mức thực thể, lớp lớn nhất DISEASESYMTOM có 2.975 mẫu train, nhiều gấp khoảng 600 lần lớp nhỏ nhất TRANSPORTATION chỉ có 5 mẫu. ORGANIZATION và TRANSPORTATION có dưới 20 mẫu train.
+                    Mất cân bằng còn xảy ra giữa các tập: train và validation có phân bố gần giống nhau, nhưng test lệch rõ. PREVENTIVEMED chiếm 2,9% thực thể ở train nhưng chỉ 0,2% ở test (343 so với 18 mẫu); MEDDEVICETECHNIQUE tăng từ 2,8% lên 7,6%; GENDER tăng từ 1,8% lên 6,7%.
+                    Hệ quả: accuracy mức token không có ý nghĩa (đoán toàn O đã đạt gần 79%), nên nhóm dùng F1 mức thực thể.
+                    Thời gian: 1 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 5: EDA - lệch miền -->
+            <section class="ml roomy">
+                <h2>EDA: test lệch miền so với train và validation</h2>
+                <div class="ml-grid g-2">
+                    <div>
+                        <div class="panel">
+                            <h3><i class="fas fa-code-branch"></i>Nguồn gốc từng câu (đã đối chiếu)</h3>
+                            <ul>
+                                <li><strong>100%</strong> câu train + validation khớp VietMed train + dev + cv (<strong>5.770 câu</strong>), chia ngẫu nhiên từ chung một nguồn</li>
+                                <li>Test: <strong>3.437</strong> câu khớp VietMed test, 60 câu không khớp chính xác</li>
+                            </ul>
+                        </div>
+                        <table class="comparison-table ml-table sm" style="margin-top:0.8em">
+                            <thead>
+                                <tr><th>VietMed</th><th>Nhóm bệnh ICD-10 chính</th><th>Ngữ cảnh ghi âm</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>train</strong></td><td>M, E, C–D, G, I</td><td>Tư vấn, điện thoại</td></tr>
+                                <tr><td><strong>dev</strong></td><td>Z, I, F, R, D, L</td><td>Điện thoại, sách, tư vấn</td></tr>
+                                <tr><td><strong>test</strong></td><td>K, M, O, P, N, V–Y, H</td><td>Podcast, talkshow, bài giảng, tin tức</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <table class="comparison-table ml-table">
+                            <thead>
+                                <tr><th>So với từ vựng train (2.220 âm tiết)</th><th class="num">Validation</th><th class="num">Test</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Token chưa gặp</td><td class="num">0,42%</td><td class="num">1,83%</td></tr>
+                                <tr><td>Loại âm tiết chưa gặp</td><td class="num">6,4%</td><td class="num">22,7%</td></tr>
+                                <tr class="best-row"><td><strong>Thực thể chưa gặp</strong></td><td class="num"><strong>6,7%</strong></td><td class="num winner">30,7%</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="conclusion-box">
+                            <h4><i class="fas fa-triangle-exclamation"></i> Hệ quả</h4>
+                            <p>Validation <strong>cùng miền</strong> với train, test là các bản ghi <strong>khác hẳn</strong>. Gần 1/3 thực thể test chưa từng xuất hiện ở train ⇒ mô hình dựa vào ghi nhớ sẽ tụt mạnh trên test.</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Nhóm đối chiếu từng câu của VietMed-NER với transcript gốc của VietMed. 100% câu của train và validation khớp với VietMed train, dev và cv, tổng 5.770 câu, và hai tập này được chia ngẫu nhiên từ chung một nguồn. Test gồm 3.437 câu khớp VietMed test và 60 câu không khớp chính xác.
+                    Nhóm bệnh ICD-10 và ngữ cảnh ghi âm của ba tập VietMed gần như không trùng nhau: test chủ yếu là podcast, talkshow, bài giảng, tin tức.
+                    Bằng chứng định lượng rõ nhất: tỉ lệ token chưa gặp là 0,42% ở validation nhưng 1,83% ở test; tỉ lệ thực thể có dạng chữ chưa gặp là 6,7% so với 30,7%.
+                    Điều này dự báo mô hình dựa vào ghi nhớ từ vựng sẽ giữ điểm cao trên validation nhưng giảm mạnh trên test; ta sẽ thấy lại ở phần phân tích lỗi.
+                    Thời gian: 1 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 6: Tiền xử lý -->
+            <section class="ml roomy">
+                <h2>Tiền xử lý và mã hoá dữ liệu</h2>
+                <div class="ml-grid g-2">
+                    <div>
+                        <table class="comparison-table ml-table sm">
+                            <thead>
+                                <tr><th>Kiểm tra chất lượng</th><th class="num">Train</th><th class="num">Val</th><th class="num">Test</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Câu rỗng / token rỗng</td><td class="num">0 / 0</td><td class="num">0 / 0</td><td class="num">0 / 0</td></tr>
+                                <tr><td>Số âm tiết ≠ số nhãn</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+                                <tr><td>Token chưa chuẩn hoá Unicode NFC</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+                                <tr><td>Token có chữ hoa / chỉ dấu câu</td><td class="num">0 / 0</td><td class="num">0 / 0</td><td class="num">0 / 0</td></tr>
+                                <tr><td>Chuỗi BIO lỗi (I- sau O)</td><td class="num">16</td><td class="num">0</td><td class="num">7</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="small-note">Không có giá trị thiếu; dữ liệu đã viết thường, chuẩn NFC. 23 chuỗi BIO lỗi (&lt; 0,02% token) được giữ nguyên để không đổi tập đánh giá.</p>
+                    </div>
+                    <div class="panel">
+                        <h3><i class="fas fa-gears"></i>Mã hoá</h3>
+                        <ul>
+                            <li><strong>Nhãn:</strong> 37 nhãn BIO → số nguyên (label2id) chỉ từ train; nhãn <code>"0"</code> đổi thành <code>O</code></li>
+                            <li><strong>Transformer:</strong> âm tiết → subword; nhãn chỉ gán cho <strong>subword đầu</strong>, subword còn lại nhận <code>-100</code> (bỏ qua khi tính loss); tối đa 256 subword</li>
+                            <li><strong>Mô hình cổ điển:</strong> đặc trưng thủ công (âm tiết, là số, tiền/hậu tố 2 ký tự, cửa sổ ±2, bigram) → <strong>DictVectorizer 77.424 chiều</strong> (one-hot, thưa)</li>
+                            <li><strong>Chia dữ liệu:</strong> giữ 3 tập chính thức; chọn siêu tham số theo validation, test chỉ dùng 1 lần</li>
+                        </ul>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Kiểm tra chất lượng: không có câu rỗng, token rỗng, không lệch số âm tiết và số nhãn, không có token chưa chuẩn hoá NFC, không chữ hoa, không dấu câu. Nghĩa là không có giá trị thiếu và không phải điền hay loại bỏ mẫu nào.
+                    Có 23 chuỗi BIO lỗi, 16 ở train và 7 ở test, chiếm chưa tới 0,02% token; nhóm giữ nguyên để không làm thay đổi tập đánh giá chính thức, seqeval coi I- đó là đầu thực thể mới.
+                    Mã hoá: 37 nhãn được ánh xạ sang số nguyên chỉ dựa trên train; nhãn O của dataset được lưu là chuỗi "0", nhóm đổi thành "O" để seqeval không coi nó là một loại thực thể.
+                    Với Transformer, nhãn gán cho subword đầu, các subword còn lại nhận -100. Với mô hình cổ điển, đặc trưng thủ công được DictVectorizer biến thành vector thưa 77.424 chiều.
+                    Thời gian: 45 giây.
+                </aside>
+            </section>
+
+            <!-- Slide 7: Sáu mô hình -->
+            <section class="ml">
+                <h2>Sáu mô hình và siêu tham số được chọn</h2>
+                <table class="comparison-table ml-table sm">
+                    <thead>
+                        <tr><th>Mô hình</th><th>Nhóm</th><th>Ý tưởng</th><th>Cấu hình được chọn (theo validation)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Logistic Regression</strong></td><td>Cổ điển, từng token</td><td>Phân loại độc lập từng âm tiết</td><td>L2, C = 10</td></tr>
+                        <tr><td><strong>Linear SVM</strong></td><td>Cổ điển, từng token</td><td>Siêu phẳng lề cực đại</td><td>C = 1, one-vs-rest</td></tr>
+                        <tr><td><strong>CRF</strong></td><td>Cổ điển, mô hình chuỗi</td><td>Học thêm xác suất chuyển nhãn</td><td>c1 = 0,1, c2 = 0,01</td></tr>
+                        <tr><td><strong>XLM-RoBERTa</strong></td><td>Transformer đa ngôn ngữ</td><td>Checkpoint của tác giả bộ dữ liệu</td><td>Có sẵn, không train lại</td></tr>
+                        <tr><td><strong>PhoBERT-base-v2</strong></td><td>Transformer tiếng Việt</td><td>Pretrain văn bản tiếng Việt chung</td><td>lr 3e-5, 8 epoch, wd 0,05, seed 123</td></tr>
+                        <tr><td><strong>ViHealthBERT</strong></td><td>Transformer tiếng Việt y tế</td><td>Pretrain thêm văn bản y tế</td><td>lr 3e-5, 8 epoch, wd 0,01, seed 2024</td></tr>
+                    </tbody>
+                </table>
+                <div class="ml-grid" style="grid-template-columns: 2.75fr 1fr;">
+                    <figure class="fig">
+                        <img src="assets/images/ml/fig_sweep_underfitting.png" alt="F1 validation trong quá trình dò siêu tham số của PhoBERT và ViHealthBERT">
+                    </figure>
+                    <div class="panel">
+                        <h3><i class="fas fa-sliders"></i>Dò 18 cấu hình</h3>
+                        <ul>
+                            <li>lr × epoch × weight decay</li>
+                            <li>F1 val tăng theo lr và epoch</li>
+                            <li>lr 5e-6, 4 epoch: PhoBERT chỉ <strong>36,65%</strong> ⇒ <strong>underfitting</strong></li>
+                            <li>Tốt nhất nằm ở biên lưới</li>
+                        </ul>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Sáu mô hình đi từ đơn giản đến phức tạp: hai mô hình phân loại từng token độc lập là Logistic Regression và Linear SVM; một mô hình chuỗi cổ điển là CRF; và ba Transformer.
+                    Siêu tham số cổ điển: Logistic Regression thử C ∈ {0,1; 1; 10; 30}, chọn C = 10; Linear SVM thử C ∈ {0,01; 0,1; 1; 3; 10}, chọn C = 1; CRF dò lưới c1 × c2, tốt nhất c1 = 0,1, c2 = 0,01 với F1 validation 89,15%.
+                    XLM-R là checkpoint của tác giả bộ dữ liệu, dùng làm mốc so sánh, không train lại.
+                    PhoBERT và ViHealthBERT: lưới 18 cấu hình gồm learning rate {5e-6; 1e-5; 3e-5} × số epoch {4; 6; 8} × weight decay {0,01; 0,05}, seed 42; cấu hình tốt nhất huấn luyện lại với 3 seed và chọn theo F1 validation.
+                    Hình: F1 validation tăng đơn điệu theo learning rate và số epoch. Với lr 5e-6 và 4 epoch, PhoBERT chỉ đạt 36,65%: mô hình chưa học đủ, tức underfitting. Cấu hình tốt nhất nằm ở góc biên của lưới, nên lưới có thể chưa đủ rộng.
+                    Lưu ý: số liệu trong hình dùng cách chấm của notebook gốc nên thấp hơn các bảng sau khoảng 1–2 điểm; hình chỉ dùng để so sánh các cấu hình với nhau.
+                    Thời gian: 1 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 8: Kết quả tổng thể -->
+            <section class="ml">
+                <h2>Kết quả tổng thể (seqeval strict, micro F1 %)</h2>
+                <table class="comparison-table ml-table">
+                    <thead>
+                        <tr>
+                            <th>Mô hình</th>
+                            <th class="num">Train F1</th>
+                            <th class="num">Val F1</th>
+                            <th class="num">Test P</th>
+                            <th class="num">Test R</th>
+                            <th class="num">Test F1</th>
+                            <th class="num">CI95 test F1</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Logistic Regression</td><td class="num">99,40</td><td class="num">83,21</td><td class="num">54,73</td><td class="num">57,81</td><td class="num">56,23</td><td class="num">55,1–57,3</td></tr>
+                        <tr><td>Linear SVM</td><td class="num">98,57</td><td class="num">84,53</td><td class="num">54,59</td><td class="num">62,09</td><td class="num">58,10</td><td class="num">57,0–59,2</td></tr>
+                        <tr class="best-row"><td><strong>CRF</strong></td><td class="num">99,96</td><td class="num">89,15</td><td class="num winner">65,78</td><td class="num">61,93</td><td class="num winner">63,80</td><td class="num">62,6–64,9</td></tr>
+                        <tr><td>XLM-R</td><td class="num">80,55</td><td class="num">79,93</td><td class="num">52,58</td><td class="num">66,24</td><td class="num">58,62</td><td class="num">57,5–59,7</td></tr>
+                        <tr><td>PhoBERT</td><td class="num">94,89</td><td class="num">85,24</td><td class="num">56,73</td><td class="num">69,39</td><td class="num">62,42</td><td class="num">61,3–63,5</td></tr>
+                        <tr><td>ViHealthBERT</td><td class="num">96,71</td><td class="num">85,18</td><td class="num">56,18</td><td class="num winner">71,04</td><td class="num">62,74</td><td class="num">61,7–63,8</td></tr>
+                    </tbody>
+                </table>
+                <div class="ml-grid g-3-2 center">
+                    <figure class="fig">
+                        <img src="assets/images/ml/fig_f1_by_split.png" alt="F1 của sáu mô hình trên train, validation và test">
+                    </figure>
+                    <div class="panel">
+                        <ul>
+                            <li><strong>CRF</strong> cao nhất trên test: <strong>63,80%</strong></li>
+                            <li>ViHealthBERT, PhoBERT đứng ngay sau; recall cao nhưng precision thấp ⇒ <strong>đoán dư</strong></li>
+                            <li>CRF là mô hình duy nhất có <strong>P &gt; R</strong></li>
+                            <li>Mọi mô hình tụt <strong>21–27 điểm</strong> từ val sang test</li>
+                        </ul>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Tất cả được chấm cùng một thước đo: F1 mức thực thể, seqeval strict, khớp chính xác cả ranh giới lẫn loại.
+                    Mô hình tốt nhất trên test là CRF với F1 63,80%. ViHealthBERT 62,74% và PhoBERT 62,42% đứng ngay sau. Linear SVM 58,10%, Logistic Regression 56,23%, XLM-R 58,62%.
+                    Precision và recall: PhoBERT và ViHealthBERT có recall cao, khoảng 69,4–71,0%, nhưng precision thấp, khoảng 56,2–56,7%, tức đoán dư thực thể. CRF là mô hình duy nhất có precision cao hơn recall, 65,8% so với 61,9%: nó chỉ gán nhãn khi gặp mẫu quen thuộc.
+                    Macro F1 thấp hơn micro F1 khoảng 5–11 điểm ở mọi mô hình vì các lớp hiếm có F1 gần 0. Khoảng tin cậy tính bằng paired bootstrap trên 3.497 câu test, 2.000 lần lấy mẫu lại.
+                    Hình bên dưới: khoảng cách giữa validation và test lớn hơn nhiều so với giữa train và validation.
+                    Thời gian: 1 phút 30 giây.
+                </aside>
+            </section>
+
+            <!-- Slide 9: Ý nghĩa thống kê -->
+            <section class="ml roomy">
+                <h2>Chênh lệch có ý nghĩa thống kê không?</h2>
+                <p class="lead"><i class="fas fa-shuffle"></i> Paired bootstrap trên 3.497 câu test, 2.000 lần lấy mẫu lại, cùng mẫu cho mọi mô hình.</p>
+                <table class="comparison-table ml-table">
+                    <thead>
+                        <tr><th>So sánh (A − B)</th><th class="num">Chênh lệch F1 (điểm)</th><th class="num">CI95</th><th>Kết luận</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>CRF − ViHealthBERT</strong></td><td class="num">+1,05</td><td class="num">[+0,08; +2,05]</td><td><span class="verdict yes">có ý nghĩa</span></td></tr>
+                        <tr><td><strong>CRF − PhoBERT</strong></td><td class="num">+1,37</td><td class="num">[+0,43; +2,31]</td><td><span class="verdict yes">có ý nghĩa</span></td></tr>
+                        <tr><td><strong>ViHealthBERT − PhoBERT</strong></td><td class="num">+0,32</td><td class="num">[−0,41; +1,04]</td><td><span class="verdict no">không có ý nghĩa</span></td></tr>
+                        <tr><td><strong>PhoBERT − XLM-R</strong></td><td class="num">+3,80</td><td class="num">[+2,89; +4,82]</td><td><span class="verdict yes">có ý nghĩa</span></td></tr>
+                        <tr><td><strong>CRF − Linear SVM</strong></td><td class="num">+5,70</td><td class="num">[+4,90; +6,50]</td><td><span class="verdict yes">có ý nghĩa</span></td></tr>
+                        <tr><td><strong>Linear SVM − Logistic Regression</strong></td><td class="num">+1,87</td><td class="num">[+1,35; +2,42]</td><td><span class="verdict yes">có ý nghĩa</span></td></tr>
+                    </tbody>
+                </table>
+                <div class="conclusion-box">
+                    <h4><i class="fas fa-scale-balanced"></i> Đọc kết quả</h4>
+                    <ul>
+                        <li>CRF hơn ViHealthBERT là <strong>lợi thế nhỏ</strong>: CI95 nằm trên 0 nhưng cận dưới rất sát 0</li>
+                        <li>ViHealthBERT và PhoBERT <strong>ngang nhau</strong> (CI95 chứa 0)</li>
+                        <li>Thêm quan hệ giữa các nhãn liền kề (CRF so với Linear SVM) mang lại <strong>+5,70 điểm</strong></li>
+                    </ul>
+                </div>
+                <aside class="notes">
+                    Để biết chênh lệch có thật hay do ngẫu nhiên, nhóm dùng paired bootstrap: lấy mẫu lại 3.497 câu test 2.000 lần, dùng cùng các mẫu cho mọi mô hình, rồi lấy khoảng 2,5–97,5% của hiệu F1.
+                    CRF hơn ViHealthBERT 1,05 điểm; khoảng tin cậy +0,08 đến +2,05 nằm trên 0 nhưng cận dưới rất sát 0, nên đây là lợi thế nhỏ.
+                    ViHealthBERT và PhoBERT không có ý nghĩa thống kê, khoảng tin cậy −0,41 đến +1,04 chứa 0, tức hai mô hình ngang nhau.
+                    Việc thêm quan hệ giữa các nhãn liền kề, tức CRF so với Linear SVM dùng cùng đặc trưng, mang lại 5,70 điểm và có ý nghĩa thống kê.
+                    Thời gian: 1 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 10: Train vs Validation -->
+            <section class="ml">
+                <h2>Train và validation: overfitting hay underfitting?</h2>
+                <div class="ml-grid" style="grid-template-columns: 2.75fr 1.75fr;">
+                    <figure class="fig">
+                        <img src="assets/images/ml/fig_vihealthbert_epoch_curve.png" alt="Loss và F1 theo epoch của ViHealthBERT trên train và validation">
+                    </figure>
+                    <figure class="fig">
+                        <img src="assets/images/ml/fig_crf_learning_curve.png" alt="Đường cong học của CRF theo kích thước tập train">
+                    </figure>
+                </div>
+                <div class="ml-grid g-2" style="margin-top:0.8em">
+                    <div class="panel">
+                        <h3><i class="fas fa-brain"></i>ViHealthBERT theo epoch</h3>
+                        <ul>
+                            <li>Epoch 1: train F1 60,0%, val F1 58,5% ⇒ <strong>underfitting</strong></li>
+                            <li>Từ epoch 5: train loss 0,056 → 0,032, val loss đi ngang, val F1 dừng ở 84,4–85,2%</li>
+                            <li>Epoch 8: train 96,81% vs val 85,13% (cách 11,7 điểm) ⇒ <strong>overfitting vừa phải</strong></li>
+                        </ul>
+                    </div>
+                    <div class="panel">
+                        <h3><i class="fas fa-chart-line"></i>CRF và tổng hợp</h3>
+                        <ul>
+                            <li>CRF: train F1 ≈ 100% ở mọi kích thước ⇒ <strong>ghi nhớ</strong> (overfit mạnh); test F1 chưa bão hoà (41,1% → 63,8%)</li>
+                            <li>Train → val: 9,6–16,2 điểm; <strong>val → test: 21–27 điểm</strong></li>
+                            <li>⇒ <strong>Lệch miền</strong> mới là nguyên nhân chính làm giảm điểm test</li>
+                        </ul>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Để có đường cong học theo epoch, nhóm huấn luyện lại ViHealthBERT với cấu hình đã chọn và sau mỗi epoch chấm lại loss và F1 trên toàn bộ train và validation.
+                    Ở epoch 1, train F1 60,0% và validation F1 58,5% đều thấp: underfitting. Từ epoch 2 đến 5, hai đường cùng tăng nhanh. Từ epoch 5, train loss tiếp tục giảm từ 0,056 xuống 0,032, train F1 lên 96,81%, trong khi validation loss đi ngang quanh 0,178 và validation F1 dừng ở khoảng 84,4–85,2%.
+                    Khoảng cách 11,7 điểm ở epoch cuối là overfitting ở mức vừa phải; validation chưa giảm rõ nên 8 epoch vẫn chấp nhận được. Bản huấn luyện lại đạt F1 test 62,15%, gần checkpoint gốc 62,74%, tức kết quả tái lập được.
+                    CRF: train F1 gần 100% ở mọi kích thước tập train, tức ghi nhớ gần như toàn bộ dữ liệu. Validation F1 tăng từ 70,3% lên 89,2%, test F1 tăng từ 41,1% lên 63,8% và chưa bão hoà: CRF thiếu dữ liệu chứ chưa chạm giới hạn mô hình.
+                    Tổng hợp: khoảng cách train–validation của các mô hình được huấn luyện là 10,8 (CRF), 11,5 (ViHealthBERT), 9,6 (PhoBERT), 14,0 (Linear SVM), 16,2 (Logistic Regression). XLM-R gần như không chênh (80,6 so với 79,9) vì nhóm không huấn luyện lại. Khoảng cách validation–test 21–27 điểm lớn hơn, nên lệch miền mới là nguyên nhân chính, không phải overfitting.
+                    Thời gian: 1 phút 30 giây.
+                </aside>
+            </section>
+
+            <!-- Slide 11: Confusion matrix -->
+            <section class="ml">
+                <h2>Confusion matrix: mô hình hay nhầm lớp nào?</h2>
+                <div class="ml-grid" style="grid-template-columns: 1fr 1.02fr;">
+                    <figure class="fig h-limit" style="--fig-h: 640px;">
+                        <img src="assets/images/ml/fig_confusion_vihealthbert.png" alt="Confusion matrix mức token của ViHealthBERT trên tập test, chuẩn hoá theo hàng">
+                    </figure>
+                    <div>
+                        <div class="panel">
+                            <h3><i class="fas fa-shuffle"></i>Cặp hay nhầm (ViHealthBERT, test)</h3>
+                            <ul>
+                                <li>"tiêu xương" → "xương": <strong>DISEASESYMTOM → ORGAN</strong> (24 lần)</li>
+                                <li>"implant": <strong>SURGERY → MEDDEVICETECHNIQUE</strong> (40 lần)</li>
+                                <li>"chính phủ": <strong>ORGANIZATION → LOCATION</strong> (9 lần)</li>
+                                <li>MEDDEVICETECHNIQUE: chỉ ~1/3 token đoán đúng</li>
+                            </ul>
+                        </div>
+                        <table class="comparison-table ml-table sm" style="margin-top:0.7em">
+                            <thead>
+                                <tr><th>Mức thực thể</th><th class="num">Khớp</th><th class="num">Lệch biên</th><th class="num">Sai loại</th><th class="num">Bỏ sót</th><th class="num">Thừa</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>LogReg</td><td class="num">4.820</td><td class="num">1.871</td><td class="num">200</td><td class="num">1.447</td><td class="num">1.420</td></tr>
+                                <tr><td>Linear SVM</td><td class="num">5.177</td><td class="num">1.865</td><td class="num">189</td><td class="num">1.107</td><td class="num">1.640</td></tr>
+                                <tr><td>CRF</td><td class="num">5.164</td><td class="num">1.429</td><td class="num">171</td><td class="num">1.574</td><td class="num">1.052</td></tr>
+                                <tr><td>XLM-R</td><td class="num">5.523</td><td class="num">1.797</td><td class="num">463</td><td class="num">555</td><td class="num">2.177</td></tr>
+                                <tr><td>PhoBERT</td><td class="num">5.786</td><td class="num">1.644</td><td class="num">424</td><td class="num">484</td><td class="num">1.796</td></tr>
+                                <tr><td>ViHealthBERT</td><td class="num">5.923</td><td class="num">1.622</td><td class="num">441</td><td class="num">352</td><td class="num">2.089</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="small-note">Lỗi chủ yếu là <strong>lệch ranh giới</strong> và <strong>đoán thừa</strong>, không phải sai loại. Test có 8.338 thực thể.</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Đây là confusion matrix mức token của ViHealthBERT trên test, chuẩn hoá theo hàng; báo cáo có đủ confusion matrix cho cả sáu mô hình.
+                    Các cặp hay bị nhầm: DISEASESYMTOM bị cắt thành ORGAN, ví dụ "tiêu xương" thành "xương" 24 lần, "ra máu" thành "máu" 11 lần: mô hình nhận ra tên cơ quan nhưng bỏ phần mô tả bệnh.
+                    SURGERY bị đoán thành MEDDEVICETECHNIQUE: "implant" 40 lần, "cấy que tránh thai" 14 lần; thủ thuật và thiết bị dùng trong thủ thuật có từ vựng trùng nhau.
+                    MEDDEVICETECHNIQUE chỉ khoảng một phần ba token được đoán đúng. ORGANIZATION bị đoán thành LOCATION: "chính phủ" 9 lần.
+                    Bảng bên phải phân loại dự đoán ở mức thực thể: ở mọi mô hình, phần lớn lỗi là lệch ranh giới và đoán thừa. Hai mô hình phân loại từng token có nhiều lỗi lệch ranh giới nhất; CRF bỏ sót nhiều nhất nhưng đoán thừa ít nhất.
+                    Thời gian: 1 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 12: Seen vs unseen -->
+            <section class="ml">
+                <h2>Phân tích lỗi: thực thể đã gặp và chưa gặp</h2>
+                <div class="ml-grid center" style="grid-template-columns: 1.35fr 1fr;">
+                    <figure class="fig">
+                        <img src="assets/images/ml/fig_seen_unseen.png" alt="Recall trên test cho thực thể đã gặp và chưa gặp trong train">
+                    </figure>
+                    <div>
+                        <div class="kpi-row" style="--kpi-cols: 2;">
+                            <div class="kpi coral"><b>83,2% | 13,9%</b><span>CRF: recall đã gặp | chưa gặp</span></div>
+                            <div class="kpi"><b>83,9% | 41,9%</b><span>ViHealthBERT: đã gặp | chưa gặp</span></div>
+                        </div>
+                        <div class="example">
+                            <p><strong>Ví dụ (thực thể chưa gặp):</strong></p>
+                            <p>"<mark>rong huyết</mark> như vậy mình sẽ phân biệt với <mark>rong kinh</mark> và <mark>rong huyết</mark>"</p>
+                            <p><i class="fas fa-check"></i> ViHealthBERT: đúng cả 3 thực thể</p>
+                            <p><i class="fas fa-xmark"></i> CRF: rong <mark class="bad">huyết</mark> → ORGAN (×2)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="conclusion-box">
+                    <p>Test có 5.782 thực thể đã gặp và 2.556 chưa gặp. Mô hình cổ điển <strong>ghi nhớ từ vựng</strong>; Transformer dùng biểu diễn học từ pretraining nên <strong>suy ra được thực thể mới</strong> (ViHealthBERT ≈ 3 lần CRF).</p>
+                </div>
+                <aside class="notes">
+                    Với dữ liệu ảnh, độ khó của mẫu có thể là ảnh mờ hay rõ. Với văn bản, yếu tố tương đương là thực thể có quen thuộc với mô hình hay không, tức đã gặp trong train hay chưa.
+                    Với thực thể đã gặp, các mô hình khá gần nhau, khoảng 77–87%, Linear SVM thậm chí cao nhất. Với thực thể chưa gặp, khác biệt rất lớn: ba mô hình cổ điển chỉ nhận ra 4,9–13,9%, còn ViHealthBERT nhận ra 41,9%.
+                    CRF: 83,2% với thực thể đã gặp nhưng chỉ 13,9% với thực thể chưa gặp. ViHealthBERT: 83,9% và 41,9%, gấp khoảng 3 lần CRF.
+                    Ví dụ thật trên test: câu "rong huyết như vậy mình sẽ phân biệt với rong kinh và rong huyết". ViHealthBERT đúng cả 3 thực thể; CRF chỉ nhận "huyết" thành ORGAN, hai lần.
+                    Vì 69% thực thể trong test đã gặp ở train, lợi thế ghi nhớ đủ để CRF dẫn đầu về F1 tổng.
+                    Thời gian: 1 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 13: Vì sao -->
+            <section class="ml roomy">
+                <h2>Vì sao mô hình này tốt hơn mô hình kia?</h2>
+                <div class="ml-grid" style="grid-template-columns: 1.15fr 1fr 1fr;">
+                    <div class="panel">
+                        <h3><i class="fas fa-link"></i>Từng token vs mô hình chuỗi</h3>
+                        <table class="comparison-table ml-table sm">
+                            <thead><tr><th>Chuyển nhãn BIO không hợp lệ (test)</th><th class="num">Số lần</th></tr></thead>
+                            <tbody>
+                                <tr><td>Logistic Regression</td><td class="num">1.127</td></tr>
+                                <tr><td>Linear SVM</td><td class="num">1.175</td></tr>
+                                <tr class="best-row"><td><strong>CRF</strong></td><td class="num winner">9</td></tr>
+                                <tr><td>Transformer</td><td class="num">595–778</td></tr>
+                            </tbody>
+                        </table>
+                        <ul>
+                            <li>Cùng đặc trưng, CRF hơn LogReg <strong>7,6</strong> và SVM <strong>5,7</strong> điểm</li>
+                            <li>Lệch biên: CRF 1.429 vs LogReg 1.871</li>
+                        </ul>
+                    </div>
+                    <div class="panel">
+                        <h3><i class="fas fa-book"></i>CRF: ghi nhớ thuật ngữ</h3>
+                        <ul>
+                            <li>Đặc trưng từ vựng nhớ chính xác thuật ngữ y khoa</li>
+                            <li><strong>69%</strong> thực thể test đã gặp ở train ⇒ thắng F1 tổng</li>
+                            <li>Precision cao nhất (65,78%), ít đoán thừa</li>
+                            <li>Nhược điểm: train F1 ≈ 100%, chỉ nhận ra <strong>13,9%</strong> thực thể mới</li>
+                        </ul>
+                    </div>
+                    <div class="panel">
+                        <h3><i class="fas fa-heart-pulse"></i>ViHealthBERT: tổng quát hoá</h3>
+                        <ul>
+                            <li>Pretrain thêm trên <strong>văn bản y tế</strong></li>
+                            <li>Nhận ra <strong>41,9%</strong> thực thể mới, gấp ≈ 3 lần CRF</li>
+                            <li>Ngang PhoBERT về F1 tổng, tốt hơn ở lớp y khoa</li>
+                            <li>XLM-R kém nhất nhóm Transformer dù nhiều tham số nhất (277M)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="conclusion-box">
+                    <p><strong>Chọn theo dữ liệu:</strong> thuật ngữ lặp lại như train → CRF (rẻ, chính xác nhất theo strict). Hội thoại chủ đề bệnh mới như test → ViHealthBERT.</p>
+                </div>
+                <aside class="notes">
+                    Phân loại từng token so với mô hình chuỗi: Logistic Regression và Linear SVM dùng cùng đặc trưng với CRF nhưng kém CRF 7,6 và 5,7 điểm F1 test. Chúng dự đoán từng âm tiết độc lập nên tạo nhiều chuỗi nhãn vô lý: trên test, Logistic Regression sinh 1.127 và Linear SVM 1.175 lần chuyển nhãn không hợp lệ, tức I- đứng sau O hoặc sau nhãn khác loại; CRF chỉ có 9 lần, các Transformer 595–778 lần. CRF học xác suất chuyển giữa nhãn liền kề nên ranh giới chính xác hơn, lỗi lệch ranh giới 1.429 so với 1.871 của Logistic Regression.
+                    CRF thắng trên test nhờ đặc trưng từ vựng giúp nhớ chính xác thuật ngữ y khoa, và 69% thực thể test đã xuất hiện trong train. Nhược điểm: overfit mạnh và chỉ nhận ra 13,9% thực thể mới.
+                    ViHealthBERT tổng quát hoá tốt nhất: 41,9% thực thể mới, gấp khoảng 3 lần CRF, nhờ pretrain thêm trên văn bản y tế. XLM-R kém nhất trong nhóm Transformer dù nhiều tham số nhất, vì là mô hình đa ngôn ngữ và dùng nguyên checkpoint của tác giả.
+                    Kết luận chọn mô hình: nếu dữ liệu chủ yếu lặp lại thuật ngữ đã có, CRF là lựa chọn tốt, rẻ và chính xác nhất theo strict; nếu phải xử lý hội thoại chủ đề bệnh mới như tập test, ViHealthBERT phù hợp hơn.
+                    Thời gian: 1 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 14: Strict vs SLUE -->
+            <section class="ml roomy">
+                <h2>Đối chiếu bài báo gốc: strict và SLUE</h2>
+                <div class="ml-grid g-3-2">
+                    <table class="comparison-table ml-table">
+                        <thead>
+                            <tr><th>Mô hình</th><th class="num">F1 strict (%)</th><th class="num">F1 kiểu SLUE (%)</th><th class="num">Bài báo công bố</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Logistic Regression</td><td class="num">56,23</td><td class="num">66,71</td><td class="num">—</td></tr>
+                            <tr><td>Linear SVM</td><td class="num">58,10</td><td class="num">67,59</td><td class="num">—</td></tr>
+                            <tr><td><strong>CRF</strong></td><td class="num winner">63,80</td><td class="num">68,22</td><td class="num">—</td></tr>
+                            <tr><td>XLM-R</td><td class="num">58,62</td><td class="num">68,53</td><td class="num">69 (P 64 / R 73)</td></tr>
+                            <tr><td>PhoBERT</td><td class="num">62,42</td><td class="num">70,58</td><td class="num">74</td></tr>
+                            <tr><td><strong>ViHealthBERT</strong></td><td class="num">62,74</td><td class="num winner">71,82</td><td class="num">—</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="panel">
+                        <h3><i class="fas fa-ruler"></i>Khác thước đo</h3>
+                        <ul>
+                            <li><strong>Strict:</strong> khớp chính xác cả ranh giới lẫn loại</li>
+                            <li><strong>SLUE:</strong> so khớp tập (loại, âm tiết), không xét ranh giới ⇒ dễ hơn</li>
+                            <li>Cùng checkpoint XLM-R: SLUE <strong>68,53%</strong> ≈ 69% bài báo</li>
+                            <li><strong>Thứ hạng đảo:</strong> SLUE ⇒ ViHealthBERT đầu, CRF đứng sau các Transformer</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="conclusion-box">
+                    <p><i class="fas fa-bullseye"></i> Nhóm chọn <strong>strict</strong> làm thước đo chính vì ứng dụng cần trích xuất <strong>đúng cả cụm</strong> thực thể để ghi vào hồ sơ.</p>
+                </div>
+                <aside class="notes">
+                    Bài báo VietMed-NER báo XLM-R base đạt F1 0,69 và PhoBERT-base-v2 đạt 0,74 trên test, cao hơn nhiều so với số của nhóm. Nguyên nhân là khác thước đo: bài báo dùng F1 kiểu SLUE, so khớp tập hợp các cặp loại và âm tiết mà không xét ranh giới thực thể. Thước đo này dễ hơn seqeval strict.
+                    Chấm lại cùng các dự đoán bằng SLUE: với cùng checkpoint XLM-R của tác giả, nhóm được 68,53%, khớp với 69% của bài báo. Như vậy phần lớn khoảng cách đến từ thước đo, không phải do nhóm huấn luyện kém.
+                    PhoBERT vẫn thấp hơn bài báo khoảng 3 điểm, có thể do bài báo dùng input đã tách từ và huấn luyện 50 epoch với batch 64.
+                    Thứ hạng thay đổi theo thước đo: theo SLUE, ViHealthBERT đứng đầu với 71,82% và CRF đứng sau các Transformer, vì Transformer nhận ra nhiều âm tiết thuộc thực thể hơn dù ranh giới chưa chính xác.
+                    Nhóm chọn strict vì ứng dụng cần trích xuất đúng cả cụm.
+                    Thời gian: 1 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 15: Kết luận & hướng phát triển -->
+            <section class="ml">
+                <h2>Kết luận và hướng phát triển</h2>
+                <div class="ml-grid" style="grid-template-columns: 1fr 1fr 1.25fr;">
+                    <div class="panel">
+                        <h3><i class="fas fa-flag-checkered"></i>Kết luận</h3>
+                        <ul>
+                            <li>Val (cùng miền) ≈ 83–89% F1; test (khác miền) chỉ 56–64%</li>
+                            <li><strong>CRF</strong> tốt nhất theo strict (63,80%), lợi thế nhỏ nhưng có ý nghĩa</li>
+                            <li>Mô hình chuỗi vượt rõ mô hình từng token</li>
+                            <li><strong>ViHealthBERT</strong> ≈ PhoBERT, tổng quát hoá tốt nhất</li>
+                            <li>Nút thắt ở dữ liệu: lệch miền, mất cân bằng, ranh giới nhãn mơ hồ</li>
+                        </ul>
+                    </div>
+                    <div class="panel">
+                        <h3><i class="fas fa-rocket"></i>Hướng phát triển</h3>
+                        <ul>
+                            <li><strong>BERT-CRF</strong>: ngữ nghĩa + ràng buộc chuyển nhãn</li>
+                            <li>Trọng số lớp / oversampling cho lớp hiếm</li>
+                            <li>Mở rộng lưới (lr 5e-5, 10 epoch)</li>
+                            <li>Tách từ VnCoreNLP cho PhoBERT</li>
+                            <li>Dữ liệu cùng miền test, từ điển thuật ngữ y khoa</li>
+                            <li>Chỉ <strong>gợi ý</strong> sửa transcript để người dùng duyệt</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <figure class="fig">
+                            <img src="assets/images/ml/fig_lora_overfitting.png" alt="LoRA sửa lỗi transcript: train loss và dev WER theo epoch cho 3 seed">
+                        </figure>
+                        <p class="small-note">Mở rộng ASR: LoRA sửa lỗi transcript — train loss ↓ (≈ 0,98 → 0,54) nhưng dev WER ↑ (seed 42: 5,36% → 6,06%) ⇒ overfitting, early stopping chọn epoch 1.</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Kết luận: trên validation cùng miền, năm mô hình do nhóm huấn luyện đạt F1 khoảng 83–89%; trên test khác miền chỉ đạt 56–64%.
+                    Theo strict, CRF là mô hình tốt nhất trên test với F1 63,80%, lợi thế nhỏ nhưng có ý nghĩa thống kê so với ViHealthBERT. Mô hình chuỗi CRF vượt rõ mô hình phân loại từng token dùng cùng đặc trưng. ViHealthBERT và PhoBERT ngang nhau, và ViHealthBERT tổng quát hoá sang thực thể mới tốt nhất. Nút thắt chính nằm ở dữ liệu: lệch miền, mất cân bằng lớp và ranh giới nhãn mơ hồ.
+                    Hướng phát triển: BERT-CRF để kết hợp biểu diễn ngữ nghĩa của ViHealthBERT và ràng buộc chuyển nhãn của CRF; trọng số lớp hoặc oversampling; mở rộng lưới siêu tham số vì cấu hình tốt nhất nằm ở biên; tách từ VnCoreNLP cho PhoBERT; bổ sung dữ liệu cùng miền test hoặc từ điển thuật ngữ y khoa.
+                    Phần mở rộng pipeline âm thanh: với LoRA sửa lỗi transcript, train loss giảm đều qua 3 epoch, khoảng 0,98 → 0,62 → 0,54, trong khi WER dev tăng, seed 42 từ 5,36% lên 6,06%, nên early stopping chọn epoch 1: một ví dụ overfitting điển hình. Vì mô hình sửa nhầm 17–22% câu vốn đã đúng, trong hệ thống thực tế chỉ nên gợi ý để người dùng duyệt, không áp dụng tự động.
+                    Thời gian: 1 phút.
+                </aside>
+            </section>
+
+            <!-- Slide 16: Kết thúc -->
+            <section class="ending-slide">
+                <h1>Cảm ơn Thầy và Anh Chị đã lắng nghe!</h1>
+                <aside class="notes">
+                    Cảm ơn Thầy và các bạn đã lắng nghe. Nhóm sẵn sàng trả lời câu hỏi.
+                    Thời gian: 15 giây.
+                </aside>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/search/search.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/zoom/zoom.js"></script>
+
+    <script>
+        Reveal.initialize({
+            width: 1600,
+            height: 900,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.5,
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            progress: true,
+            history: true,
+            center: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            plugins: [ RevealNotes, RevealSearch, RevealZoom ]
+        });
+    </script>
+</body>
+</html>
