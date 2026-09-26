@@ -1,0 +1,24 @@
+{
+  "xlm_roberta_baseline": {
+    "params_millions": 277.481509,
+    "weights_mb_fp32": 1058.5079536437988,
+    "avg_tokens_per_sentence": 24.256666666666668,
+    "latency_ms_p50": 3.4378934988126275,
+    "latency_ms_p95": 4.5391554998786905,
+    "throughput_sentences_per_s_bs32": 1670.1535668860129,
+    "peak_vram_mb": 1115.8828125,
+    "gpu": "NVIDIA GeForce RTX 5060 Ti",
+    "num_sentences": 300
+  },
+  "vihealthbert": {
+    "params_millions": 134.436133,
+    "weights_mb_fp32": 512.8331489562988,
+    "avg_tokens_per_sentence": 23.43,
+    "latency_ms_p50": 3.651790999356308,
+    "latency_ms_p95": 4.494699751103326,
+    "throughput_sentences_per_s_bs32": 2116.5148627985986,
+    "peak_vram_mb": 568.677734375,
+    "gpu": "NVIDIA GeForce RTX 5060 Ti",
+    "num_sentences": 300
+  }
+}

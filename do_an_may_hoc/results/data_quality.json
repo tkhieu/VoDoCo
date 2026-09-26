@@ -1,0 +1,62 @@
+{
+ "quality": {
+  "train": {
+   "length_mismatch": 0,
+   "empty_sentences": 0,
+   "empty_tokens": 0,
+   "non_nfc_tokens": 0,
+   "uppercase_tokens": 0,
+   "punctuation_only_tokens": 0,
+   "invalid_bio_I_after_O": 16
+  },
+  "validation": {
+   "length_mismatch": 0,
+   "empty_sentences": 0,
+   "empty_tokens": 0,
+   "non_nfc_tokens": 0,
+   "uppercase_tokens": 0,
+   "punctuation_only_tokens": 0,
+   "invalid_bio_I_after_O": 0
+  },
+  "test": {
+   "length_mismatch": 0,
+   "empty_sentences": 0,
+   "empty_tokens": 0,
+   "non_nfc_tokens": 0,
+   "uppercase_tokens": 0,
+   "punctuation_only_tokens": 0,
+   "invalid_bio_I_after_O": 7
+  }
+ },
+ "oov": {
+  "train_vocab": 2220,
+  "validation": {
+   "vocab": 1526,
+   "token_oov_rate": 0.004230393752033843,
+   "type_oov_rate": 0.063564875491481,
+   "unseen_entity_rate": 0.06680512287988924
+  },
+  "test": {
+   "vocab": 2129,
+   "token_oov_rate": 0.01830704859993563,
+   "type_oov_rate": 0.2273367778299671,
+   "unseen_entity_rate": 0.3065483329335572
+  }
+ },
+ "lineage": {
+  "train": {
+   "train": 2214,
+   "dev": 2331,
+   "cv": 71
+  },
+  "validation": {
+   "dev": 581,
+   "train": 559,
+   "cv": 14
+  },
+  "test": {
+   "test": 3437,
+   "no_exact_match": 60
+  }
+ }
+}

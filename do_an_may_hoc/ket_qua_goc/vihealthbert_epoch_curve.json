@@ -1,0 +1,78 @@
+{
+ "config": {
+  "base": "demdecuong/vihealthbert-base-syllable",
+  "lr": 3e-05,
+  "epochs": 8,
+  "weight_decay": 0.01,
+  "seed": 2024,
+  "batch": 16,
+  "warmup_ratio": 0.1
+ },
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss_logged_mean": 1.3373785714285713,
+   "train_loss": 0.45117855072021484,
+   "train_f1": 0.6001264565079938,
+   "validation_loss": 0.4696982800960541,
+   "validation_f1": 0.5854471394186261
+  },
+  {
+   "epoch": 2,
+   "train_loss_logged_mean": 0.3649714285714286,
+   "train_loss": 0.2014213353395462,
+   "train_f1": 0.8139728536930635,
+   "validation_loss": 0.25746405124664307,
+   "validation_f1": 0.7569761542364283
+  },
+  {
+   "epoch": 3,
+   "train_loss_logged_mean": 0.20975333333333335,
+   "train_loss": 0.1271742582321167,
+   "train_f1": 0.872988673883061,
+   "validation_loss": 0.2011420577764511,
+   "validation_f1": 0.8124999999999999
+  },
+  {
+   "epoch": 4,
+   "train_loss_logged_mean": 0.14062857142857146,
+   "train_loss": 0.08203573524951935,
+   "train_f1": 0.915994623655914,
+   "validation_loss": 0.18397903442382812,
+   "validation_f1": 0.8300731416907637
+  },
+  {
+   "epoch": 5,
+   "train_loss_logged_mean": 0.10143999999999999,
+   "train_loss": 0.05641331523656845,
+   "train_f1": 0.9391018896511091,
+   "validation_loss": 0.17875118553638458,
+   "validation_f1": 0.8439716312056738
+  },
+  {
+   "epoch": 6,
+   "train_loss_logged_mean": 0.0747142857142857,
+   "train_loss": 0.04531943053007126,
+   "train_f1": 0.9520842105263158,
+   "validation_loss": 0.18247291445732117,
+   "validation_f1": 0.8423347869842335
+  },
+  {
+   "epoch": 7,
+   "train_loss_logged_mean": 0.06004,
+   "train_loss": 0.03423043712973595,
+   "train_f1": 0.96478843471277,
+   "validation_loss": 0.17820456624031067,
+   "validation_f1": 0.8519770192632646
+  },
+  {
+   "epoch": 8,
+   "train_loss_logged_mean": 0.050114285714285715,
+   "train_loss": 0.031901903450489044,
+   "train_f1": 0.968115696887686,
+   "validation_loss": 0.18175488710403442,
+   "validation_f1": 0.8513444951801116
+  }
+ ],
+ "final_test_f1": 0.6214695208541524
+}

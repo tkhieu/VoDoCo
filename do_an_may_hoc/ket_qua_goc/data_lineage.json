@@ -1,0 +1,16 @@
+{
+ "train": {
+  "train": 2214,
+  "dev": 2331,
+  "cv": 71
+ },
+ "validation": {
+  "dev": 581,
+  "train": 559,
+  "cv": 14
+ },
+ "test": {
+  "test": 3437,
+  "no_exact_match": 60
+ }
+}

@@ -1,0 +1,152 @@
+[
+  {
+    "run_name": "R3_seed42",
+    "seed": 42,
+    "mode": "full",
+    "run_signature": "7fd8da81405ab2c15a70e88ff21ac4a86c53089d85a65f749cf27a4aaed49cd4",
+    "recipe_signature": "f47425309d20ccf15466a080a800989391b0388b567a0ba2eb7e9eec4d4741cd",
+    "actual_optimizer_steps": 1041,
+    "maximum_optimizer_steps": 1735,
+    "completed_epochs": 3,
+    "stopping_reason": "early_stopping",
+    "best_checkpoint": "epoch-1",
+    "best_key": [
+      0.05361881233415683,
+      0.2195738533766703,
+      1
+    ],
+    "best_hashes": {
+      "adapter_config.json": "3547ccd10f716824b434b28ca4024039fb353831b6734c2146f39105070a025d",
+      "adapter_model.safetensors": "8a6c9ff21c125c2498e3fac0f0bde9225031cf780940ac79569a5694567cb6c7"
+    },
+    "history": [
+      {
+        "epoch": 1,
+        "optimizer_steps": 347,
+        "token_cross_entropy": 0.9846325583455894,
+        "dev_wer": 0.05361881233415683,
+        "reference_overcorrection_rate": 0.2195738533766703
+      },
+      {
+        "epoch": 2,
+        "optimizer_steps": 694,
+        "token_cross_entropy": 0.6268459044518215,
+        "dev_wer": 0.059413792051727816,
+        "reference_overcorrection_rate": 0.3087757313109426
+      },
+      {
+        "epoch": 3,
+        "optimizer_steps": 1041,
+        "token_cross_entropy": 0.54681863450123,
+        "dev_wer": 0.06055753804861683,
+        "reference_overcorrection_rate": 0.323943661971831
+      }
+    ],
+    "training_seconds": 972.9721064219993,
+    "peak_vram_bytes": 2097828352,
+    "pair_count": 5544,
+    "sampler_draws_per_epoch": 5544,
+    "identity_fraction": 0.30000000000000004,
+    "loss_weighting": "non-padding target tokens within each accumulated optimizer update"
+  },
+  {
+    "run_name": "R3_seed43",
+    "seed": 43,
+    "mode": "full",
+    "run_signature": "15b2627f4eec4fc0065d73084db5a9fabd81f01ccf73f9aa1f07095a0ad4ead7",
+    "recipe_signature": "f47425309d20ccf15466a080a800989391b0388b567a0ba2eb7e9eec4d4741cd",
+    "actual_optimizer_steps": 1041,
+    "maximum_optimizer_steps": 1735,
+    "completed_epochs": 3,
+    "stopping_reason": "early_stopping",
+    "best_checkpoint": "epoch-1",
+    "best_key": [
+      0.05418306035928874,
+      0.22571325388226796,
+      1
+    ],
+    "best_hashes": {
+      "adapter_config.json": "3547ccd10f716824b434b28ca4024039fb353831b6734c2146f39105070a025d",
+      "adapter_model.safetensors": "51e4f282a529dbf3e19716ea003d61fed4f50b407d28409a44ee61f32fe0887f"
+    },
+    "history": [
+      {
+        "epoch": 1,
+        "optimizer_steps": 347,
+        "token_cross_entropy": 1.0053764012697004,
+        "dev_wer": 0.05418306035928874,
+        "reference_overcorrection_rate": 0.22571325388226796
+      },
+      {
+        "epoch": 2,
+        "optimizer_steps": 694,
+        "token_cross_entropy": 0.6111865476809493,
+        "dev_wer": 0.05581480464818373,
+        "reference_overcorrection_rate": 0.2564102564102564
+      },
+      {
+        "epoch": 3,
+        "optimizer_steps": 1041,
+        "token_cross_entropy": 0.548276310706351,
+        "dev_wer": 0.05718729984445054,
+        "reference_overcorrection_rate": 0.28602383531960995
+      }
+    ],
+    "training_seconds": 965.8455313779996,
+    "peak_vram_bytes": 2095279104,
+    "pair_count": 5544,
+    "sampler_draws_per_epoch": 5544,
+    "identity_fraction": 0.30000000000000004,
+    "loss_weighting": "non-padding target tokens within each accumulated optimizer update"
+  },
+  {
+    "run_name": "R3_seed44",
+    "seed": 44,
+    "mode": "full",
+    "run_signature": "6af4bd63a811b7253cc1505ba5568c4b9aa030ae3ef80f5bc7cf2dcc2c7a4ae7",
+    "recipe_signature": "f47425309d20ccf15466a080a800989391b0388b567a0ba2eb7e9eec4d4741cd",
+    "actual_optimizer_steps": 1041,
+    "maximum_optimizer_steps": 1735,
+    "completed_epochs": 3,
+    "stopping_reason": "early_stopping",
+    "best_checkpoint": "epoch-1",
+    "best_key": [
+      0.05733979931070241,
+      0.28494041170097506,
+      1
+    ],
+    "best_hashes": {
+      "adapter_config.json": "3547ccd10f716824b434b28ca4024039fb353831b6734c2146f39105070a025d",
+      "adapter_model.safetensors": "8a699084a2d7a9ab49d20579ac26c43859fe43b976cfd18967885adfc1f4b3c0"
+    },
+    "history": [
+      {
+        "epoch": 1,
+        "optimizer_steps": 347,
+        "token_cross_entropy": 0.9805909277669667,
+        "dev_wer": 0.05733979931070241,
+        "reference_overcorrection_rate": 0.28494041170097506
+      },
+      {
+        "epoch": 2,
+        "optimizer_steps": 694,
+        "token_cross_entropy": 0.6175494449233347,
+        "dev_wer": 0.05921554274560039,
+        "reference_overcorrection_rate": 0.29974720115565184
+      },
+      {
+        "epoch": 3,
+        "optimizer_steps": 1041,
+        "token_cross_entropy": 0.5385148760084548,
+        "dev_wer": 0.05807179674871138,
+        "reference_overcorrection_rate": 0.2939689418562658
+      }
+    ],
+    "training_seconds": 971.0776546720008,
+    "peak_vram_bytes": 2095279104,
+    "pair_count": 5544,
+    "sampler_draws_per_epoch": 5544,
+    "identity_fraction": 0.30000000000000004,
+    "loss_weighting": "non-padding target tokens within each accumulated optimizer update"
+  }
+]

@@ -1,0 +1,8 @@
+data/
+checkpoints/
+retrain_out/
+nop_bai/
+.ipynb_checkpoints/
+bao_cao/node_modules/
+bao_cao/package.json
+bao_cao/package-lock.json
