@@ -108,7 +108,7 @@ export interface components {
             code: string;
             stage: string;
             /** @enum {string} */
-            model?: "phobert" | "xlmr" | "vihealthbert-ner-seed2024";
+            model?: "logreg" | "linear-svm" | "crf" | "xlmr" | "phobert" | "vihealthbert-ner-seed2024";
             retryable: boolean;
             message: string;
         };
@@ -117,7 +117,7 @@ export interface components {
         };
         ModelIdentity: {
             /** @enum {string} */
-            logical_id: "asr" | "phobert" | "xlmr" | "vihealthbert-ner-seed2024";
+            logical_id: "asr" | "logreg" | "linear-svm" | "crf" | "xlmr" | "phobert" | "vihealthbert-ner-seed2024";
             repo_id: string | null;
             revision: string | null;
             checkpoint_sha256: string | null;
@@ -158,8 +158,11 @@ export interface components {
             api_version: "2";
             models: {
                 asr: components["schemas"]["ModelStatus"];
-                phobert: components["schemas"]["ModelStatus"];
+                logreg: components["schemas"]["ModelStatus"];
+                "linear-svm": components["schemas"]["ModelStatus"];
+                crf: components["schemas"]["ModelStatus"];
                 xlmr: components["schemas"]["ModelStatus"];
+                phobert: components["schemas"]["ModelStatus"];
                 "vihealthbert-ner-seed2024": components["schemas"]["ModelStatus"];
             };
             limits: {
@@ -182,7 +185,7 @@ export interface components {
             end: number | null;
             /** @constant */
             offset_unit: "unicode_codepoint";
-            score?: number;
+            score: number | null;
         };
         NerResult: {
             /** @enum {string} */
@@ -221,8 +224,11 @@ export interface components {
             audio: components["schemas"]["AudioMetadata"] | null;
             asr: components["schemas"]["AsrResult"] | null;
             ner: {
-                phobert?: components["schemas"]["NerResult"];
+                logreg?: components["schemas"]["NerResult"];
+                "linear-svm"?: components["schemas"]["NerResult"];
+                crf?: components["schemas"]["NerResult"];
                 xlmr?: components["schemas"]["NerResult"];
+                phobert?: components["schemas"]["NerResult"];
                 "vihealthbert-ner-seed2024"?: components["schemas"]["NerResult"];
             };
             /** @enum {string} */
@@ -258,7 +264,7 @@ export interface components {
             revision: number;
             text: string;
             text_sha256: string;
-            models: ("phobert" | "xlmr" | "vihealthbert-ner-seed2024")[];
+            models: ("logreg" | "linear-svm" | "crf" | "xlmr" | "phobert" | "vihealthbert-ner-seed2024")[];
         };
     };
     responses: never;
@@ -353,7 +359,7 @@ export interface operations {
     submitAudio: {
         parameters: {
             query: {
-                ner_model: "phobert" | "xlmr" | "vihealthbert-ner-seed2024";
+                ner_model: "logreg" | "linear-svm" | "crf" | "xlmr" | "phobert" | "vihealthbert-ner-seed2024";
             };
             header: {
                 /** @description Browser-generated 256-bit random capability, lowercase hex. Never log or put in URLs. */

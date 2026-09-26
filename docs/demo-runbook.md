@@ -1,8 +1,85 @@
 # VoDoCo operator runbook
 
-Start, demo, stop and recover the password-protected VoDoCo demo. Every command here was exercised locally except the provider-facing steps, which are marked **unverified** and exist only until an authorized operator runs them. Live measurements and the local-vs-deployed split are in [`demo-acceptance.md`](demo-acceptance.md); model provenance and rights are in [`demo-readiness.md`](demo-readiness.md).
+Start, demo, stop and recover the password-protected VoDoCo demo. Re-run the six-model preparation and acceptance commands for each release; dated execution evidence is in [`demo-acceptance.md`](demo-acceptance.md). Provider-facing steps are marked **unverified** until an authorized operator runs them. Model provenance and rights are in [`demo-readiness.md`](demo-readiness.md).
 
 Never place the demo password, the service token, the registry token or provider account keys in this repository, in a shell history on a shared machine, or in a screenshot. Never copy raw patient data into the demo.
+
+## Prepare the six-model NER release
+
+The public `/v2/models` registry contains one ASR model plus six NER models in this fixed ladder:
+`logreg`, `linear-svm`, `crf`, `xlmr`, `phobert`, `vihealthbert-ner-seed2024`.
+`/v1/models` remains the original `asr`/`phobert`/`xlmr` compatibility surface.
+
+Prepare the complete release with one command. The destination must not already exist:
+`$PHOBERT_ZIP` must be the exact selected export archive. `$VIHEALTHBERT_DIR` must be a
+non-symlink directory whose basename is exactly `vihealthbert-ner-seed2024`; the
+preparation script owns and enforces both runtime-asset allowlists.
+
+
+```sh
+uv run --project services/inference --frozen --group export \
+  python scripts/prepare_demo_models.py \
+  --phobert-zip "$PHOBERT_ZIP" \
+  --vihealthbert-dir "$VIHEALTHBERT_DIR" \
+  --dataset-dir do_an_may_hoc/data/vietmed-ner \
+  --output .local/vodoco-models/release
+```
+
+Omitting `--dataset-dir` uses `do_an_may_hoc/data/vietmed-ner` when present and otherwise
+downloads VietMed-NER revision `e3d0393c733858402a7c04228f45d351d2ce6d8f`; all three
+parquet split hashes are verified in either case. ASR and XLM-R are downloaded at their
+pinned revisions unless `--asr-root` and `--xlmr-dir` point to already available source
+snapshots. The command copies and verifies the four existing neural checkpoints, retrains
+the three team-owned classical models with the notebook feature function and
+hyperparameters, reopens every classical artifact, requires identical test predictions,
+and checks both validation and test strict entity F1 against
+`do_an_may_hoc/results/model_comparison.json` within `0.0005` before publishing the
+release plus both identical manifest copies.
+
+Classical runtime artifacts are deliberately non-executable:
+
+| Model | Runtime files | Device | Entity score |
+|---|---|---|---|
+| Logistic Regression | `model.npz`, `features.json`, `config.json` | CPU | `null` |
+| Linear SVM | `model.npz`, `features.json`, `config.json` | CPU | `null` |
+| CRF | native `model.crfsuite`, `config.json` | CPU | `null` |
+
+The linear NPZ files contain only numeric coefficient/intercept arrays and Unicode class
+names and are opened with `allow_pickle=False`. CRF uses the native CRFsuite format.
+Pickle and joblib are not runtime formats. Every file is named in `required_assets`, hashed
+with SHA-256, and checked before load. Classical text handling splits on whitespace,
+trims Unicode punctuation at token boundaries, applies NFC plus lowercase for features,
+and retains source code-point offsets. The hard limit is 4,096 classical tokens; the
+Transformer limit remains 256 tokens including special tokens.
+
+Running `scripts/export_classical_ner.py` directly emits a verified classical-only
+`classical-manifest.json`; it is not a deployable seven-model release. Operators should
+normally use `prepare_demo_models.py`, which assembles and verifies the complete release.
+
+Run the offline preflight against that exact release:
+
+```sh
+uv run --project services/inference --frozen \
+  python -m vodoco_inference.preflight \
+  --manifest services/inference/model-manifest.json \
+  --model-root .local/vodoco-models/release \
+  --audio giai_doan_14_hoan_thien/audio.wav \
+  --report .local/vodoco-preflight.json
+```
+
+Accept only a `ready` report with all seven runtime models loaded: classical models on
+`cpu`, ASR and the three Transformer NER models on `cuda:0`, and all six NER results
+`succeeded`. A manifest/hash, dataset/F1, tokenizer, device, or inference mismatch is a
+release failure; do not bypass it.
+
+With the prepared service running, verify the exact registry and required six-model text
+path without exposing the credential:
+
+```sh
+INFERENCE_SERVICE_TOKEN="$INFERENCE_SERVICE_TOKEN" \
+  uv run --project services/inference --frozen python \
+  scripts/verify_six_model_demo.py --base-url http://127.0.0.1:8000
+```
 
 ## Docker Compose + Cloudflare Tunnel (`vodoco.hieutk.dev`)
 
@@ -85,7 +162,7 @@ Do not add `ports:` to the Compose services. A direct host port would bypass Clo
 
 - `cloudflared` health proves an active Cloudflare edge connection, not that the hostname route or Access policy is correct.
 - Web `/healthz` proves the BFF process is alive.
-- Inference `/health/live` proves the ASGI process is alive. Authenticated `/v1/models` is the original three-model compatibility surface; the current web demo uses `/v2/models` for four-model readiness.
+- Inference `/health/live` proves the ASGI process is alive. Authenticated `/v1/models` is the original three-model compatibility surface; the current web demo uses `/v2/models` for one ASR plus six NER readiness states.
 - An unauthenticated HTTP `200` from `https://vodoco.hieutk.dev` is a deployment failure. Cloudflare Access must challenge or deny before the app is reachable.
 - Keep Cloudflare cache rules away from `/api/*`; the BFF returns `Cache-Control: no-store`.
 
@@ -106,7 +183,7 @@ Only three things below are genuinely owner-only: the licence decision, the choi
 
 ### 0.1 Licence position (cleared 2026-09-19)
 
-The owner authorised the original three checkpoints and subsequently supplied `vihealthbert-ner-seed2024` for this same password-protected demo, bringing the release to four checkpoints. Public redistribution and weights in Git remain prohibited. The ViHealthBERT export declares no source repository, revision or licence, so its authorization is private-demo-only. The attestations are recorded in `services/inference/model-manifest.json` and [`../services/inference/THIRD_PARTY_NOTICES.md`](../services/inference/THIRD_PARTY_NOTICES.md), which also carries the PhoBERT modification statement, the verbatim AGPL text at `services/inference/licenses/AGPL-3.0.txt`, and the section-13 Corresponding Source offer. Both are shipped inside the image under `/opt/vodoco/`.
+The owner authorised the four neural checkpoints used by this password-protected demo. The release additionally contains three team-trained classical NER artifacts derived from the pinned VietMed-NER train split: Logistic Regression, Linear SVM and CRF. Public redistribution and weights in Git remain prohibited. The ViHealthBERT export declares no source repository, revision or licence, so its authorization is private-demo-only. The attestations are recorded in `services/inference/model-manifest.json` and [`../services/inference/THIRD_PARTY_NOTICES.md`](../services/inference/THIRD_PARTY_NOTICES.md), which also carries the PhoBERT modification statement, the verbatim AGPL text at `services/inference/licenses/AGPL-3.0.txt`, and the section-13 Corresponding Source offer. Both are shipped inside the image under `/opt/vodoco/`.
 
 Two facts to keep in mind when pushing:
 
@@ -139,7 +216,7 @@ Create a second credential scoped to read/pull only for the Pod. Push credential
 1. Create the account, add billing credit, and confirm the account may run a public-IP Pod.
 2. Create a RunPod secret named `vodoco_inference_token` holding a fresh `openssl rand -hex 32` value. It must differ from any token used locally.
 3. Read the live on-demand price for a single suitable GPU in the console and record it, along with a hard shutdown deadline and a maximum acceptable spend. Availability changes hourly; no price quoted in this repository should be trusted.
-4. Confirm the chosen GPU has comfortable headroom above the measured four-model peak of 3,179,282,432 bytes reserved (approximately 2.96 GiB), and that the region's driver supports the CUDA 12.8 runtime the image ships.
+4. Confirm the chosen GPU has comfortable headroom above the measured neural-model peak of 3,179,282,432 bytes reserved (approximately 2.96 GiB), and that the region's driver supports the CUDA 12.8 runtime the image ships. Re-measure the final seven-model process because the three classical models also consume host RAM.
 5. Create the template from `deploy/runpod/template-settings.json` with the digest from step 1, container disk 32 GB, no volume, and port `8000/http`.
 
 ### 0.4 Prepare the Replit side
@@ -165,7 +242,7 @@ docker image inspect --format '{{index .RepoDigests 0}}' <registry>/vodoco-infer
 
 Record the printed digest in the handoff. Deploy by digest, not by tag, so a later push cannot change what the Pod runs.
 
-The image already contains the frozen Python environment, the real 31-asset model release at `/opt/vodoco/models`, the manifest at `/opt/vodoco/model-manifest.json`, the third-party notices at `/opt/vodoco/THIRD_PARTY_NOTICES.md` with the licence texts under `/opt/vodoco/licenses/`, `ffmpeg`, a non-root user (uid 10001) and read-only weights. It reads `INFERENCE_SERVICE_TOKEN`, `VODOCO_MODEL_ROOT`, `VODOCO_MODEL_MANIFEST` and `VODOCO_TEMP_DIR` from the environment and serves port 8000.
+The image already contains the frozen Python environment, the real 39-asset release (one ASR plus six NER models) at `/opt/vodoco/models`, the manifest at `/opt/vodoco/model-manifest.json`, the third-party notices at `/opt/vodoco/THIRD_PARTY_NOTICES.md` with the licence texts under `/opt/vodoco/licenses/`, `ffmpeg`, a non-root user (uid 10001) and read-only weights. It reads `INFERENCE_SERVICE_TOKEN`, `VODOCO_MODEL_ROOT`, `VODOCO_MODEL_MANIFEST` and `VODOCO_TEMP_DIR` from the environment and serves port 8000.
 
 Before pushing, confirm the licence material actually reached the image and is readable by the runtime user. `.dockerignore` is an allowlist (`**` first), so newly added paths are excluded until they are allowed, and a directory copied with `--chmod=0444` loses its execute bit and becomes untraversable — both were caught here only by inspecting the built image:
 
@@ -199,39 +276,33 @@ Fill `deploy/runpod/template-settings.json` (already present) and create one Pod
 | Setting | Required value |
 |---|---|
 | Template source | the digest recorded in step 1 |
-| Container disk | 32 GB (the image plus four-model release is approximately 25 GB; no volume is mounted) |
+| Container disk | 32 GB (the image plus seven-model runtime release remains dominated by the four neural checkpoints; no volume is mounted) |
 | Exposed port | `8000/http`, which yields the fixed origin `https://<pod-id>-8000.proxy.runpod.net` |
 | `INFERENCE_SERVICE_TOKEN` | Pod secret, `openssl rand -hex 32`, at least 32 printable ASCII bytes, never reused from local runs |
 | `VODOCO_MODEL_ROOT` / `VODOCO_MODEL_MANIFEST` / `VODOCO_TEMP_DIR` | `/opt/vodoco/models`, `/opt/vodoco/model-manifest.json`, `/tmp/vodoco-inference` |
-| GPU | one device with comfortable headroom above the measured four-model peak of approximately 2.96 GiB reserved; confirm compute capability and driver on the Pod itself |
+| GPU | one device with comfortable headroom above the measured neural-model peak of approximately 2.96 GiB reserved; confirm the final seven-model process, compute capability and driver on the Pod itself |
 
 Keep exactly one Pod. The service takes an exclusive directory lock and refuses a second ASGI process, so a duplicate Pod cannot silently become a second CUDA owner.
 
 ## 3. Verify the Pod before wiring the app
 
 ```sh
-curl -s -o /dev/null -w '%{http_code}\n' https://<pod-id>-8000.proxy.runpod.net/v2/models   # expect 401
-curl -s https://<pod-id>-8000.proxy.runpod.net/health/live                                   # expect {"status":"ok"} (the only unauthenticated route)
-curl -s -H "Authorization: Bearer $INFERENCE_SERVICE_TOKEN" \
-  https://<pod-id>-8000.proxy.runpod.net/v2/models | head -c 600                              # expect asr/phobert/xlmr/vihealthbert-ner-seed2024 ready
+curl -s -o /dev/null -w '%{http_code}\n' \
+  https://<pod-id>-8000.proxy.runpod.net/v2/models                    # expect 401
+curl -s https://<pod-id>-8000.proxy.runpod.net/health/live             # expect {"status":"ok"}
+INFERENCE_SERVICE_TOKEN="$INFERENCE_SERVICE_TOKEN" \
+  uv run --project services/inference --frozen python \
+  scripts/verify_six_model_demo.py \
+  --base-url https://<pod-id>-8000.proxy.runpod.net
 ```
 
-The Pod is reachable before the checkpoints finish loading, so poll `/v2/models` until all four report `ready` rather than treating the first response as final. `/v1/models` deliberately remains limited to the original three keys for strict-client compatibility. Re-measure cold-load time and GPU peak on the final four-model image; the earlier three-model figures do not include ViHealthBERT.
-
-Then run one real job for each NER selection to prove decode and model routing on the Pod's own GPU:
-
-```sh
-id=$(uuidgen); token=$(openssl rand -hex 32)
-sha=$(sha256sum giai_doan_14_hoan_thien/audio.wav | cut -d' ' -f1)
-curl -s -X PUT "https://<pod-id>-8000.proxy.runpod.net/v1/audio-jobs/$id?ner_model=phobert" \
-  -H "Authorization: Bearer $INFERENCE_SERVICE_TOKEN" -H "X-Job-Token: $token" \
-  -H "X-Session-Id: $(uuidgen)" -H "X-Input-Sha256: $sha" \
-  -H 'Content-Type: application/octet-stream' --data-binary @giai_doan_14_hoan_thien/audio.wav
-curl -s -H "Authorization: Bearer $INFERENCE_SERVICE_TOKEN" -H "X-Job-Token: $token" \
-  "https://<pod-id>-8000.proxy.runpod.net/v1/jobs/$id"
-```
-
-Expect `202` then a terminal `succeeded` job whose `asr.text_sha256` matches the local value `e84f1d06d764f319e37e7f060f388429c010a0a05a4a95a2c74ddae383e4bbb3` and whose model identities list `cuda:0`. A different hash means the wrong checkpoint or a different decode path: stop and investigate before publishing.
+The checked-in verifier polls `/v2/models` until all seven runtime models are ready,
+requires the exact model order and device assignment, then submits the fixed acceptance
+sentence in three bounded two-model jobs. It checks source identity, terminal success,
+classical null scores and every available source offset. The classical identities must
+report `cpu`; ASR, XLM-R, PhoBERT and ViHealthBERT must report `cuda:0`. `/v1/models`
+deliberately remains limited to the original three keys for strict-client compatibility.
+Re-measure cold-load time, host RAM and GPU peak on the final release.
 
 ## 4. Configure and publish the Replit app
 
@@ -270,6 +341,6 @@ Rollback: republish the previous Replit deployment, point `INFERENCE_BASE_URL` a
 
 ## 7. What is already proven, and what is not
 
-Proven locally against the real models and the production build: authenticated readiness, upload and duration boundaries, admission and replay isolation, immutable ASR, both NER adapters, partial results, worker supervision and cleanup, tokenizer limits, microphone allow/deny and recording, TXT/JSON provenance, responsive and zoom layout, reduced motion, GPU execution inside the published image, and a clean `docker stop`.
+Proven locally against the real models and the production build: authenticated readiness, upload and duration boundaries, admission and replay isolation, immutable ASR, Transformer and classical NER adapters, partial results, worker supervision and cleanup, tokenizer limits, microphone allow/deny and recording, TXT/JSON provenance, responsive and zoom layout, reduced motion, GPU execution inside the published image, and a clean `docker stop`.
 
 Not proven until an operator performs steps 2–6: provider ingress and cold start, the password gate under bypass attempts, proxy-to-proxy behaviour at the exact 10 MiB boundary, Pod-specific GPU/driver readiness, published rollback and confirmed billing stop.

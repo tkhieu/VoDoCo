@@ -78,8 +78,11 @@ paths:
         schema: &id014
           type: string
           enum:
-          - phobert
+          - logreg
+          - linear-svm
+          - crf
           - xlmr
+          - phobert
           - vihealthbert-ner-seed2024
       - name: X-Session-Id
         in: header
@@ -234,8 +237,11 @@ components:
           type: string
           enum:
           - asr
-          - phobert
+          - logreg
+          - linear-svm
+          - crf
           - xlmr
+          - phobert
           - vihealthbert-ner-seed2024
         repo_id:
           anyOf:
@@ -349,16 +355,25 @@ components:
           properties:
             asr:
               $ref: '#/components/schemas/ModelStatus'
-            phobert:
+            logreg:
+              $ref: '#/components/schemas/ModelStatus'
+            linear-svm:
+              $ref: '#/components/schemas/ModelStatus'
+            crf:
               $ref: '#/components/schemas/ModelStatus'
             xlmr:
+              $ref: '#/components/schemas/ModelStatus'
+            phobert:
               $ref: '#/components/schemas/ModelStatus'
             vihealthbert-ner-seed2024:
               $ref: '#/components/schemas/ModelStatus'
           required:
           - asr
-          - phobert
+          - logreg
+          - linear-svm
+          - crf
           - xlmr
+          - phobert
           - vihealthbert-ner-seed2024
           additionalProperties: false
         limits:
@@ -422,9 +437,11 @@ components:
         offset_unit:
           const: unicode_codepoint
         score:
-          type: number
-          minimum: 0
-          maximum: 1
+          anyOf:
+          - type: number
+            minimum: 0
+            maximum: 1
+          - type: 'null'
       required:
       - id
       - text
@@ -432,6 +449,7 @@ components:
       - start
       - end
       - offset_unit
+      - score
       additionalProperties: false
     NerResult:
       type: object
@@ -535,9 +553,15 @@ components:
         ner:
           type: object
           properties:
-            phobert:
+            logreg:
+              $ref: '#/components/schemas/NerResult'
+            linear-svm:
+              $ref: '#/components/schemas/NerResult'
+            crf:
               $ref: '#/components/schemas/NerResult'
             xlmr:
+              $ref: '#/components/schemas/NerResult'
+            phobert:
               $ref: '#/components/schemas/NerResult'
             vihealthbert-ner-seed2024:
               $ref: '#/components/schemas/NerResult'

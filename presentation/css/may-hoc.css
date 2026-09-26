@@ -1,0 +1,335 @@
+/* Extra styles for the "Máy học" deck (may-hoc.html).
+   Loaded after custom.css; reuses its midnight palette variables. */
+
+.reveal .slides section.ml > h2:first-child {
+    margin-bottom: 0.45em;
+}
+
+.reveal .slides section.ml .lead {
+    margin: 0 0 0.7em;
+    font-size: 0.8em;
+    color: #D3DEE2;
+}
+
+/* ---------- grids ---------- */
+.ml-grid {
+    display: grid;
+    gap: 1.2em;
+    align-items: start;
+}
+
+.ml-grid.g-2 { grid-template-columns: 1fr 1fr; }
+.ml-grid.g-3-2 { grid-template-columns: 3fr 2fr; }
+.ml-grid.g-2-3 { grid-template-columns: 2fr 3fr; }
+.ml-grid.g-11-9 { grid-template-columns: 11fr 9fr; }
+.ml-grid.center { align-items: center; }
+
+/* ---------- figure cards (white-background matplotlib PNGs) ---------- */
+.reveal .fig {
+    margin: 0;
+    padding: 8px;
+    background: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+}
+
+.reveal .fig img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+}
+
+.reveal .fig.h-limit img {
+    width: auto;
+    max-height: var(--fig-h, 600px);
+    margin: 0 auto;
+}
+
+.reveal .fig figcaption {
+    margin-top: 4px;
+    color: #4A5560;
+    font-size: 0.55em;
+    text-align: center;
+    font-style: italic;
+}
+
+/* ---------- panels & lists ---------- */
+.reveal .panel {
+    padding: 0.9em 1.15em;
+    border: 1px solid rgba(220, 235, 238, 0.22);
+    border-radius: 12px;
+    background: rgba(10, 24, 35, 0.72);
+}
+
+.reveal .panel h3 {
+    margin: 0 0 0.45em;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85em;
+    color: var(--deck-mint);
+}
+
+.reveal .panel h3 i {
+    margin-right: 0.35em;
+    color: var(--deck-coral);
+}
+
+.reveal .panel ul,
+.reveal .conclusion-box ul {
+    margin: 0 0 0 1.05em;
+    padding: 0;
+}
+
+.reveal .slides section.ml .panel li,
+.reveal .slides section.ml .conclusion-box li {
+    font-size: 0.78em;
+    line-height: 1.35;
+    margin-bottom: 0.38em;
+}
+
+.reveal .slides section.ml .conclusion-box {
+    margin-top: 0.9em;
+    padding: 0.8em 1.2em;
+}
+
+.reveal .slides section.ml .conclusion-box h4 {
+    margin-bottom: 0.4em;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85em;
+}
+
+.reveal .slides section.ml .conclusion-box p {
+    margin: 0;
+    font-size: 0.78em;
+}
+
+/* ---------- KPI tiles ---------- */
+.kpi-row {
+    display: grid;
+    grid-template-columns: repeat(var(--kpi-cols, 3), 1fr);
+    gap: 0.8em;
+    margin-bottom: 0.9em;
+}
+
+.reveal .kpi {
+    padding: 0.6em 0.9em;
+    border: 1px solid rgba(220, 235, 238, 0.22);
+    border-radius: 10px;
+    background: rgba(10, 24, 35, 0.72);
+}
+
+.reveal .kpi b {
+    display: block;
+    color: var(--deck-mint);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.45em;
+    line-height: 1.1;
+}
+
+.reveal .kpi.coral b { color: var(--deck-coral); }
+.reveal .kpi.gold b { color: var(--deck-gold); }
+
+.reveal .kpi span {
+    display: block;
+    margin-top: 0.2em;
+    color: #D3DEE2;
+    font-size: 0.66em;
+    line-height: 1.3;
+}
+
+/* ---------- tables ---------- */
+.reveal .slides section .comparison-table.ml-table {
+    margin: 0.3em 0 0.6em;
+    font-size: 0.74em;
+}
+
+.reveal .slides section .comparison-table.ml-table.sm {
+    font-size: 0.68em;
+}
+
+.reveal .comparison-table.ml-table th {
+    padding: 0.55em 0.75em;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.92em;
+}
+
+.reveal .comparison-table.ml-table td {
+    padding: 0.5em 0.75em;
+}
+
+.reveal .comparison-table.ml-table td.num,
+.reveal .comparison-table.ml-table th.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.reveal .slides section .comparison-table.ml-table tr.best-row td {
+    background: rgba(101, 208, 176, 0.14);
+    color: #F4F7F6;
+}
+
+.reveal .slides section .comparison-table.ml-table td.winner {
+    color: var(--deck-mint);
+    font-weight: 700;
+}
+
+.reveal .slides section .comparison-table.ml-table tr.group-row td {
+    padding: 0.3em 0.75em;
+    background: rgba(35, 73, 90, 0.55);
+    color: var(--deck-gold);
+    font-size: 0.85em;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.reveal .verdict {
+    display: inline-block;
+    padding: 0.12em 0.6em;
+    border-radius: 999px;
+    font-size: 0.9em;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.reveal .verdict.yes {
+    color: #0E2A26;
+    background: var(--deck-mint);
+}
+
+.reveal .verdict.no {
+    color: #3A1410;
+    background: var(--deck-coral);
+}
+
+/* ---------- BIO token strip ---------- */
+.bio-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35em;
+    margin: 0.3em 0 0.2em;
+}
+
+.reveal .bio-tok {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.35em 0.55em;
+    border: 1px solid rgba(220, 235, 238, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 0.72em;
+}
+
+.reveal .bio-tok b {
+    color: #F4F7F6;
+    font-weight: 600;
+}
+
+.reveal .bio-tok small {
+    margin-top: 0.15em;
+    color: var(--deck-muted);
+    font-family: 'SF Mono', Monaco, monospace;
+    font-size: 0.72em;
+}
+
+.reveal .bio-tok.ent {
+    border-color: rgba(244, 124, 104, 0.7);
+    background: rgba(244, 124, 104, 0.16);
+}
+
+.reveal .bio-tok.ent small { color: var(--deck-coral); }
+
+/* ---------- compact pipeline ---------- */
+.reveal .slides section.ml .pipeline.mini {
+    margin: 0.2em 0 0.9em;
+    padding: 0;
+}
+
+.reveal .slides section.ml .pipeline.mini .pipeline-step {
+    min-width: 0;
+    flex: 1;
+    padding: 0.6em 0.5em;
+}
+
+.reveal .slides section.ml .pipeline.mini .step-icon { font-size: 1.3em; }
+.reveal .slides section.ml .pipeline.mini .step-label { font-size: 0.7em; }
+.reveal .slides section.ml .pipeline.mini .step-desc { font-size: 0.56em; }
+.reveal .slides section.ml .pipeline.mini .pipeline-arrow { padding: 0 0.35em; font-size: 1.1em; }
+
+.reveal .slides section.ml .pipeline.mini .pipeline-step.focus {
+    border: 2px solid var(--deck-coral);
+    background: rgba(244, 124, 104, 0.18);
+}
+
+/* ---------- example quote ---------- */
+.reveal .example {
+    padding: 0.7em 1em;
+    border-left: 4px solid var(--deck-gold);
+    border-radius: 8px;
+    background: rgba(232, 186, 114, 0.1);
+}
+
+.reveal .slides section.ml .example p {
+    margin: 0 0 0.35em;
+    font-size: 0.76em;
+}
+
+.reveal .example mark {
+    padding: 0 0.2em;
+    white-space: nowrap;
+    border-radius: 4px;
+    color: #0E2A26;
+    background: var(--deck-mint);
+}
+
+.reveal .example mark.bad {
+    color: #3A1410;
+    background: var(--deck-coral);
+}
+
+.reveal .slides section.ml .small-note {
+    margin: 0.4em 0 0;
+    color: var(--deck-muted);
+    font-size: 0.62em;
+    font-style: italic;
+}
+
+/* Title slide subtitle for this deck */
+.reveal .slides section.title-slide .deck-subtitle {
+    position: relative;
+    z-index: 1;
+    margin: 0.2em 0 0;
+    color: var(--deck-mint);
+    font-family: 'Inter', sans-serif;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+/* Roomy slides: larger body text where content is light; keep title size. */
+.reveal .slides section.ml.roomy {
+    font-size: 1.14em;
+}
+
+.reveal .slides section.ml.roomy > h2:first-child {
+    font-size: 1.71em;
+}
+
+.reveal .slides section.ml.roomy .bio-tok {
+    font-size: 0.8em;
+}
+
+/* Reveal sets display:block inline on the current slide; keep the
+   closing slide vertically centred. */
+.reveal .slides section.ending-slide {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.reveal .slides section.ending-slide h1 {
+    margin: 0;
+}

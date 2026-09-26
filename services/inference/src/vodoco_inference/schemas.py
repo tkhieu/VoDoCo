@@ -12,11 +12,16 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 UPLOAD_BYTES = 10_485_760
 TEXT_BODY_BYTES = 32_768
 RESULT_BYTES = 262_144
-MODEL_IDS = ("asr", "phobert", "xlmr", "vihealthbert-ner-seed2024")
-NER_IDS = ("phobert", "xlmr", "vihealthbert-ner-seed2024")
+CLASSICAL_TOKEN_LIMIT = 4096
+CLASSICAL_NER_IDS = ("logreg", "linear-svm", "crf")
+TRANSFORMER_NER_IDS = ("xlmr", "phobert", "vihealthbert-ner-seed2024")
+NER_IDS = (*CLASSICAL_NER_IDS, *TRANSFORMER_NER_IDS)
+MODEL_IDS = ("asr", *NER_IDS)
 TERMINAL = frozenset(("succeeded", "partial", "failed"))
 HEX256 = re.compile(r"[a-f0-9]{64}\Z")
-NerModel = Literal["phobert", "xlmr", "vihealthbert-ner-seed2024"]
+NerModel = Literal[
+    "logreg", "linear-svm", "crf", "xlmr", "phobert", "vihealthbert-ner-seed2024"
+]
 
 
 def encoded(value: object) -> bytes:

@@ -19,6 +19,7 @@ MAX_SECONDS = 30
 SAMPLE_RATE = 16000
 MAX_SAMPLES = MAX_SECONDS * SAMPLE_RATE
 DEMUXERS = "wav,mp3,mov,matroska,webm"
+DECODE_TIMEOUT = 30
 
 
 @dataclass(frozen=True)
@@ -71,7 +72,7 @@ def _bounded_process(command: list[str], limit: int, deadline: float, fd: int) -
 
 
 def decode_audio(path: Path) -> DecodedAudio:
-    deadline = time.monotonic() + 15
+    deadline = time.monotonic() + DECODE_TIMEOUT
     try:
         fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
     except OSError as exc:

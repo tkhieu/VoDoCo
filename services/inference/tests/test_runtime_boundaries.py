@@ -3,6 +3,7 @@ from pathlib import Path
 from types import SimpleNamespace
 import pytest
 
+from vodoco_inference.classical import adapt_classical_entities, tokenize_classical
 from vodoco_inference.runtime import ModelRuntime, adapt_entities
 
 
@@ -65,3 +66,75 @@ def test_256_includes_special_tokens_and_never_silently_truncates(model_id):
     assert over["error"]["code"] == "NER_INPUT_TOO_LONG"
     assert over["entities"] == []
     assert over["revision"] == 5 and over["source"] == "review"
+
+
+def test_classical_preprocessing_lowercases_nfc_and_trims_boundary_punctuation_with_offsets():
+    text = "  (ĐAU),  E\u0301!!!"
+    tokens = tokenize_classical(text)
+    assert [token.normalized for token in tokens] == ["đau", "é"]
+    assert [(token.start, token.end, text[token.start:token.end]) for token in tokens] == [
+        (3, 6, "ĐAU"),
+        (10, 12, "E\u0301"),
+    ]
+
+
+def test_classical_bio_merge_preserves_source_text_and_uses_null_scores():
+    text = "tim đau đầu"
+    tokens = tokenize_classical(text)
+    entities = adapt_classical_entities(
+        text,
+        tokens,
+        ["I-ORGAN", "B-DISEASESYMTOM", "I-DISEASESYMTOM"],
+        "crf",
+        7,
+    )
+    assert [(entity["text"], entity["label"], entity["start"], entity["end"]) for entity in entities] == [
+        ("tim", "ORGAN", 0, 3),
+        ("đau đầu", "DISEASESYMTOM", 4, 11),
+    ]
+    assert all(entity["score"] is None for entity in entities)
+
+
+@pytest.mark.parametrize("model_id", ["logreg", "linear-svm", "crf"])
+def test_classical_runtime_predicts_lowercase_tokens_but_returns_exact_source_offsets(model_id):
+    class Predictor:
+        def predict(self, words):
+            assert words == ["bệnh", "nhân", "đau", "đầu"]
+            return ["O", "O", "B-DISEASESYMTOM", "I-DISEASESYMTOM"]
+
+    runtime = ModelRuntime(Path("unused"), Path("unused"))
+    runtime.model_statuses[model_id].update({
+        "status": "ready",
+        "token_limit": 4096,
+        "identity": {"logical_id": model_id},
+    })
+    runtime.pipelines[model_id] = Predictor()
+    result = runtime.recognize("BỆNH nhân đau ĐẦU,", model_id, "review", 3)
+    assert result["status"] == "succeeded"
+    assert result["entities"] == [{
+        "id": f"{model_id}:3:0",
+        "text": "đau ĐẦU",
+        "label": "DISEASESYMTOM",
+        "start": 10,
+        "end": 17,
+        "offset_unit": "unicode_codepoint",
+        "score": None,
+    }]
+
+
+def test_classical_runtime_rejects_more_than_4096_tokens_without_truncation():
+    class Predictor:
+        def predict(self, words):
+            raise AssertionError("over-limit input must not reach inference")
+
+    runtime = ModelRuntime(Path("unused"), Path("unused"))
+    runtime.model_statuses["crf"].update({
+        "status": "ready",
+        "token_limit": 4096,
+        "identity": {"logical_id": "crf"},
+    })
+    runtime.pipelines["crf"] = Predictor()
+    result = runtime.recognize("x " * 4097, "crf", "raw", 0)
+    assert result["status"] == "failed"
+    assert result["error"]["code"] == "NER_INPUT_TOO_LONG"
+    assert result["entities"] == []

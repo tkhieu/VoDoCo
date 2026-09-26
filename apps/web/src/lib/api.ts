@@ -2,21 +2,37 @@ import type { components } from '../../../../contracts/generated/demo-api';
 export type Schema = components['schemas'];
 export type Model = Schema['NerRequest']['models'][number];
 export type Source = Schema['NerRequest']['source'];
-export const nerModels = ['phobert', 'xlmr', 'vihealthbert-ner-seed2024'] as const satisfies readonly Model[];
+export const nerModels = [
+  'logreg',
+  'linear-svm',
+  'crf',
+  'xlmr',
+  'phobert',
+  'vihealthbert-ner-seed2024',
+] as const satisfies readonly Model[];
 export const modelName: Record<Model, string> = {
-  phobert: 'PhoBERT',
+  logreg: 'Logistic Regression',
+  'linear-svm': 'Linear SVM',
+  crf: 'CRF',
   xlmr: 'XLM-R',
+  phobert: 'PhoBERT',
   'vihealthbert-ner-seed2024': 'ViHealthBERT NER',
 };
 export const modelOption: Record<Model, string> = {
-  phobert: 'PhoBERT fine-tuned',
-  xlmr: 'XLM-R baseline',
-  'vihealthbert-ner-seed2024': 'ViHealthBERT NER · seed 2024',
+  logreg: 'Bậc 1 · Logistic Regression',
+  'linear-svm': 'Bậc 2 · Linear SVM',
+  crf: 'Bậc 3 · CRF',
+  xlmr: 'Bậc 4 · XLM-R',
+  phobert: 'Bậc 5 · PhoBERT',
+  'vihealthbert-ner-seed2024': 'Bậc 6 · ViHealthBERT NER',
 };
 export const modelRole: Record<Model, string> = {
-  phobert: 'fine-tuned',
-  xlmr: 'baseline',
-  'vihealthbert-ner-seed2024': 'seed 2024',
+  logreg: 'Bậc 1 · phân loại từng âm tiết',
+  'linear-svm': 'Bậc 2 · phân loại lề cực đại',
+  crf: 'Bậc 3 · mô hình chuỗi',
+  xlmr: 'Bậc 4 · Transformer đa ngôn ngữ',
+  phobert: 'Bậc 5 · Transformer tiếng Việt',
+  'vihealthbert-ner-seed2024': 'Bậc 6 · Transformer y tế',
 };
 export class HttpError extends Error {
   constructor(public status: number, public detail: Schema['ApiError'], public retryAfter: string | null = null) { super(detail.message); }

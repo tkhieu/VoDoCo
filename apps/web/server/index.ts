@@ -102,7 +102,7 @@ function proxy(req: Request, res: Response, config: ProxyConfig): void {
   }
   const audio = kind === 'audio-jobs';
   const queryKeys = [...url.searchParams.keys()];
-  if (audio ? queryKeys.length !== 1 || queryKeys[0] !== 'ner_model' || !['phobert', 'xlmr', 'vihealthbert-ner-seed2024'].includes(url.searchParams.get('ner_model') || '') : queryKeys.length !== 0) {
+  if (audio ? queryKeys.length !== 1 || queryKeys[0] !== 'ner_model' || !['logreg', 'linear-svm', 'crf', 'xlmr', 'phobert', 'vihealthbert-ner-seed2024'].includes(url.searchParams.get('ner_model') || '') : queryKeys.length !== 0) {
     rejectBody(req, res, 400, 'BAD_REQUEST', 'Tham số yêu cầu không hợp lệ.');
     return;
   }
@@ -270,7 +270,9 @@ export function createApp(config = readConfig()) {
   });
   app.get('/api/sample/audio', async (_req, res) => {
     if (!await approvedSample()) { fail(res, 404, 'SAMPLE_UNAVAILABLE', 'Chưa cấu hình audio mẫu được phép sử dụng.'); return; }
-    res.sendFile(config.samplePath!, { cacheControl: false, lastModified: false }, (error) => {
+    res.sendFile(basename(config.samplePath!), {
+      root: dirname(config.samplePath!), cacheControl: false, lastModified: false,
+    }, (error) => {
       if (error && !res.headersSent) fail(res, 503, 'SAMPLE_UNAVAILABLE', 'Không đọc được audio mẫu.');
     });
   });
@@ -278,7 +280,7 @@ export function createApp(config = readConfig()) {
   app.use(express.static(config.staticDirectory, { index: false, dotfiles: 'deny' }));
   app.use((req, res) => {
     if (req.method === 'GET' && ['/', '/workspace'].includes(req.path)) {
-      res.sendFile(resolve(config.staticDirectory, 'index.html'), (error) => {
+      res.sendFile('index.html', { root: config.staticDirectory }, (error) => {
         if (error && !res.headersSent) fail(res, 503, 'APP_UNAVAILABLE', 'Ứng dụng chưa được build.');
       });
     } else fail(res, 404, 'NOT_FOUND', 'Không tìm thấy trang.');

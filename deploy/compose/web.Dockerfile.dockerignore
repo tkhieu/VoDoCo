@@ -16,3 +16,6 @@
 !contracts/
 !contracts/generated/
 !contracts/generated/demo-api.ts
+!do_an_may_hoc/
+!do_an_may_hoc/results/
+!do_an_may_hoc/results/model_comparison.json

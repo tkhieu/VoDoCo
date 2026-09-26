@@ -11,7 +11,7 @@ import pytest
 
 from vodoco_inference.app import create_app
 from vodoco_inference.jobs import ApiFailure, JobSupervisor, RETENTION
-from vodoco_inference.schemas import RESULT_BYTES, UPLOAD_BYTES, encoded, error
+from vodoco_inference.schemas import NER_IDS, RESULT_BYTES, UPLOAD_BYTES, encoded, error
 
 SERVICE = "service-test-only-" + "s" * 32
 CAPABILITY = "a" * 64
@@ -158,6 +158,7 @@ def test_json_unicode_hash_schema_and_byte_bounds(tmp_path):
     async def scenario():
         async with client_for(tmp_path) as (client, manager):
             for changes in ({"text_sha256": "0" * 64}, {"models": ["phobert", "phobert"]},
+                            {"models": ["logreg", "linear-svm", "crf"]},
                             {"revision": True}, {"extra": "forbidden"}, {"text": "\ud800"}):
                 response = await client.put(f"/v1/ner-jobs/{uuid4()}", content=json.dumps(ner_body(**changes)),
                                             headers={"Content-Type": "application/json", "X-Job-Token": CAPABILITY})
@@ -168,31 +169,44 @@ def test_json_unicode_hash_schema_and_byte_bounds(tmp_path):
             response = await client.put(f"/v1/ner-jobs/{uuid4()}", content=oversized(),
                                         headers={"Content-Type": "application/json", "X-Job-Token": CAPABILITY, "Content-Length": "1"})
             assert response.status_code == 413
-            assert (await submit_text(client)).status_code == 202
+            assert (await submit_text(client, models=["logreg", "linear-svm"])).status_code == 202
     asyncio.run(scenario())
 
 
-def test_vihealthbert_is_an_exact_supported_model_id(tmp_path):
+def test_v2_registry_has_exact_six_model_ladder_and_v1_stays_compatible(tmp_path):
     async def scenario():
         async with client_for(tmp_path) as (client, manager):
             legacy = (await client.get("/v1/models")).json()
             assert legacy["api_version"] == "1"
-            assert set(legacy["models"]) == {"asr", "phobert", "xlmr"}
+            assert list(legacy["models"]) == ["asr", "phobert", "xlmr"]
             current = (await client.get("/v2/models")).json()
             assert current["api_version"] == "2"
-            assert set(current["models"]) == {"asr", "phobert", "xlmr", "vihealthbert-ner-seed2024"}
-            text_job = await submit_text(client, models=["vihealthbert-ner-seed2024"])
+            assert list(current["models"]) == ["asr", *NER_IDS]
+    asyncio.run(scenario())
+
+
+@pytest.mark.parametrize("model_id", NER_IDS)
+def test_every_ner_model_id_is_accepted_by_text_and_audio_routes(tmp_path, model_id):
+    async def scenario():
+        async with client_for(tmp_path) as (client, manager):
+            text_job = await submit_text(client, models=[model_id])
             assert text_job.status_code == 202
             data = b"audio"
             audio_job = await client.put(
-                f"/v1/audio-jobs/{uuid4()}?ner_model=vihealthbert-ner-seed2024",
+                f"/v1/audio-jobs/{uuid4()}?ner_model={model_id}",
                 headers=audio_headers(data),
                 content=data,
             )
             assert audio_job.status_code == 202
+            assert error("TEST", "test", model=model_id)["model"] == model_id
+    asyncio.run(scenario())
+
+
+def test_near_miss_model_id_is_rejected(tmp_path):
+    async def scenario():
+        async with client_for(tmp_path) as (client, manager):
             unknown = await submit_text(client, models=["vihealthbert-ner-seed2024-typo"])
             assert unknown.status_code == 422
-            assert error("TEST", "test", model="vihealthbert-ner-seed2024")["model"] == "vihealthbert-ner-seed2024"
     asyncio.run(scenario())
 
 

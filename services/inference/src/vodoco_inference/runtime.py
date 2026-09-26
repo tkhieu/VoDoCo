@@ -9,7 +9,9 @@ from .artifacts import (
     BACKGROUND_LABELS, ENTITY_LABELS, MODEL_IDS, asset_path, read_manifest, verify_model,
 )
 from .audio import DecodedAudio
+from .classical import adapt_classical_entities, load_classical_predictor, tokenize_classical
 from .errors import InferenceError
+from .schemas import CLASSICAL_NER_IDS, CLASSICAL_TOKEN_LIMIT
 
 
 def text_sha256(text: str) -> str:
@@ -49,9 +51,17 @@ class ModelRuntime:
         self.model_root = Path(model_root)
         self.manifest_path = Path(manifest_path)
         self.model_statuses = {
-            model_id: {"status": "loading", "identity": None,
-                       "token_limit": None if model_id == "asr" else 256,
-                       "supports_offsets": False, "error": None}
+            model_id: {
+                "status": "loading",
+                "identity": None,
+                "token_limit": (
+                    None if model_id == "asr"
+                    else CLASSICAL_TOKEN_LIMIT if model_id in CLASSICAL_NER_IDS
+                    else 256
+                ),
+                "supports_offsets": False,
+                "error": None,
+            }
             for model_id in MODEL_IDS
         }
         self.manifest = None
@@ -78,18 +88,26 @@ class ModelRuntime:
                 spec = self.manifest["models"][model_id]
                 verify_model(self.model_root, model_id, spec)
                 self._load_one(model_id, spec)
-                self._torch.cuda.synchronize()
-                self.load_measurements[model_id] = {
-                    "duration_ms": (time.monotonic() - started) * 1000,
-                    "allocated_bytes": self._torch.cuda.memory_allocated(),
-                    "peak_allocated_bytes": self._torch.cuda.max_memory_allocated(),
-                    "peak_reserved_bytes": self._torch.cuda.max_memory_reserved(),
-                }
+                if model_id in CLASSICAL_NER_IDS:
+                    self.load_measurements[model_id] = {
+                        "duration_ms": (time.monotonic() - started) * 1000,
+                        "allocated_bytes": 0,
+                        "peak_allocated_bytes": 0,
+                        "peak_reserved_bytes": 0,
+                    }
+                else:
+                    self._torch.cuda.synchronize()
+                    self.load_measurements[model_id] = {
+                        "duration_ms": (time.monotonic() - started) * 1000,
+                        "allocated_bytes": self._torch.cuda.memory_allocated(),
+                        "peak_allocated_bytes": self._torch.cuda.max_memory_allocated(),
+                        "peak_reserved_bytes": self._torch.cuda.max_memory_reserved(),
+                    }
                 self._publish(model_id, "ready", None, on_status)
             except InferenceError as exc:
                 self._publish(model_id, "missing" if exc.code == "MODEL_MISSING" else "error", exc, on_status)
-            except (ImportError, OSError, ValueError, RuntimeError, KeyError, TypeError) as exc:
-                error = InferenceError("MODEL_LOAD_FAILED", "The model could not be loaded on CUDA.",
+            except (ImportError, OSError, ValueError, RuntimeError, KeyError, TypeError):
+                error = InferenceError("MODEL_LOAD_FAILED", "The model could not be loaded.",
                                        "loading", model_id)
                 self._publish(model_id, "error", error, on_status)
 
@@ -99,6 +117,24 @@ class ModelRuntime:
         on_status(model_id, dict(self.model_statuses[model_id]))
 
     def _load_one(self, model_id, spec):
+        if model_id in CLASSICAL_NER_IDS:
+            self.pipelines[model_id] = load_classical_predictor(self.model_root, spec)
+            self.model_statuses[model_id].update({
+                "identity": {
+                    "logical_id": model_id,
+                    "repo_id": spec["repo_id"],
+                    "revision": spec["revision"],
+                    "checkpoint_sha256": spec["checkpoint_sha256"],
+                    "tokenizer": spec["tokenizer_identity"],
+                    "label_map_sha256": spec["label_map_sha256"],
+                    "device": "cpu",
+                    "dtype": spec["dtype"],
+                },
+                "token_limit": spec["token_limit"],
+                "supports_offsets": True,
+            })
+            return
+
         import torch
         from transformers import (
             AutoFeatureExtractor, AutoModelForSpeechSeq2Seq,
@@ -155,6 +191,7 @@ class ModelRuntime:
                 "label_map_sha256": spec["label_map_sha256"],
                 "device": str(model.device), "dtype": str(model.dtype).removeprefix("torch."),
             },
+            "token_limit": spec["token_limit"],
             "supports_offsets": bool(model_id != "asr" and tokenizer.is_fast),
         })
 
@@ -200,15 +237,28 @@ class ModelRuntime:
         try:
             self._require(model_id, "recognizing")
             result["model"] = self.model_statuses[model_id]["identity"]
-            tokenizer = self.tokenizers[model_id]
-            encoded = tokenizer(text, add_special_tokens=True, truncation=False)
-            if len(encoded["input_ids"]) > 256:
-                raise InferenceError("NER_INPUT_TOO_LONG", "This model accepts at most 256 tokens including special tokens; text was not truncated.",
-                                     "recognizing", model_id)
-            with self._torch.inference_mode():
-                items = self.pipelines[model_id](text)
-            result["entities"] = adapt_entities(items, text, model_id, revision, tokenizer.is_fast)
-            self._torch.cuda.synchronize()
+            if model_id in CLASSICAL_NER_IDS:
+                tokens = tokenize_classical(text)
+                limit = self.model_statuses[model_id]["token_limit"]
+                if len(tokens) > limit:
+                    raise InferenceError(
+                        "NER_INPUT_TOO_LONG",
+                        f"This classical model accepts at most {limit} whitespace tokens; text was not truncated.",
+                        "recognizing",
+                        model_id,
+                    )
+                labels = self.pipelines[model_id].predict([token.normalized for token in tokens])
+                result["entities"] = adapt_classical_entities(text, tokens, labels, model_id, revision)
+            else:
+                tokenizer = self.tokenizers[model_id]
+                encoded = tokenizer(text, add_special_tokens=True, truncation=False)
+                if len(encoded["input_ids"]) > 256:
+                    raise InferenceError("NER_INPUT_TOO_LONG", "This model accepts at most 256 tokens including special tokens; text was not truncated.",
+                                         "recognizing", model_id)
+                with self._torch.inference_mode():
+                    items = self.pipelines[model_id](text)
+                result["entities"] = adapt_entities(items, text, model_id, revision, tokenizer.is_fast)
+                self._torch.cuda.synchronize()
             result["status"] = "succeeded"
         except InferenceError as exc:
             result["error"] = exc.as_dict()

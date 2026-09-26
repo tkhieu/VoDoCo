@@ -1,14 +1,108 @@
 # VoDoCo local acceptance evidence
 
-Observed on 2026-09-18 against the production client build, the Node BFF and the supervised inference service on this workstation. Everything below was executed, not inferred. No published Replit application, RunPod Pod or paid resource existed during these runs, so provider ingress, cold start, password-gate coverage and cloud cost behaviour remain unverified.
+This document combines the current six-model acceptance contract with dated historical
+evidence from earlier releases. The six-model section is a release gate, not proof by
+itself. Provider ingress, cold start, password-gate coverage and cloud cost behaviour
+remain unverified until an authorized operator runs them.
 
-Raw per-run JSON, screenshots and the extraction probe are retained under the Git-ignored `.local/acceptance/` directory. Only redacted summaries belong in Git. The approved sample transcript is quoted in [`demo-readiness.md`](demo-readiness.md); this document refers to it by SHA-256.
+Raw per-run JSON, screenshots and probes are retained under the Git-ignored
+`.local/acceptance/` directory. Only redacted summaries belong in Git. The approved sample
+is identified by SHA-256 below; its transcript is retained only in the Git-ignored
+preflight evidence described in [`demo-readiness.md`](demo-readiness.md).
+
+## Six-model NER release acceptance
+
+The current release is acceptable only when all checks below pass together. The six NER
+models are ordered `logreg`, `linear-svm`, `crf`, `xlmr`, `phobert`,
+`vihealthbert-ner-seed2024`; `/v1/models` remains the historical three-key compatibility
+response.
+
+### Export and artifact integrity
+
+- `uv run --project services/inference --frozen --group export python
+  scripts/prepare_demo_models.py ...` creates the complete release in one command and
+  refuses an existing destination.
+- Classical training uses only the pinned VietMed-NER train split at revision
+  `e3d0393c733858402a7c04228f45d351d2ce6d8f`, the notebook feature function, and the
+  recorded Logistic Regression (`C=10`, `max_iter=300`), Linear SVM (`C=1`,
+  `max_iter=5000`) and CRF (`lbfgs`, `c1=0.1`, `c2=0.01`, 200 iterations, all
+  transitions) configurations.
+- The exporter reopens the persisted artifacts and requires test predictions to be
+  identical to the fitted estimators. Strict entity F1 on validation and test must match
+  `do_an_may_hoc/results/model_comparison.json` within absolute tolerance `0.0005`.
+- Logistic Regression and Linear SVM use numeric `model.npz` plus JSON feature/config
+  files and load with `allow_pickle=False`. CRF uses native CRFsuite format plus JSON.
+  Pickle/joblib files are forbidden at runtime.
+- `services/inference/model-manifest.json` and release `manifest.json` must be
+  byte-identical. For each model, every declared asset must exist, remain inside the
+  release without symlink traversal, and match SHA-256 before that model loads. Corruption
+  must produce `MODEL_INTEGRITY` for that model without invoking its loader.
+
+### Runtime and HTTP behavior
+
+- Authenticated `/v2/models` returns one ASR plus exactly six NER readiness entries in the
+  ladder order. All seven are `ready`; the classical identities report `cpu`, while ASR
+  and all three Transformer NER identities report `cuda:0`.
+- Classical preprocessing splits on whitespace, trims Unicode punctuation at each token
+  boundary, applies NFC plus lowercase for features, and preserves exact source
+  code-point offsets. BIO spans use exclusive ends, preserve original source casing/text,
+  and expose `score: null`. The limit is 4,096 classical tokens with no truncation.
+- Each of the six IDs is accepted by audio and text routes; near matches are rejected.
+  The sentence `Bệnh nhân bị rong huyết, đã dùng thuốc.` must complete through all six NER
+  models. Returned non-null offsets must slice the exact entity text from that unchanged
+  source sentence.
+- One model failure remains inside that model's result/panel and does not discard the
+  transcript, review draft, or successful results from other models.
+
+### Web, benchmark and verification
+
+- The comparison view renders six panels in ladder order, one column on mobile and a
+  three-by-two grid on desktop. Missing work is submitted in bounded two-model jobs;
+  comparison never reruns ASR.
+- The benchmark table contains all six rows and displays test F1, CI95 and unseen-entity
+  recall read from `do_an_may_hoc/results/model_comparison.json`, with visible text
+  `Số liệu từ do_an_may_hoc/results/model_comparison.json`. Values are not manually
+  copied or rounded to a new precision.
+- Acceptance requires the full Python tests, web tests, TypeScript checks, production web
+  build, offline preflight, authenticated `/v2/models`, six-model sentence smoke, and a
+  visual mobile/desktop comparison check. Historical evidence below is not a substitute
+  for these current checks.
+
+## Six-model extension — observed 2026-09-24
+
+The one-command preparation completed against the pinned local VietMed-NER parquet files
+and owner-provided neural exports. It trained and reopened all three classical artifacts,
+matched validation and test F1 to the canonical benchmark, and published 39 hashed assets.
+The source and release manifests were byte-identical at SHA-256
+`0895b7f2307cb0ee3f3c0ff95838193ef4674a5eac565d61b18aa246ec980af9`.
+
+The offline preflight loaded all seven runtime models. Logistic Regression, Linear SVM and
+CRF reported `cpu`; ASR, XLM-R, PhoBERT and ViHealthBERT reported `cuda:0`. All six NER
+passes succeeded on the approved audio transcript. Peak GPU allocation was
+3,009,780,224 bytes and peak reservation was 3,177,185,280 bytes; the complete cold
+preflight took 11.16 seconds on this workstation.
+
+Authenticated HTTP smoke returned the exact `/v2/models` order and completed
+`Bệnh nhân bị rong huyết, đã dùng thuốc.` through all six IDs. Every model returned three
+entities. All classical and XLM-R offsets sliced the unchanged source exactly; PhoBERT
+and ViHealthBERT correctly reported unavailable offsets. Classical scores were `null`.
+
+The production-built web app then traversed the real BFF and inference service. A fresh
+worker completed the approved sample on its first submission, and comparison completed
+all six independent panels. At 1440 px the ordered panels formed a three-by-two grid; at
+390 px they formed one column with no page-level horizontal overflow. The benchmark kept
+its own horizontal scroll region, exposed all six exact rows, displayed the canonical JSON
+source label, and rendered Logistic Regression F1 as `56,22630504520268%` without a
+binary floating-point digit. The final checks passed: 63 Python tests, 17 web tests, both
+TypeScript projects, production web build, production Compose web-image build,
+release-script compilation, offline preflight, HTTP smoke, and the desktop/mobile browser
+flow.
 
 ## ViHealthBERT extension — observed 2026-09-22
 
 The production Compose images were rebuilt and both `inference` and `web` reached healthy state. Authenticated `/v2/models` returned exactly `asr`, `phobert`, `xlmr` and `vihealthbert-ner-seed2024`; all four were `ready` on `cuda:0`, with ViHealthBERT correctly reporting `supports_offsets: false`. `/v1/models` remains the compatibility surface and returns only the original three model keys.
 
-A real approved-sample request traversed the production Node BFF and selected `vihealthbert-ner-seed2024`. The terminal job was `succeeded`, retained the exact model identity, returned four entities and did not reuse a PhoBERT/XLM-R result. Focused regression checks passed for exact model-ID forwarding, strict near-match rejection, independent browser result slots, export inclusion, 256/257-token enforcement, and runtime-only asset packaging. The existing comparison view intentionally remains the historically measured XLM-R/PhoBERT pair.
+A real approved-sample request traversed the production Node BFF and selected `vihealthbert-ner-seed2024`. The terminal job was `succeeded`, retained the exact model identity, returned four entities and did not reuse a PhoBERT/XLM-R result. Focused regression checks passed for exact model-ID forwarding, strict near-match rejection, independent browser result slots, export inclusion, 256/257-token enforcement, and runtime-only asset packaging. At this 2026-09-22 observation, the comparison view still showed only XLM-R and PhoBERT; the current six-model contract above supersedes that UI state.
 
 The production UI rendered a third option labelled `ViHealthBERT NER · seed 2024`. Selecting it changed the readiness message to `ViHealthBERT NER đã sẵn sàng`, and the model-information popover showed the new checkpoint identity. The default remained PhoBERT.
 

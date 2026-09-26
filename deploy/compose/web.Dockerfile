@@ -11,6 +11,7 @@ COPY apps/web/src ./src
 COPY apps/web/server ./server
 COPY apps/web/public ./public
 COPY contracts/generated /opt/vodoco/contracts/generated
+COPY do_an_may_hoc/results/model_comparison.json /opt/vodoco/do_an_may_hoc/results/model_comparison.json
 RUN npm run build && npm prune --omit=dev
 
 FROM ${NODE_IMAGE} AS runtime
