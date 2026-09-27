@@ -1,0 +1,1186 @@
+{
+ "sources": {
+  "PhoWhisper-medium": "vinai/PhoWhisper-medium, 3.437 câu nói VietMed test",
+  "Whisper-small": "leduckhai/MultiMed-ST whisper-small-vietnamese checkpoint-5000, 500 câu nói VietMed test đầu tiên"
+ },
+ "gold_entity_join": {
+  "test_utterances": 3437,
+  "matched_to_ner": 3437,
+  "ner_test_entities": 8338,
+  "entities_in_matched_utterances": 8112
+ },
+ "vietmed_splits": {
+  "train": {
+   "utterances": 2773,
+   "hours": 4.7988888888888885,
+   "duration": {
+    "mean": 6.230075730256041,
+    "median": 6.0,
+    "p95": 8.0,
+    "max": 13.0
+   },
+   "words": {
+    "mean": 24.48647673999279,
+    "median": 26.0,
+    "max": 40
+   },
+   "words_per_second": 3.9303658254225513,
+   "icd10_top": [
+    [
+     "M00-M99",
+     0.23151821132347639
+    ],
+    [
+     "E00-E89",
+     0.22033898305084745
+    ],
+    [
+     "C00-D49",
+     0.21781464118283447
+    ],
+    [
+     "G00-G99",
+     0.19689866570501263
+    ],
+    [
+     "I00-I99",
+     0.13342949873782906
+    ]
+   ],
+   "rec_condition_top": [
+    [
+     "Consultation",
+     0.571583122971511
+    ],
+    [
+     "Tel",
+     0.428416877028489
+    ]
+   ]
+  },
+  "dev": {
+   "utterances": 2912,
+   "hours": 4.958333333333333,
+   "duration": {
+    "mean": 6.1298076923076925,
+    "median": 6.0,
+    "p95": 8.0,
+    "max": 10.0
+   },
+   "words": {
+    "mean": 23.667582417582416,
+    "median": 26.0,
+    "max": 39
+   },
+   "words_per_second": 3.861064425770308,
+   "icd10_top": [
+    [
+     "Z00-Z99",
+     0.26270604395604397
+    ],
+    [
+     "I00-I99",
+     0.23076923076923078
+    ],
+    [
+     "F01-F99",
+     0.17651098901098902
+    ],
+    [
+     "R00-R99",
+     0.11744505494505494
+    ],
+    [
+     "D50-D89",
+     0.1092032967032967
+    ]
+   ],
+   "rec_condition_top": [
+    [
+     "Tel",
+     0.5078983516483516
+    ],
+    [
+     "Book",
+     0.2857142857142857
+    ],
+    [
+     "Consultation",
+     0.15728021978021978
+    ],
+    [
+     "Talkshow",
+     0.049107142857142856
+    ]
+   ]
+  },
+  "cv": {
+   "utterances": 85,
+   "hours": 0.14944444444444444,
+   "duration": {
+    "mean": 6.329411764705882,
+    "median": 6.0,
+    "p95": 8.0,
+    "max": 8.0
+   },
+   "words": {
+    "mean": 24.741176470588236,
+    "median": 26.0,
+    "max": 36
+   },
+   "words_per_second": 3.908921933085502,
+   "icd10_top": [
+    [
+     "M00-M99",
+     0.29411764705882354
+    ],
+    [
+     "G00-G99",
+     0.23529411764705882
+    ],
+    [
+     "C00-D49",
+     0.18823529411764706
+    ],
+    [
+     "E00-E89",
+     0.16470588235294117
+    ],
+    [
+     "I00-I99",
+     0.11764705882352941
+    ]
+   ],
+   "rec_condition_top": [
+    [
+     "Tel",
+     0.5294117647058824
+    ],
+    [
+     "Consultation",
+     0.47058823529411764
+    ]
+   ]
+  },
+  "test": {
+   "utterances": 3437,
+   "hours": 6.022222222222222,
+   "duration": {
+    "mean": 6.307826592958976,
+    "median": 6.0,
+    "p95": 8.0,
+    "max": 49.0
+   },
+   "words": {
+    "mean": 22.15187663660169,
+    "median": 20.0,
+    "max": 38
+   },
+   "words_per_second": 3.5118081180811807,
+   "icd10_top": [
+    [
+     "K00-K95",
+     0.17602560372417805
+    ],
+    [
+     "M00-M99",
+     0.1297643293569974
+    ],
+    [
+     "O00-O9A",
+     0.12365434972359617
+    ],
+    [
+     "P00-P96",
+     0.11347105033459412
+    ],
+    [
+     "O00_O99",
+     0.10939773057899331
+    ]
+   ],
+   "rec_condition_top": [
+    [
+     "Podcast",
+     0.22286878091358744
+    ],
+    [
+     "Talkshow",
+     0.21239453011347106
+    ],
+    [
+     "Tel",
+     0.17660750654640675
+    ],
+    [
+     "Consultation",
+     0.1297643293569974
+    ]
+   ]
+  }
+ },
+ "systems": {
+  "PhoWhisper-medium (toàn bộ test)": {
+   "utterances": 3437,
+   "reference_words": 76138,
+   "wer": {
+    "corpus": 0.23850114266200845,
+    "raw_punct": 0.2660432372796764,
+    "ignoring_diacritics": 0.2321179962699309,
+    "tone_placement_normalized": 0.23768683180540598,
+    "utterance_mean": 0.24366000743372684,
+    "utterance_median": 0.21052631578947367,
+    "buckets": {
+     "0%": 52,
+     "0–10%": 353,
+     "10–30%": 2167,
+     ">30%": 865
+    }
+   },
+   "errors": {
+    "substitutions": 5363,
+    "deletions": 5304,
+    "insertions": 7492,
+    "diacritic_only_substitutions": 432,
+    "diacritic_share_of_errors": 0.02378985626961837,
+    "tone_only_substitutions": 316,
+    "tone_only_share_of_errors": 0.017401839308331956,
+    "tone_placement_variants": 58,
+    "tone_placement_share_of_errors": 0.003194008480643207,
+    "edge": {
+     "start_ins": 4064,
+     "start_del": 1078,
+     "end_ins": 1748,
+     "end_del": 3189
+    },
+    "edge_insertions_deletions": 10079,
+    "edge_share_of_errors": 0.5550415771793601,
+    "utterances_without_matched_word": 4,
+    "top_diacritic_confusions": [
+     [
+      "khỏe",
+      "khoẻ",
+      32
+     ],
+     [
+      "tử",
+      "tự",
+      22
+     ],
+     [
+      "hóa",
+      "hoá",
+      20
+     ],
+     [
+      "cảm",
+      "cám",
+      20
+     ],
+     [
+      "ba",
+      "bà",
+      8
+     ],
+     [
+      "con",
+      "còn",
+      6
+     ],
+     [
+      "câm",
+      "căm",
+      6
+     ],
+     [
+      "sau",
+      "sâu",
+      5
+     ],
+     [
+      "mãn",
+      "mạn",
+      5
+     ],
+     [
+      "cong",
+      "công",
+      5
+     ],
+     [
+      "sữa",
+      "sửa",
+      5
+     ],
+     [
+      "tử",
+      "từ",
+      5
+     ]
+    ],
+    "top_other_substitutions": [
+     [
+      "các",
+      "cái",
+      50
+     ],
+     [
+      "cung",
+      "công",
+      36
+     ],
+     [
+      "implant",
+      "lan",
+      27
+     ],
+     [
+      "mà",
+      "và",
+      20
+     ],
+     [
+      "làm",
+      "là",
+      19
+     ],
+     [
+      "sẽ",
+      "phải",
+      18
+     ],
+     [
+      "có",
+      "cái",
+      16
+     ],
+     [
+      "d",
+      "đê",
+      14
+     ],
+     [
+      "canxi",
+      "xi",
+      14
+     ],
+     [
+      "là",
+      "và",
+      13
+     ],
+     [
+      "nó",
+      "đó",
+      13
+     ],
+     [
+      "rong",
+      "trong",
+      13
+     ]
+    ]
+   },
+   "style": {
+    "hyp_with_punctuation": 0.9997090485888857,
+    "hyp_with_digits": 0.0008728542333430317,
+    "hyp_unk_tokens": 314
+   },
+   "entity_survival": {
+    "AGE": {
+     "n": 622,
+     "exact": 567,
+     "ignoring_diacritics": 572,
+     "exact_rate": 0.9115755627009646,
+     "ignoring_diacritics_rate": 0.9196141479099679
+    },
+    "ALL": {
+     "n": 8108,
+     "exact": 6368,
+     "ignoring_diacritics": 6486,
+     "exact_rate": 0.785397138628515,
+     "ignoring_diacritics_rate": 0.7999506660088801
+    },
+    "DATETIME": {
+     "n": 653,
+     "exact": 572,
+     "ignoring_diacritics": 580,
+     "exact_rate": 0.8759571209800919,
+     "ignoring_diacritics_rate": 0.888208269525268
+    },
+    "DIAGNOSTICS": {
+     "n": 289,
+     "exact": 225,
+     "ignoring_diacritics": 226,
+     "exact_rate": 0.7785467128027682,
+     "ignoring_diacritics_rate": 0.7820069204152249
+    },
+    "DISEASESYMTOM": {
+     "n": 1432,
+     "exact": 1069,
+     "ignoring_diacritics": 1094,
+     "exact_rate": 0.7465083798882681,
+     "ignoring_diacritics_rate": 0.7639664804469274
+    },
+    "DRUGCHEMICAL": {
+     "n": 669,
+     "exact": 427,
+     "ignoring_diacritics": 432,
+     "exact_rate": 0.6382660687593423,
+     "ignoring_diacritics_rate": 0.6457399103139013
+    },
+    "FOODDRINK": {
+     "n": 237,
+     "exact": 205,
+     "ignoring_diacritics": 208,
+     "exact_rate": 0.8649789029535865,
+     "ignoring_diacritics_rate": 0.8776371308016878
+    },
+    "GENDER": {
+     "n": 550,
+     "exact": 484,
+     "ignoring_diacritics": 496,
+     "exact_rate": 0.88,
+     "ignoring_diacritics_rate": 0.9018181818181819
+    },
+    "LOCATION": {
+     "n": 316,
+     "exact": 283,
+     "ignoring_diacritics": 285,
+     "exact_rate": 0.8955696202531646,
+     "ignoring_diacritics_rate": 0.9018987341772152
+    },
+    "MEDDEVICETECHNIQUE": {
+     "n": 629,
+     "exact": 440,
+     "ignoring_diacritics": 459,
+     "exact_rate": 0.699523052464229,
+     "ignoring_diacritics_rate": 0.7297297297297297
+    },
+    "OCCUPATION": {
+     "n": 539,
+     "exact": 492,
+     "ignoring_diacritics": 493,
+     "exact_rate": 0.9128014842300557,
+     "ignoring_diacritics_rate": 0.9146567717996289
+    },
+    "ORGAN": {
+     "n": 1251,
+     "exact": 924,
+     "ignoring_diacritics": 953,
+     "exact_rate": 0.7386091127098321,
+     "ignoring_diacritics_rate": 0.7617905675459632
+    },
+    "ORGANIZATION": {
+     "n": 60,
+     "exact": 50,
+     "ignoring_diacritics": 53,
+     "exact_rate": 0.8333333333333334,
+     "ignoring_diacritics_rate": 0.8833333333333333
+    },
+    "PERSONALCARE": {
+     "n": 93,
+     "exact": 85,
+     "ignoring_diacritics": 85,
+     "exact_rate": 0.9139784946236559,
+     "ignoring_diacritics_rate": 0.9139784946236559
+    },
+    "PREVENTIVEMED": {
+     "n": 18,
+     "exact": 9,
+     "ignoring_diacritics": 9,
+     "exact_rate": 0.5,
+     "ignoring_diacritics_rate": 0.5
+    },
+    "SURGERY": {
+     "n": 275,
+     "exact": 150,
+     "ignoring_diacritics": 151,
+     "exact_rate": 0.5454545454545454,
+     "ignoring_diacritics_rate": 0.5490909090909091
+    },
+    "TRANSPORTATION": {
+     "n": 1,
+     "exact": 1,
+     "ignoring_diacritics": 1,
+     "exact_rate": 1.0,
+     "ignoring_diacritics_rate": 1.0
+    },
+    "TREATMENT": {
+     "n": 219,
+     "exact": 196,
+     "ignoring_diacritics": 197,
+     "exact_rate": 0.8949771689497716,
+     "ignoring_diacritics_rate": 0.8995433789954338
+    },
+    "UNITCALIBRATOR": {
+     "n": 255,
+     "exact": 189,
+     "ignoring_diacritics": 192,
+     "exact_rate": 0.7411764705882353,
+     "ignoring_diacritics_rate": 0.7529411764705882
+    },
+    "wer 0%": {
+     "n": 115,
+     "exact": 115,
+     "ignoring_diacritics": 115,
+     "exact_rate": 1.0,
+     "ignoring_diacritics_rate": 1.0
+    },
+    "wer 0–10%": {
+     "n": 761,
+     "exact": 722,
+     "ignoring_diacritics": 726,
+     "exact_rate": 0.9487516425755584,
+     "ignoring_diacritics_rate": 0.9540078843626807
+    },
+    "wer 10–30%": {
+     "n": 5115,
+     "exact": 4246,
+     "ignoring_diacritics": 4326,
+     "exact_rate": 0.8301075268817204,
+     "ignoring_diacritics_rate": 0.8457478005865102
+    },
+    "wer >30%": {
+     "n": 2117,
+     "exact": 1285,
+     "ignoring_diacritics": 1319,
+     "exact_rate": 0.6069910250354275,
+     "ignoring_diacritics_rate": 0.6230514879546528
+    }
+   }
+  },
+  "PhoWhisper-medium (500 câu)": {
+   "utterances": 500,
+   "reference_words": 10544,
+   "wer": {
+    "corpus": 0.18816388467374812,
+    "raw_punct": 0.21841805766312594,
+    "ignoring_diacritics": 0.18209408194233687,
+    "tone_placement_normalized": 0.1863619119878604,
+    "utterance_mean": 0.19662550183668992,
+    "utterance_median": 0.17391304347826086,
+    "buckets": {
+     "0%": 8,
+     "0–10%": 84,
+     "10–30%": 342,
+     ">30%": 66
+    }
+   },
+   "errors": {
+    "substitutions": 516,
+    "deletions": 591,
+    "insertions": 877,
+    "diacritic_only_substitutions": 60,
+    "diacritic_share_of_errors": 0.03024193548387097,
+    "tone_only_substitutions": 43,
+    "tone_only_share_of_errors": 0.021673387096774195,
+    "tone_placement_variants": 19,
+    "tone_placement_share_of_errors": 0.009576612903225807,
+    "edge": {
+     "start_ins": 493,
+     "start_del": 139,
+     "end_ins": 206,
+     "end_del": 384
+    },
+    "edge_insertions_deletions": 1222,
+    "edge_share_of_errors": 0.6159274193548387,
+    "utterances_without_matched_word": 0,
+    "top_diacritic_confusions": [
+     [
+      "khỏe",
+      "khoẻ",
+      15
+     ],
+     [
+      "cảm",
+      "cám",
+      8
+     ],
+     [
+      "hóa",
+      "hoá",
+      4
+     ],
+     [
+      "que",
+      "quê",
+      3
+     ],
+     [
+      "vâng",
+      "vầng",
+      2
+     ],
+     [
+      "tránh",
+      "tranh",
+      2
+     ],
+     [
+      "lâm",
+      "lạm",
+      1
+     ],
+     [
+      "sâu",
+      "sau",
+      1
+     ],
+     [
+      "câu",
+      "cầu",
+      1
+     ],
+     [
+      "tầm",
+      "tạm",
+      1
+     ],
+     [
+      "chân",
+      "chăn",
+      1
+     ],
+     [
+      "móng",
+      "mống",
+      1
+     ]
+    ],
+    "top_other_substitutions": [
+     [
+      "tránh",
+      "chánh",
+      9
+     ],
+     [
+      "các",
+      "cái",
+      8
+     ],
+     [
+      "rong",
+      "dong",
+      6
+     ],
+     [
+      "hormone",
+      "môn",
+      5
+     ],
+     [
+      "cấy",
+      "kế",
+      5
+     ],
+     [
+      "vòng",
+      "phòng",
+      5
+     ],
+     [
+      "tôi",
+      "tui",
+      3
+     ],
+     [
+      "lăm",
+      "năm",
+      3
+     ],
+     [
+      "những",
+      "như",
+      3
+     ],
+     [
+      "que",
+      "quen",
+      3
+     ],
+     [
+      "khoa",
+      "hoa",
+      2
+     ],
+     [
+      "oxy",
+      "xy",
+      2
+     ]
+    ]
+   },
+   "style": {
+    "hyp_with_punctuation": 1.0,
+    "hyp_with_digits": 0.0,
+    "hyp_unk_tokens": 44
+   },
+   "entity_survival": {
+    "AGE": {
+     "n": 18,
+     "exact": 18,
+     "ignoring_diacritics": 18,
+     "exact_rate": 1.0,
+     "ignoring_diacritics_rate": 1.0
+    },
+    "ALL": {
+     "n": 1118,
+     "exact": 926,
+     "ignoring_diacritics": 935,
+     "exact_rate": 0.8282647584973166,
+     "ignoring_diacritics_rate": 0.8363148479427549
+    },
+    "DATETIME": {
+     "n": 124,
+     "exact": 110,
+     "ignoring_diacritics": 110,
+     "exact_rate": 0.8870967741935484,
+     "ignoring_diacritics_rate": 0.8870967741935484
+    },
+    "DIAGNOSTICS": {
+     "n": 56,
+     "exact": 52,
+     "ignoring_diacritics": 52,
+     "exact_rate": 0.9285714285714286,
+     "ignoring_diacritics_rate": 0.9285714285714286
+    },
+    "DISEASESYMTOM": {
+     "n": 154,
+     "exact": 126,
+     "ignoring_diacritics": 127,
+     "exact_rate": 0.8181818181818182,
+     "ignoring_diacritics_rate": 0.8246753246753247
+    },
+    "DRUGCHEMICAL": {
+     "n": 46,
+     "exact": 27,
+     "ignoring_diacritics": 27,
+     "exact_rate": 0.5869565217391305,
+     "ignoring_diacritics_rate": 0.5869565217391305
+    },
+    "FOODDRINK": {
+     "n": 1,
+     "exact": 1,
+     "ignoring_diacritics": 1,
+     "exact_rate": 1.0,
+     "ignoring_diacritics_rate": 1.0
+    },
+    "GENDER": {
+     "n": 73,
+     "exact": 69,
+     "ignoring_diacritics": 69,
+     "exact_rate": 0.9452054794520548,
+     "ignoring_diacritics_rate": 0.9452054794520548
+    },
+    "LOCATION": {
+     "n": 55,
+     "exact": 47,
+     "ignoring_diacritics": 47,
+     "exact_rate": 0.8545454545454545,
+     "ignoring_diacritics_rate": 0.8545454545454545
+    },
+    "MEDDEVICETECHNIQUE": {
+     "n": 230,
+     "exact": 169,
+     "ignoring_diacritics": 176,
+     "exact_rate": 0.7347826086956522,
+     "ignoring_diacritics_rate": 0.7652173913043478
+    },
+    "OCCUPATION": {
+     "n": 108,
+     "exact": 98,
+     "ignoring_diacritics": 98,
+     "exact_rate": 0.9074074074074074,
+     "ignoring_diacritics_rate": 0.9074074074074074
+    },
+    "ORGAN": {
+     "n": 106,
+     "exact": 89,
+     "ignoring_diacritics": 90,
+     "exact_rate": 0.839622641509434,
+     "ignoring_diacritics_rate": 0.8490566037735849
+    },
+    "ORGANIZATION": {
+     "n": 6,
+     "exact": 5,
+     "ignoring_diacritics": 5,
+     "exact_rate": 0.8333333333333334,
+     "ignoring_diacritics_rate": 0.8333333333333334
+    },
+    "PERSONALCARE": {
+     "n": 31,
+     "exact": 28,
+     "ignoring_diacritics": 28,
+     "exact_rate": 0.9032258064516129,
+     "ignoring_diacritics_rate": 0.9032258064516129
+    },
+    "SURGERY": {
+     "n": 49,
+     "exact": 33,
+     "ignoring_diacritics": 33,
+     "exact_rate": 0.673469387755102,
+     "ignoring_diacritics_rate": 0.673469387755102
+    },
+    "TREATMENT": {
+     "n": 25,
+     "exact": 23,
+     "ignoring_diacritics": 23,
+     "exact_rate": 0.92,
+     "ignoring_diacritics_rate": 0.92
+    },
+    "UNITCALIBRATOR": {
+     "n": 36,
+     "exact": 31,
+     "ignoring_diacritics": 31,
+     "exact_rate": 0.8611111111111112,
+     "ignoring_diacritics_rate": 0.8611111111111112
+    },
+    "wer 0%": {
+     "n": 19,
+     "exact": 19,
+     "ignoring_diacritics": 19,
+     "exact_rate": 1.0,
+     "ignoring_diacritics_rate": 1.0
+    },
+    "wer 0–10%": {
+     "n": 180,
+     "exact": 170,
+     "ignoring_diacritics": 170,
+     "exact_rate": 0.9444444444444444,
+     "ignoring_diacritics_rate": 0.9444444444444444
+    },
+    "wer 10–30%": {
+     "n": 774,
+     "exact": 643,
+     "ignoring_diacritics": 651,
+     "exact_rate": 0.8307493540051679,
+     "ignoring_diacritics_rate": 0.8410852713178295
+    },
+    "wer >30%": {
+     "n": 145,
+     "exact": 94,
+     "ignoring_diacritics": 95,
+     "exact_rate": 0.6482758620689655,
+     "ignoring_diacritics_rate": 0.6551724137931034
+    }
+   }
+  },
+  "Whisper-small (500 câu)": {
+   "utterances": 500,
+   "reference_words": 10544,
+   "wer": {
+    "corpus": 0.25322458270106224,
+    "raw_punct": 0.25322458270106224,
+    "ignoring_diacritics": 0.23738619119878604,
+    "tone_placement_normalized": 0.25322458270106224,
+    "utterance_mean": 0.2611628338274527,
+    "utterance_median": 0.25,
+    "buckets": {
+     "0%": 2,
+     "0–10%": 34,
+     "10–30%": 317,
+     ">30%": 147
+    }
+   },
+   "errors": {
+    "substitutions": 1246,
+    "deletions": 767,
+    "insertions": 657,
+    "diacritic_only_substitutions": 162,
+    "diacritic_share_of_errors": 0.060674157303370786,
+    "tone_only_substitutions": 79,
+    "tone_only_share_of_errors": 0.02958801498127341,
+    "tone_placement_variants": 0,
+    "tone_placement_share_of_errors": 0.0,
+    "edge": {
+     "start_ins": 223,
+     "start_del": 459,
+     "end_ins": 347,
+     "end_del": 228
+    },
+    "edge_insertions_deletions": 1257,
+    "edge_share_of_errors": 0.4707865168539326,
+    "utterances_without_matched_word": 0,
+    "top_diacritic_confusions": [
+     [
+      "que",
+      "quê",
+      38
+     ],
+     [
+      "tĩnh",
+      "tỉnh",
+      26
+     ],
+     [
+      "đặt",
+      "đạt",
+      7
+     ],
+     [
+      "tử",
+      "từ",
+      5
+     ],
+     [
+      "tắc",
+      "tác",
+      4
+     ],
+     [
+      "vấn",
+      "vẫn",
+      3
+     ],
+     [
+      "thai",
+      "thái",
+      3
+     ],
+     [
+      "ngũ",
+      "ngủ",
+      2
+     ],
+     [
+      "du",
+      "dư",
+      2
+     ],
+     [
+      "tĩnh",
+      "tính",
+      2
+     ],
+     [
+      "tầm",
+      "tăm",
+      2
+     ],
+     [
+      "soi",
+      "sôi",
+      2
+     ]
+    ],
+    "top_other_substitutions": [
+     [
+      "tránh",
+      "chánh",
+      21
+     ],
+     [
+      "cấy",
+      "cái",
+      20
+     ],
+     [
+      "tránh",
+      "sánh",
+      17
+     ],
+     [
+      "que",
+      "quen",
+      14
+     ],
+     [
+      "thai",
+      "thay",
+      14
+     ],
+     [
+      "tránh",
+      "chính",
+      13
+     ],
+     [
+      "các",
+      "cái",
+      10
+     ],
+     [
+      "que",
+      "quay",
+      8
+     ],
+     [
+      "uy",
+      "y",
+      7
+     ],
+     [
+      "trứng",
+      "chứng",
+      6
+     ],
+     [
+      "ra",
+      "da",
+      6
+     ],
+     [
+      "tránh",
+      "sinh",
+      6
+     ]
+    ]
+   },
+   "style": {
+    "hyp_with_punctuation": 0.0,
+    "hyp_with_digits": 0.002,
+    "hyp_unk_tokens": 0
+   },
+   "entity_survival": {
+    "AGE": {
+     "n": 18,
+     "exact": 12,
+     "ignoring_diacritics": 12,
+     "exact_rate": 0.6666666666666666,
+     "ignoring_diacritics_rate": 0.6666666666666666
+    },
+    "ALL": {
+     "n": 1118,
+     "exact": 687,
+     "ignoring_diacritics": 745,
+     "exact_rate": 0.6144901610017889,
+     "ignoring_diacritics_rate": 0.6663685152057245
+    },
+    "DATETIME": {
+     "n": 124,
+     "exact": 97,
+     "ignoring_diacritics": 100,
+     "exact_rate": 0.782258064516129,
+     "ignoring_diacritics_rate": 0.8064516129032258
+    },
+    "DIAGNOSTICS": {
+     "n": 56,
+     "exact": 50,
+     "ignoring_diacritics": 50,
+     "exact_rate": 0.8928571428571429,
+     "ignoring_diacritics_rate": 0.8928571428571429
+    },
+    "DISEASESYMTOM": {
+     "n": 154,
+     "exact": 89,
+     "ignoring_diacritics": 101,
+     "exact_rate": 0.577922077922078,
+     "ignoring_diacritics_rate": 0.6558441558441559
+    },
+    "DRUGCHEMICAL": {
+     "n": 46,
+     "exact": 21,
+     "ignoring_diacritics": 21,
+     "exact_rate": 0.45652173913043476,
+     "ignoring_diacritics_rate": 0.45652173913043476
+    },
+    "FOODDRINK": {
+     "n": 1,
+     "exact": 1,
+     "ignoring_diacritics": 1,
+     "exact_rate": 1.0,
+     "ignoring_diacritics_rate": 1.0
+    },
+    "GENDER": {
+     "n": 73,
+     "exact": 61,
+     "ignoring_diacritics": 61,
+     "exact_rate": 0.8356164383561644,
+     "ignoring_diacritics_rate": 0.8356164383561644
+    },
+    "LOCATION": {
+     "n": 55,
+     "exact": 39,
+     "ignoring_diacritics": 40,
+     "exact_rate": 0.7090909090909091,
+     "ignoring_diacritics_rate": 0.7272727272727273
+    },
+    "MEDDEVICETECHNIQUE": {
+     "n": 230,
+     "exact": 67,
+     "ignoring_diacritics": 90,
+     "exact_rate": 0.29130434782608694,
+     "ignoring_diacritics_rate": 0.391304347826087
+    },
+    "OCCUPATION": {
+     "n": 108,
+     "exact": 93,
+     "ignoring_diacritics": 93,
+     "exact_rate": 0.8611111111111112,
+     "ignoring_diacritics_rate": 0.8611111111111112
+    },
+    "ORGAN": {
+     "n": 106,
+     "exact": 60,
+     "ignoring_diacritics": 76,
+     "exact_rate": 0.5660377358490566,
+     "ignoring_diacritics_rate": 0.7169811320754716
+    },
+    "ORGANIZATION": {
+     "n": 6,
+     "exact": 3,
+     "ignoring_diacritics": 3,
+     "exact_rate": 0.5,
+     "ignoring_diacritics_rate": 0.5
+    },
+    "PERSONALCARE": {
+     "n": 31,
+     "exact": 24,
+     "ignoring_diacritics": 25,
+     "exact_rate": 0.7741935483870968,
+     "ignoring_diacritics_rate": 0.8064516129032258
+    },
+    "SURGERY": {
+     "n": 49,
+     "exact": 21,
+     "ignoring_diacritics": 23,
+     "exact_rate": 0.42857142857142855,
+     "ignoring_diacritics_rate": 0.46938775510204084
+    },
+    "TREATMENT": {
+     "n": 25,
+     "exact": 22,
+     "ignoring_diacritics": 22,
+     "exact_rate": 0.88,
+     "ignoring_diacritics_rate": 0.88
+    },
+    "UNITCALIBRATOR": {
+     "n": 36,
+     "exact": 27,
+     "ignoring_diacritics": 27,
+     "exact_rate": 0.75,
+     "ignoring_diacritics_rate": 0.75
+    },
+    "wer 0%": {
+     "n": 2,
+     "exact": 2,
+     "ignoring_diacritics": 2,
+     "exact_rate": 1.0,
+     "ignoring_diacritics_rate": 1.0
+    },
+    "wer 0–10%": {
+     "n": 58,
+     "exact": 55,
+     "ignoring_diacritics": 56,
+     "exact_rate": 0.9482758620689655,
+     "ignoring_diacritics_rate": 0.9655172413793104
+    },
+    "wer 10–30%": {
+     "n": 718,
+     "exact": 490,
+     "ignoring_diacritics": 527,
+     "exact_rate": 0.6824512534818942,
+     "ignoring_diacritics_rate": 0.733983286908078
+    },
+    "wer >30%": {
+     "n": 340,
+     "exact": 140,
+     "ignoring_diacritics": 160,
+     "exact_rate": 0.4117647058823529,
+     "ignoring_diacritics_rate": 0.47058823529411764
+    }
+   }
+  }
+ }
+}

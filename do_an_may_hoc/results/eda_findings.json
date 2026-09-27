@@ -1,0 +1,52 @@
+[
+ {
+  "phat_hien": "Nhãn O áp đảo",
+  "bang_chung": "78,5% token train mang nhãn O; đoán toàn O đã đạt accuracy 78,8% trên test.",
+  "quyet_dinh": "Thước đo chính là F1 mức thực thể (seqeval strict), báo cáo kèm macro F1; accuracy mức token chỉ để tham khảo."
+ },
+ {
+  "phat_hien": "Mất cân bằng nặng giữa các loại",
+  "bang_chung": "DISEASESYMTOM có 2.975 thực thể train, gấp 595 lần TRANSPORTATION; lớp hiếm: ORGANIZATION (19 mẫu train), TRANSPORTATION (5 mẫu train).",
+  "quyet_dinh": "Giữ nguyên ba tập chính thức, không dùng class weight hay oversampling, vì: (1) thước đo chính là micro F1 do các lớp lớn quyết định; (2) lớp hiếm chỉ có vài mẫu, nhân trọng số hàng trăm lần sẽ khiến mô hình học thuộc vài chuỗi và đoán thừa; (3) phần lớn điểm bị mất đến từ lệch miền chứ không từ lớp hiếm; (4) cả sáu mô hình dùng cùng một hàm mục tiêu để so sánh công bằng. F1 theo loại của lớp hiếm không đáng tin: một thực thể TRANSPORTATION trên test tương đương 3,7 điểm recall."
+ },
+ {
+  "phat_hien": "Lệch miền giữa train và test",
+  "bang_chung": "30,65% thực thể test chưa gặp trong train (validation: 6,68%); cao nhất ở MEDDEVICETECHNIQUE (74%), SURGERY (72%), TRANSPORTATION (70%).",
+  "quyet_dinh": "Dự kiến mô hình dựa vào ghi nhớ (CRF, Logistic Regression, Linear SVM) giảm mạnh trên test; báo cáo riêng recall thực thể đã gặp và chưa gặp; chọn siêu tham số theo validation nhưng không coi F1 validation là ước lượng cho test."
+ },
+ {
+  "phat_hien": "Chuỗi BIO lỗi trong nhãn gốc",
+  "bang_chung": "16 / 0 / 7 lần I- đứng sau O (train / validation / test), tức 0,011% số token.",
+  "quyet_dinh": "Giữ nguyên, không sửa nhãn: seqeval coi I- đó là đầu một thực thể mới nên cách chấm vẫn xác định, và sửa nhãn test sẽ làm thay đổi tập đánh giá chính thức."
+ },
+ {
+  "phat_hien": "Độ dài câu và subword",
+  "bang_chung": "Câu dài tối đa 40 âm tiết; sau khi tách subword câu dài nhất có 45 (PhoBERT), 45 (ViHealthBERT), 47 (XLM-R) token; 0 câu vượt 256.",
+  "quyet_dinh": "Dùng max_length = 256 cho Transformer; không câu nào bị cắt."
+ },
+ {
+  "phat_hien": "Trùng lặp giữa các tập",
+  "bang_chung": "2 câu validation trùng train, 0 câu test trùng train, 1 câu lặp trong test.",
+  "quyet_dinh": "Giữ nguyên các tập; mức trùng không đáng kể và test không rò rỉ từ train."
+ },
+ {
+  "phat_hien": "Nhãn chưa nhất quán",
+  "bang_chung": "4 chuỗi train mang nhiều loại; 3 chuỗi từ 2 âm tiết lúc có nhãn lúc không (ví dụ \"bệnh lý\": 57 lần có nhãn, 95 lần không); 6 chuỗi từ 2 âm tiết thông dụng bị gán nhãn lẻ tẻ.",
+  "quyet_dinh": "Không sửa nhãn để giữ tập chuẩn, nhưng coi đây là nhiễu nhãn khi phân tích lỗi đoán thừa và bỏ sót."
+ },
+ {
+  "phat_hien": "Nhiễu văn bản hội thoại",
+  "bang_chung": "7,3% câu train có từ đệm; 0,9% token test là từ ngoại lai/viết tắt, 93% trong số đó nằm trong thực thể; số được viết bằng chữ.",
+  "quyet_dinh": "Không lọc từ đệm (transcript ASR cũng có); đặc trưng tiền tố/hậu tố cho mô hình cổ điển; tokenizer subword của Transformer xử lý từ ngoại lai."
+ },
+ {
+  "phat_hien": "Vi-Ner bổ sung được lớp hiếm",
+  "bang_chung": "Vi-Ner train có 19.255 câu, ORGANIZATION 8.773 so với 19 ở VietMed train, LOCATION 12.070 so với 292; văn bản viết có chữ hoa và dấu câu (13,4% / 10,5% token); 0 câu VietMed-NER trùng Vi-Ner.",
+  "quyet_dinh": "Chọn fine-tune hai bước (phương án A): bước 1 trên Vi-Ner đã viết thường, bỏ dấu câu, giữ LOCATION/ORGANIZATION/DATETIME và gán PERSON thành O; bước 2 trên VietMed-NER. Kỳ vọng giúp ORGANIZATION và LOCATION, không giúp các loại y khoa."
+ },
+ {
+  "phat_hien": "Lỗi ASR làm mất thực thể",
+  "bang_chung": "PhoWhisper-medium WER 23,9% trên 3.437 câu nói test; chỉ 2,4% lỗi là sai dấu (1,7% chỉ sai dấu thanh), 55,5% là chèn/xoá ở hai đầu câu (chủ yếu thừa từ ở đầu, thiếu từ ở cuối); 78,5% thực thể vàng còn nguyên.",
+  "quyet_dinh": "Thí nghiệm sửa lỗi trước NER nên nhắm vào lỗi thay thế từ (thuật ngữ, từ ngoại lai) hơn là khôi phục dấu; chuẩn hoá vị trí dấu và bỏ dấu câu bằng luật; lỗi lệch ranh giới đoạn cần xử lý ở phía ASR, không sửa được bằng mô hình văn bản."
+ }
+]

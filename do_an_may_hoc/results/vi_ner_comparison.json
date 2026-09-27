@@ -1,0 +1,262 @@
+{
+ "label_map": {
+  "PERSON": null,
+  "LOCATION": "LOCATION",
+  "ORGANIZATION": "ORGANIZATION",
+  "DATETIME": "DATETIME"
+ },
+ "stats": {
+  "vi_ner": {
+   "train": {
+    "sentences": 19255,
+    "tokens": 774830,
+    "len_mean": 40.24045702414957,
+    "len_median": 31.0,
+    "len_p95": 103.0,
+    "len_max": 766,
+    "uppercase_token_share": 0.13374417614186337,
+    "punct_token_share": 0.10475975375243601,
+    "sentence_final_punct_share": 0.8823682160477798,
+    "empty_tokens": 14,
+    "entities_per_sentence": 1.8571799532588937,
+    "entity_token_share": 0.10099892879728456,
+    "sentences_without_entity": 0.34209296286678786,
+    "entity_spans": {
+     "LOCATION": 12070,
+     "PERSON": 10790,
+     "ORGANIZATION": 8773,
+     "DATETIME": 4127
+    }
+   },
+   "validation": {
+    "sentences": 2407,
+    "tokens": 160496,
+    "len_mean": 66.67885334441213,
+    "len_median": 59.0,
+    "len_p95": 147.69999999999982,
+    "len_max": 753,
+    "uppercase_token_share": 0.11034542916957432,
+    "punct_token_share": 0.09461918054032499,
+    "sentence_final_punct_share": 0.7482343165766514,
+    "empty_tokens": 1,
+    "entities_per_sentence": 2.4299958454507684,
+    "entity_token_share": 0.07683057521682783,
+    "sentences_without_entity": 0.28957208142916496,
+    "entity_spans": {
+     "PERSON": 2251,
+     "ORGANIZATION": 1389,
+     "LOCATION": 1216,
+     "DATETIME": 993
+    }
+   },
+   "test": {
+    "sentences": 2407,
+    "tokens": 139754,
+    "len_mean": 58.06148732862484,
+    "len_median": 52.0,
+    "len_p95": 125.0,
+    "len_max": 908,
+    "uppercase_token_share": 0.11454412753838888,
+    "punct_token_share": 0.09575396768607697,
+    "sentence_final_punct_share": 0.7154133776485251,
+    "empty_tokens": 0,
+    "entities_per_sentence": 2.0976319069380973,
+    "entity_token_share": 0.08236615767706112,
+    "sentences_without_entity": 0.3464894058994599,
+    "entity_spans": {
+     "PERSON": 1737,
+     "ORGANIZATION": 1366,
+     "LOCATION": 1082,
+     "DATETIME": 864
+    }
+   }
+  },
+  "vietmed_ner": {
+   "train": {
+    "sentences": 4616,
+    "tokens": 111267,
+    "len_mean": 24.104636048526864,
+    "len_median": 26.0,
+    "len_p95": 30.0,
+    "len_max": 40,
+    "uppercase_token_share": 0.0,
+    "punct_token_share": 8.987390690860722e-05,
+    "sentence_final_punct_share": 0.0,
+    "empty_tokens": 0,
+    "entities_per_sentence": 2.544844020797227,
+    "entity_token_share": 0.21522104487404173,
+    "sentences_without_entity": 0.09532062391681109,
+    "entity_spans": {
+     "DISEASESYMTOM": 2975,
+     "ORGAN": 1972,
+     "DRUGCHEMICAL": 1127,
+     "UNITCALIBRATOR": 822,
+     "TREATMENT": 740,
+     "DATETIME": 698,
+     "OCCUPATION": 547,
+     "AGE": 456,
+     "PERSONALCARE": 384,
+     "DIAGNOSTICS": 373,
+     "PREVENTIVEMED": 343,
+     "MEDDEVICETECHNIQUE": 327,
+     "LOCATION": 292,
+     "FOODDRINK": 257,
+     "GENDER": 210,
+     "SURGERY": 200,
+     "ORGANIZATION": 19,
+     "TRANSPORTATION": 5
+    }
+   },
+   "validation": {
+    "sentences": 1154,
+    "tokens": 27657,
+    "len_mean": 23.966204506065857,
+    "len_median": 26.0,
+    "len_p95": 30.0,
+    "len_max": 38,
+    "uppercase_token_share": 0.0,
+    "punct_token_share": 0.0,
+    "sentence_final_punct_share": 0.0,
+    "empty_tokens": 0,
+    "entities_per_sentence": 2.503466204506066,
+    "entity_token_share": 0.2129298188523701,
+    "sentences_without_entity": 0.09098786828422877,
+    "entity_spans": {
+     "DISEASESYMTOM": 746,
+     "ORGAN": 485,
+     "DRUGCHEMICAL": 278,
+     "UNITCALIBRATOR": 220,
+     "TREATMENT": 178,
+     "DATETIME": 166,
+     "OCCUPATION": 134,
+     "AGE": 109,
+     "DIAGNOSTICS": 91,
+     "PERSONALCARE": 89,
+     "PREVENTIVEMED": 80,
+     "LOCATION": 77,
+     "MEDDEVICETECHNIQUE": 68,
+     "FOODDRINK": 56,
+     "SURGERY": 56,
+     "GENDER": 51,
+     "TRANSPORTATION": 3,
+     "ORGANIZATION": 2
+    }
+   },
+   "test": {
+    "sentences": 3497,
+    "tokens": 77675,
+    "len_mean": 22.21189591078067,
+    "len_median": 20.0,
+    "len_p95": 30.0,
+    "len_max": 40,
+    "uppercase_token_share": 0.0,
+    "punct_token_share": 2.5748310267138717e-05,
+    "sentence_final_punct_share": 0.0,
+    "empty_tokens": 0,
+    "entities_per_sentence": 2.3843294252216185,
+    "entity_token_share": 0.21232056646282588,
+    "sentences_without_entity": 0.10094366599942808,
+    "entity_spans": {
+     "DISEASESYMTOM": 1467,
+     "ORGAN": 1260,
+     "DRUGCHEMICAL": 709,
+     "DATETIME": 667,
+     "MEDDEVICETECHNIQUE": 635,
+     "AGE": 622,
+     "OCCUPATION": 565,
+     "GENDER": 558,
+     "LOCATION": 329,
+     "DIAGNOSTICS": 299,
+     "SURGERY": 276,
+     "FOODDRINK": 261,
+     "UNITCALIBRATOR": 257,
+     "TREATMENT": 232,
+     "PERSONALCARE": 95,
+     "ORGANIZATION": 61,
+     "TRANSPORTATION": 27,
+     "PREVENTIVEMED": 18
+    }
+   }
+  }
+ },
+ "vi_ner_duplicates": {
+  "raw": {
+   "within_split": {
+    "train": 95,
+    "validation": 3,
+    "test": 4
+   },
+   "train_validation": 2,
+   "train_test": 4,
+   "validation_test": 21
+  },
+  "normalized": {
+   "within_split": {
+    "train": 138,
+    "validation": 4,
+    "test": 5
+   },
+   "train_validation": 1,
+   "train_test": 4,
+   "validation_test": 24
+  }
+ },
+ "vietmed_sentences_found_in_vi_ner": {
+  "train": 0,
+  "validation": 0,
+  "test": 0
+ },
+ "type_coverage": {
+  "DATETIME": {
+   "vi_ner_train": 4127,
+   "vietmed_train": 698,
+   "vi_ner_train_distinct_surfaces": 1664,
+   "vietmed_test": 667,
+   "vietmed_test_covered": 198,
+   "vietmed_test_unseen": 169,
+   "vietmed_test_unseen_covered": 27,
+   "covered_unseen_examples": [
+    "thứ hai",
+    "vài ngày",
+    "thứ bảy",
+    "ngày thứ ba",
+    "hai năm",
+    "ba năm"
+   ]
+  },
+  "LOCATION": {
+   "vi_ner_train": 12070,
+   "vietmed_train": 292,
+   "vi_ner_train_distinct_surfaces": 2781,
+   "vietmed_test": 329,
+   "vietmed_test_covered": 132,
+   "vietmed_test_unseen": 66,
+   "vietmed_test_unseen_covered": 23,
+   "covered_unseen_examples": [
+    "úc",
+    "bình phước",
+    "hồ chí minh",
+    "châu á",
+    "hậu giang",
+    "bạc liêu",
+    "cần thơ",
+    "đồng nai"
+   ]
+  },
+  "ORGANIZATION": {
+   "vi_ner_train": 8773,
+   "vietmed_train": 19,
+   "vi_ner_train_distinct_surfaces": 3200,
+   "vietmed_test": 61,
+   "vietmed_test_covered": 30,
+   "vietmed_test_unseen": 26,
+   "vietmed_test_unseen_covered": 5,
+   "covered_unseen_examples": [
+    "sở y tế",
+    "chính quyền địa phương",
+    "chính quyền"
+   ]
+  }
+ },
+ "tokens_changed_by_normalization_share": 0.22395821706291624
+}
