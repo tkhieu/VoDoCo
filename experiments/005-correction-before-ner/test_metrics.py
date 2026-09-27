@@ -1,3 +1,5 @@
+import unicodedata
+
 import pytest
 
 from metrics import Entity, bio_entities, changes, corpus_wer, decoded_entities, normalize, score
@@ -62,3 +64,41 @@ def test_zero_outside_tags_never_become_pseudo_entities() -> None:
 
     assert set(result["per_type"]) == {"DISEASESYMTOM"}
     assert result["micro"]["tp"] == 1
+
+
+@pytest.mark.parametrize("labels", [
+    ["O", "I-DISEASESYMTOM"],
+    ["B-DRUGCHEMICAL", "I-DISEASESYMTOM"],
+])
+def test_i_tag_after_outside_or_another_type_starts_new_entity(labels: list[str]) -> None:
+    entities = bio_entities(["thuốc", "bệnh"], labels)
+
+    assert entities[-1] == Entity("DISEASESYMTOM", "bệnh")
+
+
+def test_score_matches_nfc_and_nfd_surfaces() -> None:
+    gold = {"one": [Entity("DRUGCHEMICAL", "thuốc")]}
+    decomposed = unicodedata.normalize("NFD", "thuốc")
+
+    result = score(gold, {"one": [Entity("DRUGCHEMICAL", decomposed)]})
+
+    assert result["micro"]["tp"] == 1
+
+
+def test_score_rejects_utterance_id_mismatch() -> None:
+    gold = {"one": [Entity("DISEASESYMTOM", "bệnh")]}
+
+    with pytest.raises(ValueError, match="Prediction IDs"):
+        score(gold, {"two": [Entity("DISEASESYMTOM", "bệnh")]})
+
+
+def test_duplicate_matching_is_case_insensitive() -> None:
+    gold = {"one": [Entity("DRUGCHEMICAL", "Thuốc A"),
+                    Entity("DRUGCHEMICAL", "THUỐC A")]}
+    predicted = {"one": [Entity("DRUGCHEMICAL", "thuốc a")]}
+
+    result = score(gold, predicted)
+
+    assert result["micro"]["tp"] == 1
+    assert result["micro"]["predicted"] == 1
+    assert result["micro"]["gold"] == 2

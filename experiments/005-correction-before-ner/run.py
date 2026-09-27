@@ -2,10 +2,12 @@ import hashlib
 import json
 import os
 import subprocess
+import unicodedata
 from collections import defaultdict, deque
 from pathlib import Path
 
 import torch
+import torch.version
 from huggingface_hub import hf_hub_download, snapshot_download
 from pyarrow import parquet
 from transformers import (
@@ -82,18 +84,25 @@ def load_gold(ids: set[str]) -> tuple[dict[str, str], dict[str, list[Entity]], d
                                   "speech_sha256": sha256(speech_file)}
 
 
-def correct(hypotheses: dict[str, str]) -> dict[str, str]:
-    cache = LOCAL / "corrected.jsonl"
+def correct(hypotheses: dict[str, str]) -> tuple[dict[str, str], dict]:
+    cache = LOCAL / "corrected_greedy_2x.jsonl"
     corrected = {}
+    cap_hit_ids = []
+    max_input_tokens = 0
     if cache.exists():
         for line in cache.read_text(encoding="utf-8").splitlines():
             row = json.loads(line)
             if row["utterance_id"] not in hypotheses:
                 raise ValueError("Correction cache has an unknown ID")
             corrected[row["utterance_id"]] = row["corrected"]
+            max_input_tokens = max(max_input_tokens, row["input_tokens"])
+            if row["hit_cap"]:
+                cap_hit_ids.append(row["utterance_id"])
     pending = [(uid, text) for uid, text in hypotheses.items() if uid not in corrected]
     if not pending:
-        return corrected
+        return corrected, {"max_input_tokens": max_input_tokens, "cap_hit_ids": cap_hit_ids,
+                           "cap_hit_count": len(cap_hit_ids),
+                           "decoding": "greedy, num_beams=1, fp16; max_new_tokens=min(512,max(64,2*batch_max_input_tokens))"}
     model_path = LOCAL / "corrector"
     if not (model_path / "model.safetensors").exists():
         snapshot_download("bmd1905/vietnamese-correction-v2", revision=CORRECTOR_REVISION,
@@ -110,21 +119,35 @@ def correct(hypotheses: dict[str, str]) -> dict[str, str]:
             batch = pending[start:start + 8]
             encoded = tokenizer([text for _, text in batch], padding=True,
                                 truncation=False, return_tensors="pt").to("cuda")
-            if encoded["input_ids"].shape[1] > 512:
+            input_lengths = encoded["attention_mask"].sum(dim=1).tolist()
+            batch_input_tokens = max(input_lengths)
+            max_input_tokens = max(max_input_tokens, batch_input_tokens)
+            if batch_input_tokens > 512:
                 raise ValueError("Correction input exceeds the model-card 512-token limit")
+            generation_cap = min(512, max(64, 2 * batch_input_tokens))
             with torch.inference_mode():
-                generated = model.generate(**encoded, max_new_tokens=256, num_beams=1)
-            for (uid, _), text in zip(batch, tokenizer.batch_decode(generated,
-                                                                     skip_special_tokens=True), strict=True):
+                generated = model.generate(**encoded, max_new_tokens=generation_cap, num_beams=1)
+            decoded = tokenizer.batch_decode(generated, skip_special_tokens=True)
+            for (uid, _), text, tokens, input_tokens in zip(
+                batch, decoded, generated.tolist(), input_lengths, strict=True,
+            ):
+                output_tokens = sum(token != tokenizer.pad_token_id for token in tokens) - 1
+                hit_cap = output_tokens >= generation_cap or tokenizer.eos_token_id not in tokens
+                if hit_cap:
+                    cap_hit_ids.append(uid)
                 corrected[uid] = text.strip()
-                output.write(json.dumps({"utterance_id": uid, "corrected": corrected[uid]},
+                output.write(json.dumps({"utterance_id": uid, "corrected": corrected[uid],
+                                         "input_tokens": input_tokens, "output_tokens": output_tokens,
+                                         "generation_cap": generation_cap, "hit_cap": hit_cap},
                                         ensure_ascii=False) + "\n")
             output.flush()
             if start % 160 == 0:
                 print(f"corrected {len(corrected)}/{len(hypotheses)}", flush=True)
     del model
     torch.cuda.empty_cache()
-    return corrected
+    return corrected, {"max_input_tokens": max_input_tokens, "cap_hit_ids": cap_hit_ids,
+                       "cap_hit_count": len(cap_hit_ids),
+                       "decoding": "greedy, num_beams=1, fp16; max_new_tokens=min(512,max(64,2*batch_max_input_tokens))"}
 
 
 def predict(texts: dict[str, str]) -> dict[str, list[Entity]]:
@@ -133,7 +156,7 @@ def predict(texts: dict[str, str]) -> dict[str, list[Entity]]:
     model = AutoModelForTokenClassification.from_pretrained(
         model_path, dtype=torch.float32, use_safetensors=True, local_files_only=True,
     ).to("cuda").eval()
-    recognizer = pipeline("ner", model=model, tokenizer=tokenizer,
+    recognizer = pipeline("token-classification", model=model, tokenizer=tokenizer,
                           aggregation_strategy="simple", device=0,
                           ignore_labels=["O", "0", "dum"])
     ids = list(texts)
@@ -160,10 +183,9 @@ def cached_predict(name: str, texts: dict[str, str]) -> dict[str, list[Entity]]:
                                        sort_keys=True).encode("utf-8")).hexdigest()
     if cache.exists():
         saved = json.loads(cache.read_text(encoding="utf-8"))
-        if saved["input_sha256"] != digest:
-            raise ValueError(f"Stale NER cache: {name}")
-        return {uid: [Entity(**item) for item in items]
-                for uid, items in saved["predictions"].items()}
+        if saved["input_sha256"] == digest:
+            return {uid: [Entity(**item) for item in items]
+                    for uid, items in saved["predictions"].items()}
     result = predict(texts)
     cache.write_text(json.dumps({"input_sha256": digest,
                                  "predictions": {uid: [{"label": e.label, "surface": e.surface}
@@ -181,9 +203,10 @@ def main() -> None:
     raw = load_asr()
     references, gold, alignment = load_gold(set(raw))
     raw = {uid: raw[uid] for uid in references}
-    corrected = correct(raw)
+    corrected, correction_generation = correct(raw)
+    raw_cleaned = {uid: normalize(text) for uid, text in raw.items()}
     cleaned = {uid: normalize(text) for uid, text in corrected.items()}
-    branches = {"raw": raw, "corrected": corrected,
+    branches = {"raw": raw, "raw_normalized": raw_cleaned, "corrected": corrected,
                 "corrected_normalized": cleaned, "gold_text": references}
     predictions = {name: cached_predict(name, texts) for name, texts in branches.items()}
     entity_changes = changes(gold, predictions["raw"], predictions["corrected"])
@@ -204,13 +227,33 @@ def main() -> None:
                    "alignment": alignment, "scored_utterances": len(gold)},
         "wer": {"raw": corpus_wer(references, raw),
                 "corrected": corpus_wer(references, corrected)},
+        "correction_generation": correction_generation,
         "text_changes": {
             "changed_verbatim": sum(raw[uid] != corrected[uid] for uid in raw),
             "changed_after_scoring_normalization": sum(
                 normalize(raw[uid]) != normalize(corrected[uid]) for uid in raw),
+            "raw_lowercase_count": sum(text == text.lower() for text in raw.values()),
+            "raw_terminal_period_count": sum(text.endswith(".") for text in raw.values()),
+            "raw_internal_punctuation_count": sum(any(
+                unicodedata.category(char).startswith("P") for char in text[:-1]
+            ) for text in raw.values()),
         },
         "ner": {name: score(gold, result) for name, result in predictions.items()},
         "changes": entity_changes,
+    }
+    control = report["ner"]["raw_normalized"]
+    treated = report["ner"]["corrected_normalized"]
+    report["normalized_comparison"] = {
+        "corrected_minus_raw_micro_f1": treated["micro"]["f1"] - control["micro"]["f1"],
+        "corrected_minus_raw_true_positives": treated["micro"]["tp"] - control["micro"]["tp"],
+        "corrected_minus_raw_per_type_f1": {
+            label: treated["per_type"][label]["f1"] - control["per_type"][label]["f1"]
+            for label in control["per_type"]
+        },
+        "corrected_minus_raw_per_type_true_positives": {
+            label: treated["per_type"][label]["tp"] - control["per_type"][label]["tp"]
+            for label in control["per_type"]
+        },
     }
     result_path = HERE / "results.json"
     result_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n",

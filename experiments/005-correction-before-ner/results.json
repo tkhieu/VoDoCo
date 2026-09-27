@@ -29,9 +29,18 @@
       "wer": 0.2389477002285324
     }
   },
+  "correction_generation": {
+    "max_input_tokens": 256,
+    "cap_hit_ids": [],
+    "cap_hit_count": 0,
+    "decoding": "greedy, num_beams=1, fp16; max_new_tokens=min(512,max(64,2*batch_max_input_tokens))"
+  },
   "text_changes": {
     "changed_verbatim": 476,
-    "changed_after_scoring_normalization": 176
+    "changed_after_scoring_normalization": 176,
+    "raw_lowercase_count": 3437,
+    "raw_terminal_period_count": 3436,
+    "raw_internal_punctuation_count": 1
   },
   "ner": {
     "raw": {
@@ -187,6 +196,162 @@
           "precision": 0.20528455284552846,
           "recall": 0.396078431372549,
           "f1": 0.27041499330655955
+        }
+      }
+    },
+    "raw_normalized": {
+      "micro": {
+        "tp": 4609,
+        "predicted": 9691,
+        "gold": 8112,
+        "precision": 0.47559591373439275,
+        "recall": 0.5681706114398422,
+        "f1": 0.5177779026006852
+      },
+      "per_type": {
+        "AGE": {
+          "tp": 414,
+          "predicted": 708,
+          "gold": 622,
+          "precision": 0.5847457627118644,
+          "recall": 0.6655948553054662,
+          "f1": 0.6225563909774436
+        },
+        "DATETIME": {
+          "tp": 437,
+          "predicted": 717,
+          "gold": 653,
+          "precision": 0.6094839609483961,
+          "recall": 0.669218989280245,
+          "f1": 0.637956204379562
+        },
+        "DIAGNOSTICS": {
+          "tp": 186,
+          "predicted": 335,
+          "gold": 291,
+          "precision": 0.5552238805970149,
+          "recall": 0.6391752577319587,
+          "f1": 0.5942492012779552
+        },
+        "DISEASESYMTOM": {
+          "tp": 690,
+          "predicted": 1406,
+          "gold": 1432,
+          "precision": 0.4907539118065434,
+          "recall": 0.4818435754189944,
+          "f1": 0.48625792811839325
+        },
+        "DRUGCHEMICAL": {
+          "tp": 367,
+          "predicted": 754,
+          "gold": 669,
+          "precision": 0.48673740053050396,
+          "recall": 0.5485799701046338,
+          "f1": 0.5158116654954322
+        },
+        "FOODDRINK": {
+          "tp": 154,
+          "predicted": 276,
+          "gold": 237,
+          "precision": 0.5579710144927537,
+          "recall": 0.6497890295358649,
+          "f1": 0.6003898635477583
+        },
+        "GENDER": {
+          "tp": 397,
+          "predicted": 610,
+          "gold": 550,
+          "precision": 0.6508196721311476,
+          "recall": 0.7218181818181818,
+          "f1": 0.6844827586206896
+        },
+        "LOCATION": {
+          "tp": 249,
+          "predicted": 456,
+          "gold": 316,
+          "precision": 0.5460526315789473,
+          "recall": 0.7879746835443038,
+          "f1": 0.6450777202072538
+        },
+        "MEDDEVICETECHNIQUE": {
+          "tp": 80,
+          "predicted": 428,
+          "gold": 629,
+          "precision": 0.18691588785046728,
+          "recall": 0.1271860095389507,
+          "f1": 0.15137180700094607
+        },
+        "OCCUPATION": {
+          "tp": 475,
+          "predicted": 599,
+          "gold": 539,
+          "precision": 0.7929883138564274,
+          "recall": 0.8812615955473099,
+          "f1": 0.8347978910369068
+        },
+        "ORGAN": {
+          "tp": 709,
+          "predicted": 1588,
+          "gold": 1253,
+          "precision": 0.4464735516372796,
+          "recall": 0.5658419792498005,
+          "f1": 0.4991200281590989
+        },
+        "ORGANIZATION": {
+          "tp": 0,
+          "predicted": 0,
+          "gold": 60,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "PERSONALCARE": {
+          "tp": 77,
+          "predicted": 387,
+          "gold": 93,
+          "precision": 0.19896640826873385,
+          "recall": 0.8279569892473119,
+          "f1": 0.32083333333333336
+        },
+        "PREVENTIVEMED": {
+          "tp": 2,
+          "predicted": 393,
+          "gold": 18,
+          "precision": 0.005089058524173028,
+          "recall": 0.1111111111111111,
+          "f1": 0.009732360097323601
+        },
+        "SURGERY": {
+          "tp": 88,
+          "predicted": 185,
+          "gold": 275,
+          "precision": 0.4756756756756757,
+          "recall": 0.32,
+          "f1": 0.3826086956521739
+        },
+        "TRANSPORTATION": {
+          "tp": 0,
+          "predicted": 0,
+          "gold": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "TREATMENT": {
+          "tp": 178,
+          "predicted": 343,
+          "gold": 219,
+          "precision": 0.5189504373177842,
+          "recall": 0.8127853881278538,
+          "f1": 0.6334519572953736
+        },
+        "UNITCALIBRATOR": {
+          "tp": 106,
+          "predicted": 506,
+          "gold": 255,
+          "precision": 0.20948616600790515,
+          "recall": 0.41568627450980394,
+          "f1": 0.278580814717477
         }
       }
     },
@@ -820,5 +985,49 @@
         "corrected_text": "đến giờ phút này thì Việt nam đã đạt được những cái trình độ cao như thế nào trong việc cấy ốc tai điện tử và chúng tôi câu hỏi."
       }
     ]
+  },
+  "normalized_comparison": {
+    "corrected_minus_raw_micro_f1": 0.000540820707923495,
+    "corrected_minus_raw_true_positives": 3,
+    "corrected_minus_raw_per_type_f1": {
+      "AGE": 0.0,
+      "DATETIME": -0.0004653218120930225,
+      "DIAGNOSTICS": 0.0038215382718840285,
+      "DISEASESYMTOM": -0.0008551845376686407,
+      "DRUGCHEMICAL": 0.003962345804002787,
+      "FOODDRINK": 0.007797270955165692,
+      "GENDER": 0.0,
+      "LOCATION": -0.0008345119278230229,
+      "MEDDEVICETECHNIQUE": 0.0001433445142054457,
+      "OCCUPATION": 0.0,
+      "ORGAN": 0.0003516167863044095,
+      "ORGANIZATION": 0.0,
+      "PERSONALCARE": -0.0006670131670131751,
+      "PREVENTIVEMED": 2.3737463652008517e-05,
+      "SURGERY": 0.0,
+      "TRANSPORTATION": 0.0,
+      "TREATMENT": 0.0,
+      "UNITCALIBRATOR": 0.0
+    },
+    "corrected_minus_raw_per_type_true_positives": {
+      "AGE": 0,
+      "DATETIME": 0,
+      "DIAGNOSTICS": 0,
+      "DISEASESYMTOM": 0,
+      "DRUGCHEMICAL": 1,
+      "FOODDRINK": 2,
+      "GENDER": 0,
+      "LOCATION": 0,
+      "MEDDEVICETECHNIQUE": 0,
+      "OCCUPATION": 0,
+      "ORGAN": 0,
+      "ORGANIZATION": 0,
+      "PERSONALCARE": 0,
+      "PREVENTIVEMED": 0,
+      "SURGERY": 0,
+      "TRANSPORTATION": 0,
+      "TREATMENT": 0,
+      "UNITCALIBRATOR": 0
+    }
   }
 }
