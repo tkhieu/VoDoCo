@@ -87,25 +87,38 @@ def _ngrams(tokens, n):
 
 
 def split_overlap(data, n=8, threshold=0.5):
-    """Exact duplicates inside and across splits, plus near duplicates sharing >= threshold of their n-grams."""
+    """Exact duplicates inside and across splits, plus near duplicates of a single train sentence.
+
+    A sentence is a near duplicate when at least `threshold` of its n-grams occur in one and the same train
+    sentence (n-grams spread over unrelated train sentences do not add up). Examples are sentence indices of
+    the first split, so no dataset text is written to JSON.
+    """
     text = {s: [' '.join(w) for w in data[s][0]] for s in data}
     out = {'within_split_duplicates': {s: len(v) - len(set(v)) for s, v in text.items()}}
     cross = {}
     for a, b in (('validation', 'train'), ('test', 'train'), ('test', 'validation')):
         ref = set(text[b])
-        hits = [x for x in text[a] if x in ref]
-        cross[f'{a}_in_{b}'] = {'count': len(hits), 'examples': sorted(set(hits))[:5]}
+        hits = [i for i, x in enumerate(text[a]) if x in ref]
+        cross[f'{a}_in_{b}'] = {'count': len(hits), 'indices': hits[:5]}
     out['cross_split_exact'] = cross
-    train_grams = set().union(*(_ngrams(w, n) for w in data['train'][0]))
+    index = defaultdict(set)  # n-gram -> ids of the train sentences containing it
+    for i, w in enumerate(data['train'][0]):
+        for g in _ngrams(w, n):
+            index[g].add(i)
     near = {}
     for s in ('validation', 'test'):
-        shares = []
-        for w in data[s][0]:
+        shares, hits = [], []
+        for j, w in enumerate(data[s][0]):
             g = _ngrams(w, n)
-            if g:
-                shares.append(len(g & train_grams) / len(g))
-        near[s] = {'sentences_with_ngrams': len(shares), 'near_duplicates': sum(x >= threshold for x in shares)}
-    out['near_duplicate_of_train'] = {'ngram': n, 'threshold': threshold, **near}
+            if not g:
+                continue
+            per_train = Counter(i for x in g for i in index.get(x, ()))
+            share = max(per_train.values(), default=0) / len(g)
+            shares.append(share)
+            if share >= threshold:
+                hits.append(j)
+        near[s] = {'sentences_with_ngrams': len(shares), 'near_duplicates': len(hits), 'indices': hits[:5]}
+    out['near_duplicate_of_train'] = {'ngram': n, 'threshold': threshold, 'unit': 'single train sentence', **near}
     return out
 
 

@@ -91,8 +91,19 @@ def bucket(wer):
     return next(name for lo, hi, name in WER_BUCKETS if (wer == 0 if hi == 0 else lo < wer <= hi))
 
 
-def compare(pairs, gold_entities, top=12):
-    """pairs: [(utterance_id, gold_text, hypothesis)]; gold_entities: {gold_text: [(type, start, end)]} (end inclusive).
+def normalize_tokens(tokens):
+    """norm_words applied token by token, plus the (first, last) normalized index of each input token."""
+    words, where = [], []
+    for tok in tokens:
+        parts = norm_words(tok)
+        where.append((len(words), len(words) + len(parts) - 1))
+        words += parts
+    return words, where
+
+
+def compare(pairs, top=12):
+    """pairs: [(utterance_id, gold_tokens, hypothesis, gold_entities)] joined by utterance id;
+    gold_entities: [(type, start, end)] over gold_tokens (end inclusive).
 
     An entity survives when every reference word of its span is aligned to an identical hypothesis word
     ("ignoring diacritics": identical after removing all marks).
@@ -104,8 +115,9 @@ def compare(pairs, gold_entities, top=12):
     per_utt = []
     punct = digits = unk = 0
     survival = defaultdict(Counter)
-    for uid, gold, hyp in pairs:
-        ref, h = norm_words(gold), norm_words(hyp)
+    for uid, gold_tokens, hyp, gold_entities in pairs:
+        gold = ' '.join(gold_tokens)
+        (ref, where), h = normalize_tokens(gold_tokens), norm_words(hyp)
         ops = align(ref, h)
         c = Counter(op for op, *_ in ops)
         ops_total.update(c)
@@ -137,8 +149,8 @@ def compare(pairs, gold_entities, top=12):
         punct += any(ch in PUNCT for ch in hyp)
         digits += any(ch.isdigit() for ch in hyp)
         unk += h.count('unk')
-        for t, a, b in gold_entities.get(' '.join(ref), []):
-            span = [status.get(k) for k in range(a, b + 1)]
+        for t, a, b in gold_entities:
+            span = [status.get(k) for k in range(where[a][0], where[b][1] + 1)]
             exact = all(x == 'exact' for x in span)
             loose = all(x in ('exact', 'marks') for x in span)
             for key in (t, 'ALL', f'wer {bucket(wer)}'):
