@@ -1,0 +1,1033 @@
+{
+  "source": {
+    "asr_commit": "712dcfed7",
+    "asr_path": "do_an_may_hoc/ket_qua_goc/asr_test_phowhisper_medium.jsonl",
+    "asr_sha256": "1f98467d18e079b7d5c08b76166e8dd7ab8d36729d46b95484c0b0d5c2e8c475",
+    "corrector_repo": "bmd1905/vietnamese-correction-v2",
+    "corrector_revision": "a3d342348d39d87622aa58aabd07de38ade8c17b",
+    "corrector_sha256": "2c3ca2ef8f5b24e0f3c71a8736cf207ac9bec18eeae5df39bac9c339721f96f4",
+    "ner_model_path": ".local/vodoco-models/release/phobert",
+    "ner_model_sha256": "6bdb21e18a9b8d34c0e836da0b7461e5bacaa2b5822cb52ad60c9515f2606e5f",
+    "alignment": {
+      "speech_rows": 3437,
+      "ner_rows": 3497,
+      "ambiguous_duplicate_ids_excluded": 0,
+      "ner_sha256": "fd9c5e5778ded8d01512e1acf19c4e75a788c861d43299683e16d13a2b05228a",
+      "speech_sha256": "52d763817841d7a39a01fb5ea892943e3acae17f9a127dedbcb628e53e593bfe"
+    },
+    "scored_utterances": 3437
+  },
+  "wer": {
+    "raw": {
+      "errors": 18159,
+      "reference_words": 76138,
+      "wer": 0.23850114266200845
+    },
+    "corrected": {
+      "errors": 18193,
+      "reference_words": 76138,
+      "wer": 0.2389477002285324
+    }
+  },
+  "correction_generation": {
+    "max_input_tokens": 256,
+    "cap_hit_ids": [],
+    "cap_hit_count": 0,
+    "decoding": "greedy, num_beams=1, fp16; max_new_tokens=min(512,max(64,2*batch_max_input_tokens))"
+  },
+  "text_changes": {
+    "changed_verbatim": 476,
+    "changed_after_scoring_normalization": 176,
+    "raw_lowercase_count": 3437,
+    "raw_terminal_period_count": 3436,
+    "raw_internal_punctuation_count": 1
+  },
+  "ner": {
+    "raw": {
+      "micro": {
+        "tp": 4439,
+        "predicted": 9492,
+        "gold": 8112,
+        "precision": 0.46765697429414244,
+        "recall": 0.5472140039447732,
+        "f1": 0.504317200636219
+      },
+      "per_type": {
+        "AGE": {
+          "tp": 400,
+          "predicted": 683,
+          "gold": 622,
+          "precision": 0.5856515373352855,
+          "recall": 0.6430868167202572,
+          "f1": 0.6130268199233716
+        },
+        "DATETIME": {
+          "tp": 421,
+          "predicted": 722,
+          "gold": 653,
+          "precision": 0.5831024930747922,
+          "recall": 0.6447166921898928,
+          "f1": 0.6123636363636363
+        },
+        "DIAGNOSTICS": {
+          "tp": 173,
+          "predicted": 338,
+          "gold": 291,
+          "precision": 0.5118343195266272,
+          "recall": 0.5945017182130584,
+          "f1": 0.5500794912559619
+        },
+        "DISEASESYMTOM": {
+          "tp": 657,
+          "predicted": 1389,
+          "gold": 1432,
+          "precision": 0.47300215982721383,
+          "recall": 0.45879888268156427,
+          "f1": 0.46579227224388514
+        },
+        "DRUGCHEMICAL": {
+          "tp": 357,
+          "predicted": 751,
+          "gold": 669,
+          "precision": 0.47536617842876167,
+          "recall": 0.5336322869955157,
+          "f1": 0.5028169014084507
+        },
+        "FOODDRINK": {
+          "tp": 145,
+          "predicted": 261,
+          "gold": 237,
+          "precision": 0.5555555555555556,
+          "recall": 0.6118143459915611,
+          "f1": 0.5823293172690763
+        },
+        "GENDER": {
+          "tp": 384,
+          "predicted": 584,
+          "gold": 550,
+          "precision": 0.6575342465753424,
+          "recall": 0.6981818181818182,
+          "f1": 0.6772486772486772
+        },
+        "LOCATION": {
+          "tp": 239,
+          "predicted": 438,
+          "gold": 316,
+          "precision": 0.545662100456621,
+          "recall": 0.7563291139240507,
+          "f1": 0.6339522546419099
+        },
+        "MEDDEVICETECHNIQUE": {
+          "tp": 71,
+          "predicted": 431,
+          "gold": 629,
+          "precision": 0.16473317865429235,
+          "recall": 0.11287758346581876,
+          "f1": 0.1339622641509434
+        },
+        "OCCUPATION": {
+          "tp": 469,
+          "predicted": 593,
+          "gold": 539,
+          "precision": 0.790893760539629,
+          "recall": 0.8701298701298701,
+          "f1": 0.8286219081272085
+        },
+        "ORGAN": {
+          "tp": 680,
+          "predicted": 1524,
+          "gold": 1253,
+          "precision": 0.4461942257217848,
+          "recall": 0.5426975259377494,
+          "f1": 0.4897371263953907
+        },
+        "ORGANIZATION": {
+          "tp": 0,
+          "predicted": 0,
+          "gold": 60,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "PERSONALCARE": {
+          "tp": 75,
+          "predicted": 372,
+          "gold": 93,
+          "precision": 0.20161290322580644,
+          "recall": 0.8064516129032258,
+          "f1": 0.3225806451612903
+        },
+        "PREVENTIVEMED": {
+          "tp": 2,
+          "predicted": 386,
+          "gold": 18,
+          "precision": 0.0051813471502590676,
+          "recall": 0.1111111111111111,
+          "f1": 0.009900990099009901
+        },
+        "SURGERY": {
+          "tp": 89,
+          "predicted": 185,
+          "gold": 275,
+          "precision": 0.4810810810810811,
+          "recall": 0.3236363636363636,
+          "f1": 0.3869565217391304
+        },
+        "TRANSPORTATION": {
+          "tp": 0,
+          "predicted": 0,
+          "gold": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "TREATMENT": {
+          "tp": 176,
+          "predicted": 343,
+          "gold": 219,
+          "precision": 0.5131195335276968,
+          "recall": 0.8036529680365296,
+          "f1": 0.6263345195729537
+        },
+        "UNITCALIBRATOR": {
+          "tp": 101,
+          "predicted": 492,
+          "gold": 255,
+          "precision": 0.20528455284552846,
+          "recall": 0.396078431372549,
+          "f1": 0.27041499330655955
+        }
+      }
+    },
+    "raw_normalized": {
+      "micro": {
+        "tp": 4609,
+        "predicted": 9691,
+        "gold": 8112,
+        "precision": 0.47559591373439275,
+        "recall": 0.5681706114398422,
+        "f1": 0.5177779026006852
+      },
+      "per_type": {
+        "AGE": {
+          "tp": 414,
+          "predicted": 708,
+          "gold": 622,
+          "precision": 0.5847457627118644,
+          "recall": 0.6655948553054662,
+          "f1": 0.6225563909774436
+        },
+        "DATETIME": {
+          "tp": 437,
+          "predicted": 717,
+          "gold": 653,
+          "precision": 0.6094839609483961,
+          "recall": 0.669218989280245,
+          "f1": 0.637956204379562
+        },
+        "DIAGNOSTICS": {
+          "tp": 186,
+          "predicted": 335,
+          "gold": 291,
+          "precision": 0.5552238805970149,
+          "recall": 0.6391752577319587,
+          "f1": 0.5942492012779552
+        },
+        "DISEASESYMTOM": {
+          "tp": 690,
+          "predicted": 1406,
+          "gold": 1432,
+          "precision": 0.4907539118065434,
+          "recall": 0.4818435754189944,
+          "f1": 0.48625792811839325
+        },
+        "DRUGCHEMICAL": {
+          "tp": 367,
+          "predicted": 754,
+          "gold": 669,
+          "precision": 0.48673740053050396,
+          "recall": 0.5485799701046338,
+          "f1": 0.5158116654954322
+        },
+        "FOODDRINK": {
+          "tp": 154,
+          "predicted": 276,
+          "gold": 237,
+          "precision": 0.5579710144927537,
+          "recall": 0.6497890295358649,
+          "f1": 0.6003898635477583
+        },
+        "GENDER": {
+          "tp": 397,
+          "predicted": 610,
+          "gold": 550,
+          "precision": 0.6508196721311476,
+          "recall": 0.7218181818181818,
+          "f1": 0.6844827586206896
+        },
+        "LOCATION": {
+          "tp": 249,
+          "predicted": 456,
+          "gold": 316,
+          "precision": 0.5460526315789473,
+          "recall": 0.7879746835443038,
+          "f1": 0.6450777202072538
+        },
+        "MEDDEVICETECHNIQUE": {
+          "tp": 80,
+          "predicted": 428,
+          "gold": 629,
+          "precision": 0.18691588785046728,
+          "recall": 0.1271860095389507,
+          "f1": 0.15137180700094607
+        },
+        "OCCUPATION": {
+          "tp": 475,
+          "predicted": 599,
+          "gold": 539,
+          "precision": 0.7929883138564274,
+          "recall": 0.8812615955473099,
+          "f1": 0.8347978910369068
+        },
+        "ORGAN": {
+          "tp": 709,
+          "predicted": 1588,
+          "gold": 1253,
+          "precision": 0.4464735516372796,
+          "recall": 0.5658419792498005,
+          "f1": 0.4991200281590989
+        },
+        "ORGANIZATION": {
+          "tp": 0,
+          "predicted": 0,
+          "gold": 60,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "PERSONALCARE": {
+          "tp": 77,
+          "predicted": 387,
+          "gold": 93,
+          "precision": 0.19896640826873385,
+          "recall": 0.8279569892473119,
+          "f1": 0.32083333333333336
+        },
+        "PREVENTIVEMED": {
+          "tp": 2,
+          "predicted": 393,
+          "gold": 18,
+          "precision": 0.005089058524173028,
+          "recall": 0.1111111111111111,
+          "f1": 0.009732360097323601
+        },
+        "SURGERY": {
+          "tp": 88,
+          "predicted": 185,
+          "gold": 275,
+          "precision": 0.4756756756756757,
+          "recall": 0.32,
+          "f1": 0.3826086956521739
+        },
+        "TRANSPORTATION": {
+          "tp": 0,
+          "predicted": 0,
+          "gold": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "TREATMENT": {
+          "tp": 178,
+          "predicted": 343,
+          "gold": 219,
+          "precision": 0.5189504373177842,
+          "recall": 0.8127853881278538,
+          "f1": 0.6334519572953736
+        },
+        "UNITCALIBRATOR": {
+          "tp": 106,
+          "predicted": 506,
+          "gold": 255,
+          "precision": 0.20948616600790515,
+          "recall": 0.41568627450980394,
+          "f1": 0.278580814717477
+        }
+      }
+    },
+    "corrected": {
+      "micro": {
+        "tp": 4438,
+        "predicted": 9483,
+        "gold": 8112,
+        "precision": 0.4679953601181061,
+        "recall": 0.5470907297830375,
+        "f1": 0.5044614947428246
+      },
+      "per_type": {
+        "AGE": {
+          "tp": 400,
+          "predicted": 681,
+          "gold": 622,
+          "precision": 0.5873715124816447,
+          "recall": 0.6430868167202572,
+          "f1": 0.6139677666922486
+        },
+        "DATETIME": {
+          "tp": 419,
+          "predicted": 721,
+          "gold": 653,
+          "precision": 0.5811373092926491,
+          "recall": 0.6416539050535988,
+          "f1": 0.6098981077147017
+        },
+        "DIAGNOSTICS": {
+          "tp": 173,
+          "predicted": 334,
+          "gold": 291,
+          "precision": 0.5179640718562875,
+          "recall": 0.5945017182130584,
+          "f1": 0.5536
+        },
+        "DISEASESYMTOM": {
+          "tp": 656,
+          "predicted": 1391,
+          "gold": 1432,
+          "precision": 0.4716031631919482,
+          "recall": 0.4581005586592179,
+          "f1": 0.46475380800566773
+        },
+        "DRUGCHEMICAL": {
+          "tp": 358,
+          "predicted": 748,
+          "gold": 669,
+          "precision": 0.4786096256684492,
+          "recall": 0.5351270553064275,
+          "f1": 0.5052928722653494
+        },
+        "FOODDRINK": {
+          "tp": 144,
+          "predicted": 263,
+          "gold": 237,
+          "precision": 0.5475285171102662,
+          "recall": 0.6075949367088608,
+          "f1": 0.576
+        },
+        "GENDER": {
+          "tp": 384,
+          "predicted": 584,
+          "gold": 550,
+          "precision": 0.6575342465753424,
+          "recall": 0.6981818181818182,
+          "f1": 0.6772486772486772
+        },
+        "LOCATION": {
+          "tp": 240,
+          "predicted": 442,
+          "gold": 316,
+          "precision": 0.5429864253393665,
+          "recall": 0.759493670886076,
+          "f1": 0.633245382585752
+        },
+        "MEDDEVICETECHNIQUE": {
+          "tp": 72,
+          "predicted": 426,
+          "gold": 629,
+          "precision": 0.16901408450704225,
+          "recall": 0.11446740858505565,
+          "f1": 0.13649289099526066
+        },
+        "OCCUPATION": {
+          "tp": 469,
+          "predicted": 596,
+          "gold": 539,
+          "precision": 0.7869127516778524,
+          "recall": 0.8701298701298701,
+          "f1": 0.826431718061674
+        },
+        "ORGAN": {
+          "tp": 679,
+          "predicted": 1523,
+          "gold": 1253,
+          "precision": 0.4458305975049245,
+          "recall": 0.5418994413407822,
+          "f1": 0.489193083573487
+        },
+        "ORGANIZATION": {
+          "tp": 0,
+          "predicted": 0,
+          "gold": 60,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "PERSONALCARE": {
+          "tp": 75,
+          "predicted": 372,
+          "gold": 93,
+          "precision": 0.20161290322580644,
+          "recall": 0.8064516129032258,
+          "f1": 0.3225806451612903
+        },
+        "PREVENTIVEMED": {
+          "tp": 2,
+          "predicted": 384,
+          "gold": 18,
+          "precision": 0.005208333333333333,
+          "recall": 0.1111111111111111,
+          "f1": 0.009950248756218905
+        },
+        "SURGERY": {
+          "tp": 89,
+          "predicted": 185,
+          "gold": 275,
+          "precision": 0.4810810810810811,
+          "recall": 0.3236363636363636,
+          "f1": 0.3869565217391304
+        },
+        "TRANSPORTATION": {
+          "tp": 0,
+          "predicted": 0,
+          "gold": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "TREATMENT": {
+          "tp": 176,
+          "predicted": 339,
+          "gold": 219,
+          "precision": 0.5191740412979351,
+          "recall": 0.8036529680365296,
+          "f1": 0.6308243727598566
+        },
+        "UNITCALIBRATOR": {
+          "tp": 102,
+          "predicted": 494,
+          "gold": 255,
+          "precision": 0.20647773279352227,
+          "recall": 0.4,
+          "f1": 0.27236315086782376
+        }
+      }
+    },
+    "corrected_normalized": {
+      "micro": {
+        "tp": 4612,
+        "predicted": 9684,
+        "gold": 8112,
+        "precision": 0.47624948368442793,
+        "recall": 0.5685404339250493,
+        "f1": 0.5183187233086087
+      },
+      "per_type": {
+        "AGE": {
+          "tp": 414,
+          "predicted": 708,
+          "gold": 622,
+          "precision": 0.5847457627118644,
+          "recall": 0.6655948553054662,
+          "f1": 0.6225563909774436
+        },
+        "DATETIME": {
+          "tp": 437,
+          "predicted": 718,
+          "gold": 653,
+          "precision": 0.6086350974930362,
+          "recall": 0.669218989280245,
+          "f1": 0.637490882567469
+        },
+        "DIAGNOSTICS": {
+          "tp": 186,
+          "predicted": 331,
+          "gold": 291,
+          "precision": 0.5619335347432024,
+          "recall": 0.6391752577319587,
+          "f1": 0.5980707395498392
+        },
+        "DISEASESYMTOM": {
+          "tp": 690,
+          "predicted": 1411,
+          "gold": 1432,
+          "precision": 0.4890148830616584,
+          "recall": 0.4818435754189944,
+          "f1": 0.4854027435807246
+        },
+        "DRUGCHEMICAL": {
+          "tp": 368,
+          "predicted": 747,
+          "gold": 669,
+          "precision": 0.4926372155287818,
+          "recall": 0.5500747384155455,
+          "f1": 0.519774011299435
+        },
+        "FOODDRINK": {
+          "tp": 156,
+          "predicted": 276,
+          "gold": 237,
+          "precision": 0.5652173913043478,
+          "recall": 0.6582278481012658,
+          "f1": 0.6081871345029239
+        },
+        "GENDER": {
+          "tp": 397,
+          "predicted": 610,
+          "gold": 550,
+          "precision": 0.6508196721311476,
+          "recall": 0.7218181818181818,
+          "f1": 0.6844827586206896
+        },
+        "LOCATION": {
+          "tp": 249,
+          "predicted": 457,
+          "gold": 316,
+          "precision": 0.5448577680525164,
+          "recall": 0.7879746835443038,
+          "f1": 0.6442432082794308
+        },
+        "MEDDEVICETECHNIQUE": {
+          "tp": 80,
+          "predicted": 427,
+          "gold": 629,
+          "precision": 0.1873536299765808,
+          "recall": 0.1271860095389507,
+          "f1": 0.15151515151515152
+        },
+        "OCCUPATION": {
+          "tp": 475,
+          "predicted": 599,
+          "gold": 539,
+          "precision": 0.7929883138564274,
+          "recall": 0.8812615955473099,
+          "f1": 0.8347978910369068
+        },
+        "ORGAN": {
+          "tp": 709,
+          "predicted": 1586,
+          "gold": 1253,
+          "precision": 0.44703656998738966,
+          "recall": 0.5658419792498005,
+          "f1": 0.4994716449454033
+        },
+        "ORGANIZATION": {
+          "tp": 0,
+          "predicted": 0,
+          "gold": 60,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "PERSONALCARE": {
+          "tp": 77,
+          "predicted": 388,
+          "gold": 93,
+          "precision": 0.19845360824742267,
+          "recall": 0.8279569892473119,
+          "f1": 0.3201663201663202
+        },
+        "PREVENTIVEMED": {
+          "tp": 2,
+          "predicted": 392,
+          "gold": 18,
+          "precision": 0.00510204081632653,
+          "recall": 0.1111111111111111,
+          "f1": 0.00975609756097561
+        },
+        "SURGERY": {
+          "tp": 88,
+          "predicted": 185,
+          "gold": 275,
+          "precision": 0.4756756756756757,
+          "recall": 0.32,
+          "f1": 0.3826086956521739
+        },
+        "TRANSPORTATION": {
+          "tp": 0,
+          "predicted": 0,
+          "gold": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "TREATMENT": {
+          "tp": 178,
+          "predicted": 343,
+          "gold": 219,
+          "precision": 0.5189504373177842,
+          "recall": 0.8127853881278538,
+          "f1": 0.6334519572953736
+        },
+        "UNITCALIBRATOR": {
+          "tp": 106,
+          "predicted": 506,
+          "gold": 255,
+          "precision": 0.20948616600790515,
+          "recall": 0.41568627450980394,
+          "f1": 0.278580814717477
+        }
+      }
+    },
+    "gold_text": {
+      "micro": {
+        "tp": 5631,
+        "predicted": 9921,
+        "gold": 8112,
+        "precision": 0.5675839129120048,
+        "recall": 0.6941568047337278,
+        "f1": 0.6245217101979704
+      },
+      "per_type": {
+        "AGE": {
+          "tp": 466,
+          "predicted": 716,
+          "gold": 622,
+          "precision": 0.6508379888268156,
+          "recall": 0.7491961414790996,
+          "f1": 0.6965620328849028
+        },
+        "DATETIME": {
+          "tp": 488,
+          "predicted": 698,
+          "gold": 653,
+          "precision": 0.6991404011461319,
+          "recall": 0.7473200612557427,
+          "f1": 0.7224278312361214
+        },
+        "DIAGNOSTICS": {
+          "tp": 212,
+          "predicted": 326,
+          "gold": 291,
+          "precision": 0.6503067484662577,
+          "recall": 0.7285223367697594,
+          "f1": 0.6871961102106969
+        },
+        "DISEASESYMTOM": {
+          "tp": 909,
+          "predicted": 1485,
+          "gold": 1432,
+          "precision": 0.6121212121212121,
+          "recall": 0.6347765363128491,
+          "f1": 0.6232430579362359
+        },
+        "DRUGCHEMICAL": {
+          "tp": 589,
+          "predicted": 827,
+          "gold": 669,
+          "precision": 0.7122128174123338,
+          "recall": 0.8804185351270553,
+          "f1": 0.7874331550802139
+        },
+        "FOODDRINK": {
+          "tp": 180,
+          "predicted": 268,
+          "gold": 237,
+          "precision": 0.6716417910447762,
+          "recall": 0.759493670886076,
+          "f1": 0.7128712871287128
+        },
+        "GENDER": {
+          "tp": 447,
+          "predicted": 593,
+          "gold": 550,
+          "precision": 0.7537942664418212,
+          "recall": 0.8127272727272727,
+          "f1": 0.7821522309711286
+        },
+        "LOCATION": {
+          "tp": 273,
+          "predicted": 440,
+          "gold": 316,
+          "precision": 0.6204545454545455,
+          "recall": 0.8639240506329114,
+          "f1": 0.7222222222222222
+        },
+        "MEDDEVICETECHNIQUE": {
+          "tp": 113,
+          "predicted": 498,
+          "gold": 629,
+          "precision": 0.22690763052208834,
+          "recall": 0.17965023847376788,
+          "f1": 0.2005323868677906
+        },
+        "OCCUPATION": {
+          "tp": 514,
+          "predicted": 579,
+          "gold": 539,
+          "precision": 0.8877374784110535,
+          "recall": 0.9536178107606679,
+          "f1": 0.9194991055456172
+        },
+        "ORGAN": {
+          "tp": 908,
+          "predicted": 1645,
+          "gold": 1253,
+          "precision": 0.5519756838905775,
+          "recall": 0.7246608140462889,
+          "f1": 0.6266390614216701
+        },
+        "ORGANIZATION": {
+          "tp": 0,
+          "predicted": 0,
+          "gold": 60,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "PERSONALCARE": {
+          "tp": 84,
+          "predicted": 390,
+          "gold": 93,
+          "precision": 0.2153846153846154,
+          "recall": 0.9032258064516129,
+          "f1": 0.34782608695652173
+        },
+        "PREVENTIVEMED": {
+          "tp": 5,
+          "predicted": 373,
+          "gold": 18,
+          "precision": 0.013404825737265416,
+          "recall": 0.2777777777777778,
+          "f1": 0.02557544757033248
+        },
+        "SURGERY": {
+          "tp": 110,
+          "predicted": 268,
+          "gold": 275,
+          "precision": 0.41044776119402987,
+          "recall": 0.4,
+          "f1": 0.40515653775322286
+        },
+        "TRANSPORTATION": {
+          "tp": 0,
+          "predicted": 0,
+          "gold": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "TREATMENT": {
+          "tp": 188,
+          "predicted": 323,
+          "gold": 219,
+          "precision": 0.5820433436532507,
+          "recall": 0.8584474885844748,
+          "f1": 0.6937269372693727
+        },
+        "UNITCALIBRATOR": {
+          "tp": 145,
+          "predicted": 492,
+          "gold": 255,
+          "precision": 0.29471544715447157,
+          "recall": 0.5686274509803921,
+          "f1": 0.38821954484605087
+        }
+      }
+    }
+  },
+  "changes": {
+    "by_type": {
+      "AGE": {
+        "recovered": 1,
+        "broken": 1
+      },
+      "DATETIME": {
+        "recovered": 0,
+        "broken": 2
+      },
+      "DISEASESYMTOM": {
+        "recovered": 0,
+        "broken": 1
+      },
+      "DRUGCHEMICAL": {
+        "recovered": 1,
+        "broken": 0
+      },
+      "FOODDRINK": {
+        "recovered": 0,
+        "broken": 1
+      },
+      "LOCATION": {
+        "recovered": 1,
+        "broken": 0
+      },
+      "MEDDEVICETECHNIQUE": {
+        "recovered": 2,
+        "broken": 1
+      },
+      "ORGAN": {
+        "recovered": 0,
+        "broken": 1
+      },
+      "UNITCALIBRATOR": {
+        "recovered": 1,
+        "broken": 0
+      }
+    },
+    "examples": [
+      {
+        "utterance_id": "utt_id_test_002052",
+        "kind": "broken",
+        "label": "DISEASESYMTOM",
+        "surface": "viêm gan",
+        "count": 1,
+        "gold_text": "hiv viêm gan siêu vi b viêm gan siêu vi c các vi khuẩn vân vân cũng như các hóa",
+        "raw_text": "như hiv viêm gan siêu vi bê viêm gan siêu vi c các vi khuẩn vân vân cũng như các.",
+        "corrected_text": "như : HIV, viêm gan siêu vi B, viêm gan siêu vi C, các vi khuẩn vân vân cũng như các."
+      },
+      {
+        "utterance_id": "utt_id_test_002079",
+        "kind": "recovered",
+        "label": "DRUGCHEMICAL",
+        "surface": "sữa mẹ",
+        "count": 1,
+        "gold_text": "dài trong suốt cuộc đời mẹ và bé lợi ích của sữa mẹ dành cho bé giảm đáng kể tần",
+        "raw_text": "unk lâu dài trong suốt cuộc đời mẹ và bé lợi ích của sữa mẹ dành cho bé giảm đáng kể từng.",
+        "corrected_text": "Suốt lâu dài trong suốt cuộc đời mẹ và bé lợi ích của sữa mẹ dành cho bé giảm đáng kể từng."
+      },
+      {
+        "utterance_id": "utt_id_test_000371",
+        "kind": "recovered",
+        "label": "MEDDEVICETECHNIQUE",
+        "surface": "đặt vòng",
+        "count": 1,
+        "gold_text": "tránh thai được chưa ạ và đi trước hay sau chu kỳ kinh đặt vòng thì có hiệu quả",
+        "raw_text": "đặt vòng tránh thai được chưa ạ và đi trước hay sau chu kỳ kinh đặt vòng thì có hiệu quả ngừa thân.",
+        "corrected_text": "Đặt vòng tránh thai được chưa ạ và đi trước hay sau chu kỳ kinh đặt vòng thì có hiệu quả ngừa thân."
+      },
+      {
+        "utterance_id": "utt_id_test_000585",
+        "kind": "broken",
+        "label": "ORGAN",
+        "surface": "răng số tám",
+        "count": 1,
+        "gold_text": "cái răng số bảy làm răng số tám mà bị sâu nhổ rồi thì nên trồng lại mà một khi răng số tám mà mà nhổ rồi thì ở vị trí này",
+        "raw_text": "còn cái răng số bảy và răng số tám mà bị sâu nhổ rồi thì nên trồng lại mà mỗi khi răng số tám mà mà nhổ rồi thì.",
+        "corrected_text": "Còn cái răng số bảy và răng số tám mà bị sâu nhổ rồi thì nên trồng lại mà mỗi khi răng số tám mà mà nhổ rồi thì."
+      },
+      {
+        "utterance_id": "utt_id_test_001517",
+        "kind": "broken",
+        "label": "DATETIME",
+        "surface": "bây giờ",
+        "count": 1,
+        "gold_text": "bây giờ chúng ta sang cái phần thứ hai là nhận biết bệnh nhân có nguy cơ bị thuyên tắc huyết khối tĩnh mạch như thế",
+        "raw_text": "bây giờ chúng ta sang cái phần thứ hai là nhận biết bệnh nhân có nguy cơ bị thuyên tắc các khối tĩnh mạch như thế nào.",
+        "corrected_text": "Bây giờ chúng ta sang cái phần thứ hai là nhận biết bệnh nhân có nguy cơ bị thuyên tắc các khối tĩnh mạch như thế nào."
+      },
+      {
+        "utterance_id": "utt_id_test_001874",
+        "kind": "broken",
+        "label": "MEDDEVICETECHNIQUE",
+        "surface": "tủ đông",
+        "count": 1,
+        "gold_text": "cho đúng hai tùy thấy loại tủ lạnh tủ đông mà thời gian trữ sữa mẹ đông lạnh",
+        "raw_text": "cho đúng tùy theo loại tủ lạnh tủ đông mà thời gian trữ sữa mẹ đông lạnh sẽ kéo dài.",
+        "corrected_text": "cho đúng theo loại tủ lạnh tủ đông mà thời gian trữ sữa mẹ đông lạnh sẽ kéo dài."
+      },
+      {
+        "utterance_id": "utt_id_test_001889",
+        "kind": "broken",
+        "label": "FOODDRINK",
+        "surface": "sữa công thức",
+        "count": 1,
+        "gold_text": "công thức hoàn toàn thông báo bổ sung vitamin d thường không áp dụng cho sữa công thức từ khối lượng",
+        "raw_text": "không phải bú sữa công thức hoàn toàn khuyến cáo bổ sung vitamin d thường không áp dụng.",
+        "corrected_text": "không phải bú sữa công thức hoàn toàn khuyến cáo bổ sung vitamin D thường không áp dụng."
+      },
+      {
+        "utterance_id": "utt_id_test_002062",
+        "kind": "broken",
+        "label": "AGE",
+        "surface": "đứa con",
+        "count": 1,
+        "gold_text": "hào về những đứa con khỏe mạnh và thông minh của mình vì chúng đã được chăm sóc một cách khoa học nhất từ bàn tay của",
+        "raw_text": "về những đứa con khỏe mạnh và thông minh của mình vì chúng đã được chăm sóc một cách khoa học nhất từ bàn tay.",
+        "corrected_text": "về những đứa con mạnh và thông minh của mình vì chúng đã được chăm sóc một cách khoa học nhất từ bàn tay."
+      },
+      {
+        "utterance_id": "utt_id_test_002078",
+        "kind": "recovered",
+        "label": "AGE",
+        "surface": "trẻ",
+        "count": 1,
+        "gold_text": "hiện nay ở úc người ta cho trẻ tại nhóm nguy cơ thiếu vitamin d nếu trẻ sinh non",
+        "raw_text": "khuyến cáo hiện nay ở úc người ta cho trẻ phải nhóm nguy cơ thiếu vitamin d nếu trẻ sinh non.",
+        "corrected_text": "khuyến cáo hiện nay ở Úc người ta cho trẻ phải nhóm nguy cơ thiếu vitamin D nếu trẻ sinh non."
+      },
+      {
+        "utterance_id": "utt_id_test_002578",
+        "kind": "broken",
+        "label": "DATETIME",
+        "surface": "bây giờ",
+        "count": 1,
+        "gold_text": "bây giờ cái vòng kinh nhân tạo là dùng như thế nào vòng kinh nhân tạo rất là dễ rất là mình uống uống cái vị thuốc ngừa",
+        "raw_text": "bây giờ cái vòng kinh nhân tạo là dùng như thế nào vòng kinh nhân tạo rất là dễ tức là mình uống uống cái vị thuốc dừa thai cắt dây.",
+        "corrected_text": "Bây giờ cái vòng kinh nhân tạo là dùng như thế nào vòng kinh nhân tạo rất là dễ tức là mình uống uống cái vị thuốc dừa thai cắt dây."
+      },
+      {
+        "utterance_id": "utt_id_test_003022",
+        "kind": "recovered",
+        "label": "MEDDEVICETECHNIQUE",
+        "surface": "tái tạo",
+        "count": 1,
+        "gold_text": "chứa immunegamma thành quả của công nghệ sinh học hoa kỳ có tác dụng tái tạo và phục hồi niêm mạc đại tràng hỗ trợ điều trị",
+        "raw_text": "nữa imun gamma thành quả của công nghệ sinh học hoa kỳ có tác dụng tái tạo và phục hồi niêm mạc đại tràng hỗ trợ.",
+        "corrected_text": "nữa gamma thành quả của công nghệ sinh học hoa kỳ có tác dụng tái tạo và phục hồi niêm mạc đại tràng hỗ trợ."
+      },
+      {
+        "utterance_id": "utt_id_test_003328",
+        "kind": "recovered",
+        "label": "UNITCALIBRATOR",
+        "surface": "cao",
+        "count": 1,
+        "gold_text": "giờ phút này thì việt nam đã đạt được những cái trình độ cao như thế nào trong việc cấy ốc tai điện tử và chúng tôi câu hỏi",
+        "raw_text": "đến giờ phút này thì việt nam đã đạt được những cái trình độ cao như thế nào trong việc cấy ốc tai điện tử và chúng tôi câu hỏi.",
+        "corrected_text": "đến giờ phút này thì Việt nam đã đạt được những cái trình độ cao như thế nào trong việc cấy ốc tai điện tử và chúng tôi câu hỏi."
+      }
+    ]
+  },
+  "normalized_comparison": {
+    "corrected_minus_raw_micro_f1": 0.000540820707923495,
+    "corrected_minus_raw_true_positives": 3,
+    "corrected_minus_raw_per_type_f1": {
+      "AGE": 0.0,
+      "DATETIME": -0.0004653218120930225,
+      "DIAGNOSTICS": 0.0038215382718840285,
+      "DISEASESYMTOM": -0.0008551845376686407,
+      "DRUGCHEMICAL": 0.003962345804002787,
+      "FOODDRINK": 0.007797270955165692,
+      "GENDER": 0.0,
+      "LOCATION": -0.0008345119278230229,
+      "MEDDEVICETECHNIQUE": 0.0001433445142054457,
+      "OCCUPATION": 0.0,
+      "ORGAN": 0.0003516167863044095,
+      "ORGANIZATION": 0.0,
+      "PERSONALCARE": -0.0006670131670131751,
+      "PREVENTIVEMED": 2.3737463652008517e-05,
+      "SURGERY": 0.0,
+      "TRANSPORTATION": 0.0,
+      "TREATMENT": 0.0,
+      "UNITCALIBRATOR": 0.0
+    },
+    "corrected_minus_raw_per_type_true_positives": {
+      "AGE": 0,
+      "DATETIME": 0,
+      "DIAGNOSTICS": 0,
+      "DISEASESYMTOM": 0,
+      "DRUGCHEMICAL": 1,
+      "FOODDRINK": 2,
+      "GENDER": 0,
+      "LOCATION": 0,
+      "MEDDEVICETECHNIQUE": 0,
+      "OCCUPATION": 0,
+      "ORGAN": 0,
+      "ORGANIZATION": 0,
+      "PERSONALCARE": 0,
+      "PREVENTIVEMED": 0,
+      "SURGERY": 0,
+      "TRANSPORTATION": 0,
+      "TREATMENT": 0,
+      "UNITCALIBRATOR": 0
+    }
+  }
+}
