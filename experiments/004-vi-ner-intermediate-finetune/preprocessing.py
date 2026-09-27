@@ -9,7 +9,11 @@ def normalize_row(tokens, tags):
     words, labels = [], []
     for token, tag in zip(tokens, tags):
         word = str(token).lower().strip()
-        if not word or all(unicodedata.category(char).startswith("P") for char in word):
+        while word and unicodedata.category(word[0]).startswith("P"):
+            word = word[1:]
+        while word and unicodedata.category(word[-1]).startswith("P"):
+            word = word[:-1]
+        if not word:
             continue
         tag = "O" if tag == "0" else str(tag)
         if tag.startswith("I-") and (not labels or labels[-1] not in {"B-" + tag[2:], tag}):

@@ -43,11 +43,13 @@ def prepare_vietmed(raw):
     raw = {split: raw[split].select_columns(["words", "labels"])
            for split in ("train", "validation", "test")}
     feature = raw["train"].features["labels"].feature
-    names = tag_names(raw["train"], "labels")
+    names = list(dict.fromkeys("O" if name == "0" else name
+                               for name in tag_names(raw["train"], "labels")))
     result = {}
     for split in ("train", "validation", "test"):
         result[split] = [{"words": row["words"],
-                          "tags": [feature.int2str(tag) if isinstance(tag, int) else str(tag)
+                          "tags": ["O" if str(tag) == "0" else
+                                   feature.int2str(tag) if isinstance(tag, int) else str(tag)
                                    for tag in row["labels"]]}
                          for row in raw[split]]
     return result, names
@@ -97,6 +99,7 @@ def run_one(kind, seed, model_id, wd, vm, vm_names, vn, vn_names, tokenizer, wor
     start = time.monotonic()
     vm_data = {split: tokenize(rows, tokenizer, vm_names) for split, rows in vm.items()}
     result = {"condition": kind, "seed": seed, "model": model_id,
+              "outside_tag": "O",
               "hyperparameters": {"learning_rate": 3e-5, "epochs": 8,
                                     "weight_decay": wd, "warmup_ratio": 0.1,
                                     "effective_batch_size": 16, "precision": "bf16"}}
@@ -115,6 +118,7 @@ def run_one(kind, seed, model_id, wd, vm, vm_names, vn, vn_names, tokenizer, wor
         del first, stage1
         gc.collect()
         torch.cuda.empty_cache()
+    set_seed(seed)
     model = AutoModelForTokenClassification.from_pretrained(
         model_id, num_labels=len(vm_names), id2label=dict(enumerate(vm_names)),
         label2id={name: i for i, name in enumerate(vm_names)})
@@ -172,6 +176,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--encoder", choices=MODELS, default="phobert")
     parser.add_argument("--seeds", type=int, nargs="+", default=list(SEEDS))
+    parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA unavailable; refusing CPU training")
@@ -193,11 +198,15 @@ def main():
     for seed in args.seeds:
         for condition in ("baseline", "intermediate"):
             path = out / f"{condition}-seed-{seed}.json"
-            if path.exists():
-                completed.append(json.loads(path.read_text()))
+            if path.exists() and not args.force:
+                existing = json.loads(path.read_text())
+                if existing.get("outside_tag") != "O":
+                    raise ValueError(f"Stale scoring in {path}; rerun with --force")
+                completed.append(existing)
                 continue
+            run_dir = f"corrected-{condition}-{seed}" if args.force else f"{condition}-{seed}"
             result = run_one(condition, seed, model_id, wd, vm, vm_names, vn,
-                             vn_names, tokenizer, work / f"{condition}-{seed}")
+                             vn_names, tokenizer, work / run_dir)
             save_json(path, result)
             completed.append(result)
             print(f"{condition} seed {seed}: test F1={result['test']['micro_f1']:.4f}", flush=True)
