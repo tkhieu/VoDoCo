@@ -219,7 +219,7 @@ Edit `index.html` và thêm section mới:
 
 1. Thêm `?print-pdf` vào URL:
    ```
-   http://localhost:8000/index.html?print-pdf
+   http://localhost:8000/may-hoc.html?print-pdf
    ```
 
 2. Print từ browser (Ctrl+P):
