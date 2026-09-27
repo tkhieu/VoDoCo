@@ -38,6 +38,8 @@ const AGGF = {
 const AGG = { PhoBERT: AGGF.PhoBERT.summary, ViHealthBERT: AGGF.ViHealthBERT.summary };
 const SEEDS = AGGF.PhoBERT.seeds.join(', ');
 const X5 = RJ('experiments/005-correction-before-ner/results.json');
+const CONF = J('confusion_all_models.json');
+const WS_HYP = fs.readFileSync(path.join(ROOT, 'do_an_may_hoc/ket_qua_goc/asr_test_whisper_small.jsonl'), 'utf8').trim().split('\n').map((l) => JSON.parse(l).hypothesis);
 const X1 = RJ('experiments/001-zeroshot-correction-vietmed/outputs/evaluation-summary.json');
 
 const ORDER = ['Logistic Regression', 'Linear SVM', 'CRF', 'XLM-R', 'PhoBERT', 'ViHealthBERT'];
@@ -94,6 +96,7 @@ const f5 = (k) => NER5[k].micro.f1;
 const corrGain = X5.normalized_comparison.corrected_minus_raw_micro_f1;
 const normGain = f5('raw_normalized') - f5('raw');
 const TC = X5.text_changes;
+const wsNormChanged = WS_HYP.filter((h) => h !== h.toLowerCase() || /\p{P}/u.test(h)).length; // normalization = lowercase + strip punctuation
 const aggT = (m, path, t) => AGG[m][path].per_type[t].f1.mean;
 
 // ---------- palette & type (same theme as v2)
@@ -430,12 +433,12 @@ const chartBase = {
     { name: 'Chấm đúng (18 loại thật)', labels: OLD_ROWS.map(([m]) => m), values: OLD_ROWS.map(([m]) => r1(M[m].test_f1)) },
   ], { ...chartBase, x: 6.4, y: 1.25, w: 6.4, h: 3.5, barDir: 'col', barGrouping: 'clustered', chartColors: ['A8B5C0', C.coral], title: 'Micro F1 test (%) trên cùng checkpoint', showValue: true, dataLabelPosition: 'outEnd', dataLabelFontSize: 11, valAxisMinVal: 50, valAxisMaxVal: 66, dataLabelFormatCode: '0.0' });
   kpi(s, `${sgn(oldDelta)} → ${sgn(PV.delta)}`, 'ViHealthBERT − PhoBERT: số cũ nói "hơn", số đúng kèm CI95', 0.6, 4.9, 4.0, 1.95, C.navy);
-  kpi(s, ci(PV.ci95), 'CI95 chứa 0 ⇒ hai mô hình **ngang nhau**', 4.75, 4.9, 3.85, 1.95, C.coral, C.coralTint);
+  kpi(s, ci(PV.ci95), 'CI95 chứa 0 ⇒ **chênh lệch không phân biệt được với 0**', 4.75, 4.9, 3.85, 1.95, C.coral, C.coralTint);
   card(s, 8.75, 4.9, 4.0, 1.95, C.tealTint);
   heading(s, 'Cách sửa', 8.95, 5.0, 3.7, C.teal, 15);
   bullets(s, ['Đổi "0" → "O" trước khi dựng label2id, huấn luyện và chấm', 'Chấm lại checkpoint cũ; chạy lại 3 seed (slide 13)'], 8.95, 5.4, 3.7, 1.45, 12.5);
   source(s, 'giai_doan_15_ner_finetune_vihealthbert/ketqua/ner_gold_comparison.json (số cũ), model_comparison.json (số đúng, pairs); đính chính trong FINAL_RESULTS.md / README.md');
-  s.addNotes(`Đây là phần nhóm muốn nhấn mạnh nhất về quy trình. Bộ dữ liệu ghi nhãn "ngoài thực thể" bằng ký tự số không, chứ không phải chữ O. Thư viện seqeval không nhận ra điều đó, nên coi mỗi đoạn số không là một thực thể giả thuộc loại gạch dưới, và cộng cả vào micro F1. Trên test có ${int(fakeSupport)} thực thể giả như vậy, gần bằng số thực thể thật. Kết quả là các số cũ, ví dụ PhoBERT ${pct(OLD.phobert_best_validation_seed.f1)}% và ViHealthBERT ${pct(OLD.vihealthbert_best_validation_seed.f1)}%, đều bị lệch. Sau khi đổi số không thành O và chấm lại trên cùng checkpoint, cả ba Transformer đều tăng ${rng(OLD_ROWS.map(([m, o]) => M[m].test_f1 - o.f1), 1)} điểm. Quan trọng hơn là kết luận: số cũ nói ViHealthBERT hơn PhoBERT ${pct(oldDelta)} điểm; số đúng là ${pct(PV.delta)} điểm với khoảng tin cậy từ ${sgn(PV.ci95[0])} đến ${sgn(PV.ci95[1])}, chứa 0, tức hai mô hình ngang nhau. Bài học: phải kiểm tra tập nhãn trước khi tin vào thước đo. Thời gian: 1 phút 15 giây.`);
+  s.addNotes(`Đây là phần nhóm muốn nhấn mạnh nhất về quy trình. Bộ dữ liệu ghi nhãn "ngoài thực thể" bằng ký tự số không, chứ không phải chữ O. Thư viện seqeval không nhận ra điều đó, nên coi mỗi đoạn số không là một thực thể giả thuộc loại gạch dưới, và cộng cả vào micro F1. Trên test có ${int(fakeSupport)} thực thể giả như vậy, gần bằng số thực thể thật. Kết quả là các số cũ, ví dụ PhoBERT ${pct(OLD.phobert_best_validation_seed.f1)}% và ViHealthBERT ${pct(OLD.vihealthbert_best_validation_seed.f1)}%, đều bị lệch. Sau khi đổi số không thành O và chấm lại trên cùng checkpoint, cả ba Transformer đều tăng ${rng(OLD_ROWS.map(([m, o]) => M[m].test_f1 - o.f1), 1)} điểm. Quan trọng hơn là kết luận: số cũ nói ViHealthBERT hơn PhoBERT ${pct(oldDelta)} điểm; số đúng là ${pct(PV.delta)} điểm với khoảng tin cậy từ ${sgn(PV.ci95[0])} đến ${sgn(PV.ci95[1])}, chứa 0, tức chênh lệch không phân biệt được với 0; đây không phải phép kiểm định tương đương, nên nhóm không nói mô hình nào tốt hơn. Bài học: phải kiểm tra tập nhãn trước khi tin vào thước đo. Thời gian: 1 phút 15 giây.`);
 }
 
 // ============================================================ 12. Results table
@@ -457,10 +460,10 @@ const chartBase = {
 
 // ============================================================ 13. Bootstrap & seeds
 {
-  const s = base('CRF hơn khoảng 1 điểm; PhoBERT ≈ ViHealthBERT', 2);
-  const pairRows = Object.entries(MC.pairs).map(([k, p]) => [k.replace('Logistic Regression', 'LogReg'), sgn(p.delta), ci(p.ci95), p.ci95[0] > 0 || p.ci95[1] < 0 ? 'Khác biệt thật' : 'Ngang nhau']);
-  const tieIdx = pairRows.findIndex((r) => r[3] === 'Ngang nhau');
-  table(s, ['Cặp (A − B)', 'Δ F1', 'CI95 bootstrap', 'Kết luận'], pairRows, { x: 0.6, y: 1.35, w: 6.6, colW: [2.4, 0.9, 1.75, 1.55], size: 12.5, highlight: tieIdx, rowH: 0.45 });
+  const s = base('CRF hơn ~1 điểm; hai BERT tiếng Việt chưa tách được', 2);
+  const pairRows = Object.entries(MC.pairs).map(([k, p]) => [k.replace('Logistic Regression', 'LogReg'), sgn(p.delta), ci(p.ci95), p.ci95[0] > 0 || p.ci95[1] < 0 ? 'CI không chứa 0' : 'Không phân biệt được với 0']);
+  const tieIdx = pairRows.findIndex((r) => r[3] === 'Không phân biệt được với 0');
+  table(s, ['Cặp (A − B)', 'Δ F1', 'CI95 bootstrap', 'Kết luận'], pairRows, { x: 0.6, y: 1.35, w: 6.6, colW: [2.25, 0.8, 1.6, 1.95], size: 12, highlight: tieIdx, rowH: 0.45 });
   card(s, 0.6, 4.75, 6.6, 2.15, C.goldTint);
   heading(s, 'Chạy lại 3 seed với cách chấm đúng', 0.82, 4.85, 6.2, C.navy, 15);
   table(s, ['Mô hình', 'Micro F1 (mean ± std)', 'Macro F1'], ['PhoBERT', 'ViHealthBERT'].map((m) => [m, ms(AGG[m].baseline.micro_f1), ms(AGG[m].baseline.macro_f1)]),
@@ -472,7 +475,7 @@ const chartBase = {
   });
   text(s, 'Pretrain y tế tăng ở vài loại y khoa nhưng giảm ở loại khác; tổng thể bù trừ nhau.', 7.5, 5.7, 5.2, 0.9, { size: 13 });
   source(s, 'model_comparison.json (pairs, per_type_f1); experiments/004-vi-ner-intermediate-finetune/results/*/aggregate.json (baseline)');
-  s.addNotes(`Để biết chênh lệch có thật hay không, nhóm dùng paired bootstrap trên tập test. CRF hơn cả PhoBERT và ViHealthBERT, và khoảng tin cậy không chứa 0, nên đó là khác biệt thật, dù chỉ khoảng một điểm. Giữa ViHealthBERT và PhoBERT, chênh lệch ${pct(PV.delta)} điểm với khoảng tin cậy chứa 0: không kết luận được mô hình nào tốt hơn. Kết quả chạy lại ba seed với cách chấm đúng củng cố điều này: PhoBERT ${ms(AGG.PhoBERT.baseline.micro_f1)} và ViHealthBERT ${ms(AGG.ViHealthBERT.baseline.micro_f1)}, chênh lệch nhỏ hơn độ dao động giữa các seed. Biểu đồ bên phải cho thấy pretrain y tế giúp một số loại nhưng làm giảm loại khác, nên tổng thể bù trừ nhau. Thời gian: 1 phút.`);
+  s.addNotes(`Để biết chênh lệch có thật hay không, nhóm dùng paired bootstrap trên tập test. CRF hơn cả PhoBERT và ViHealthBERT, và khoảng tin cậy không chứa 0, nên chênh lệch có ý nghĩa thống kê, dù chỉ khoảng một điểm. Giữa ViHealthBERT và PhoBERT, chênh lệch ${pct(PV.delta)} điểm với khoảng tin cậy chứa 0: chênh lệch không phân biệt được với 0. Đây không phải phép kiểm định tương đương, nên nhóm chỉ nói rằng chưa tách được hai mô hình. Kết quả chạy lại ba seed với cách chấm đúng củng cố điều này: PhoBERT ${ms(AGG.PhoBERT.baseline.micro_f1)} và ViHealthBERT ${ms(AGG.ViHealthBERT.baseline.micro_f1)}, chênh lệch nhỏ hơn độ dao động giữa các seed. Biểu đồ bên phải cho thấy pretrain y tế giúp một số loại nhưng làm giảm loại khác, nên tổng thể bù trừ nhau. Thời gian: 1 phút.`);
 }
 
 // ============================================================ 14. Seen vs unseen
@@ -513,7 +516,21 @@ const chartBase = {
 // ============================================================ 16. Error types
 {
   const s = base('Lỗi còn lại: lệch ranh giới và đoán thừa, ít sai loại', 2);
-  image(s, 'fig_confusion_vihealthbert.png', 0.5, 1.2, 5.9, 5.75);
+  const CL = CONF.labels;
+  const CM = CONF.matrices.ViHealthBERT;
+  const top = CL.filter((l) => l !== 'O').sort((a, b) => EDA.test.entity_spans[b] - EDA.test.entity_spans[a]).slice(0, 7);
+  const keep = ['O', ...top];
+  const rowN = (l) => { const r = CM[CL.indexOf(l)]; const tot = r.reduce((a, b) => a + b, 0); return (c) => r[CL.indexOf(c)] / tot; };
+  const heat = (v) => { const t = Math.min(1, v); const mix = (a, b) => Math.round(a + (b - a) * t); return [mix(0xFF, 0x0F), mix(0xFF, 0x2A), mix(0xFF, 0x3D)].map((c) => c.toString(16).padStart(2, '0')).join('').toUpperCase(); };
+  const abbr = (l) => l.slice(0, 7);
+  const hdr = [{ text: 'Vàng ↓ / Dự đoán →', options: { bold: true, fontSize: 9, color: C.white, fill: { color: C.navy } } },
+    ...keep.map((c) => ({ text: abbr(c), options: { bold: true, fontSize: 9, color: C.white, fill: { color: C.navy }, align: 'center' } }))];
+  const body = keep.map((g) => { const f = rowN(g); return [{ text: abbr(g), options: { bold: true, fontSize: 10, color: C.ink, fill: { color: 'F7FAFB' } } },
+    ...keep.map((c) => { const v = f(c); return { text: pct(v, 0), options: { fontSize: 12, bold: g === c, align: 'center', color: v > 0.45 ? C.white : C.ink, fill: { color: heat(v) } } }; })]; });
+  s.addTable([hdr, ...body], { x: 0.6, y: 1.35, w: 5.9, colW: [1.1, ...keep.map(() => 4.8 / keep.length)], rowH: 0.5, fontFace: BODY, border: { type: 'solid', pt: 0.5, color: C.line }, margin: [1, 2, 1, 2] });
+  text(s, `Confusion mức token của ViHealthBERT trên test, % theo hàng; ${keep.length - 1} loại nhiều nhất + O (đủ ${CL.length - 1} loại trong báo cáo).`, 0.6, 6.0, 5.9, 0.6, { size: 11, italic: true, color: C.muted });
+  const offDiag = top.flatMap((g) => top.filter((c) => c !== g).map((c) => [g, c, rowN(g)(c)])).sort((a, b) => b[2] - a[2])[0];
+  const toO = top.map((g) => [g, rowN(g)('O')]).sort((a, b) => b[1] - a[1])[0];
   const so = (m) => M[m].span_outcomes;
   table(s, ['Mô hình', 'Khớp', 'Lệch biên', 'Sai loại', 'Bỏ sót', 'Thừa'], ORDER.map((m) => [SHORT[m], int(so(m).exact), int(so(m).boundary), int(so(m).wrong_type), int(so(m).missed), int(so(m).spurious)]),
     { x: 6.7, y: 1.35, w: 6.05, colW: [1.45, 0.9, 1.0, 0.9, 0.9, 0.9], size: 12, rowH: 0.42, highlight: ORDER.indexOf('CRF') });
@@ -522,8 +539,8 @@ const chartBase = {
   bullets(s, [`Transformer bỏ sót ít hơn (${int(so('ViHealthBERT').missed)} so với CRF ${int(so('CRF').missed)}) nhưng đoán thừa nhiều hơn (${int(so('ViHealthBERT').spurious)} so với ${int(so('CRF').spurious)})`,
     `Sai loại chỉ ${int(Math.min(...ORDER.map((m) => so(m).wrong_type)))}–${int(Math.max(...ORDER.map((m) => so(m).wrong_type)))} thực thể ⇒ vấn đề chính là **ranh giới**`,
     'Hướng tự nhiên: BERT-CRF (chưa thực hiện)'], 6.92, 5.05, 5.65, 1.8, 13);
-  source(s, 'model_comparison.json (span_outcomes), fig_confusion_vihealthbert.png (confusion mức token, chuẩn hoá theo hàng)');
-  s.addNotes(`Nhóm phân loại lỗi ở mức thực thể thành năm nhóm: khớp chính xác, lệch ranh giới, sai loại, bỏ sót và đoán thừa. Transformer bỏ sót ít hơn nhiều so với CRF, nhưng đoán thừa gần gấp đôi. Số thực thể bị sai loại rất ít ở mọi mô hình, nên vấn đề chính không phải nhầm loại mà là xác định ranh giới và đoán thừa. Confusion matrix bên trái của ViHealthBERT, chuẩn hoá theo hàng, cho thấy nhầm lẫn lớn nhất là giữa thực thể và nhãn O, và giữa các loại gần nghĩa như bệnh và cơ quan. Đây chính là loại lỗi mà lớp CRF xử lý tốt, nên hướng tự nhiên tiếp theo là BERT-CRF; nhóm chưa thực hiện hướng này. Thời gian: 50 giây.`);
+  source(s, 'model_comparison.json (span_outcomes), confusion_all_models.json (ViHealthBERT, chuẩn hoá theo hàng)');
+  s.addNotes(`Nhóm phân loại lỗi ở mức thực thể thành năm nhóm: khớp chính xác, lệch ranh giới, sai loại, bỏ sót và đoán thừa. Transformer bỏ sót ít hơn nhiều so với CRF, nhưng đoán thừa gần gấp đôi. Số thực thể bị sai loại rất ít ở mọi mô hình, nên vấn đề chính không phải nhầm loại mà là xác định ranh giới và đoán thừa. Confusion matrix bên trái là của ViHealthBERT ở mức token, chuẩn hoá theo hàng, chỉ giữ ${keep.length - 1} loại nhiều nhất cho dễ đọc. Nhầm lẫn lớn nhất là giữa thực thể và nhãn O, ví dụ ${pct(toO[1], 0)}% token ${toO[0]} bị đoán thành O; giữa hai loại, lớn nhất là ${offDiag[0]} bị đoán thành ${offDiag[1]}, ${pct(offDiag[2], 0)}%. Đây chính là loại lỗi mà lớp CRF xử lý tốt, nên hướng tự nhiên tiếp theo là BERT-CRF; nhóm chưa thực hiện hướng này. Thời gian: 50 giây.`);
 }
 
 // ============================================================ 17. Vi-Ner intermediate fine-tune
@@ -589,16 +606,16 @@ const chartBase = {
   card(s, 7.95, 4.1, 4.8, 2.8, C.tint);
   heading(s, 'Vì sao chuẩn hoá giúp?', 8.15, 4.2, 4.4, C.navy, 15);
   bullets(s, [`${int(TC.raw_terminal_period_count)}/${int(X5.source.scored_utterances)} transcript PhoWhisper kết thúc bằng **dấu chấm**; NER học trên văn bản không dấu câu`,
-    `Whisper-small của demo: **${pct(WS.style.hyp_with_punctuation, 0)}%** câu có dấu câu ⇒ chuẩn hoá **không thay đổi gì** cho demo`], 8.15, 4.6, 4.45, 2.25, 13);
+    `${int(WS_HYP.length)} transcript Whisper-small hiện có: **${wsNormChanged}** câu có chữ hoa hoặc dấu câu ⇒ bước chuẩn hoá sẽ không đổi câu nào; chưa đo tác động lên pipeline demo`], 8.15, 4.6, 4.45, 2.25, 13);
   card(s, 0.6, 5.8, 7.1, 1.1, C.goldTint);
   text(s, `**Không đưa mô hình sửa lỗi vào demo.** Kết quả trên PhoWhisper, không ước lượng trực tiếp pipeline Whisper-small. Khoảng cách chuẩn → ASR: ${pct(f5('gold_text'))}% → ${pct(f5('raw'))}%.`, 0.8, 5.8, 6.8, 1.1, { size: 13, valign: 'middle' });
-  source(s, 'experiments/005-correction-before-ner/results.json (ner, normalized_comparison, text_changes), README.md; asr_eda.json (style)');
-  s.addNotes(`Thí nghiệm thứ ba đo trực tiếp điều quan trọng: sửa lỗi có giúp NER không. Nhóm chạy cùng checkpoint PhoBERT của demo trên bốn phiên bản transcript PhoWhisper của ${int(X5.source.scored_utterances)} câu test. Ban đầu có vẻ sửa lỗi giúp tăng F1, nhưng khi thêm nhánh đối chứng chỉ viết thường và bỏ dấu câu, phần tăng gần như biến mất: sửa lỗi chỉ thêm ${pct(corrGain, 3)} điểm, tương đương ${X5.normalized_comparison.corrected_minus_raw_true_positives} thực thể. Toàn bộ phần tăng ${pct(normGain, 2)} điểm đến từ chuẩn hoá, chủ yếu là bỏ dấu chấm ở cuối câu mà PhoWhisper luôn thêm vào. Với Whisper-small mà demo dùng, transcript vốn không có dấu câu, nên chuẩn hoá cũng không thay đổi gì. Vì vậy nhóm không đưa mô hình sửa lỗi vào demo. Lưu ý: các số này đo trên PhoWhisper, không phải pipeline Whisper-small của demo. Thời gian: 1 phút 10 giây.`);
+  source(s, 'experiments/005-correction-before-ner/results.json (ner, normalized_comparison, text_changes), README.md; ket_qua_goc/asr_test_whisper_small.jsonl (đếm lúc build)');
+  s.addNotes(`Thí nghiệm thứ ba đo trực tiếp điều quan trọng: sửa lỗi có giúp NER không. Nhóm chạy cùng checkpoint PhoBERT của demo trên bốn phiên bản transcript PhoWhisper của ${int(X5.source.scored_utterances)} câu test. Ban đầu có vẻ sửa lỗi giúp tăng F1, nhưng khi thêm nhánh đối chứng chỉ viết thường và bỏ dấu câu, phần tăng gần như biến mất: sửa lỗi chỉ thêm ${pct(corrGain, 3)} điểm, tương đương ${X5.normalized_comparison.corrected_minus_raw_true_positives} thực thể. Toàn bộ phần tăng ${pct(normGain, 2)} điểm đến từ chuẩn hoá, chủ yếu là bỏ dấu chấm ở cuối câu mà PhoWhisper luôn thêm vào. Trong ${int(WS_HYP.length)} transcript Whisper-small hiện có, không câu nào có chữ hoa hay dấu câu, nên bước chuẩn hoá sẽ không thay đổi câu nào trong số đó; nhóm chưa đo tác động trên pipeline demo đầy đủ. Vì vậy nhóm không đưa mô hình sửa lỗi vào demo. Lưu ý: các số này đo trên PhoWhisper, không phải pipeline Whisper-small của demo. Thời gian: 1 phút 10 giây.`);
 }
 
 // ============================================================ 20. ASR & demo pipeline
 {
-  const s = base(`Phía âm thanh: ${pct(PW.entity_survival.ALL.exact_rate, 1)}% thực thể còn nguyên sau ASR`, 4);
+  const s = base(`PhoWhisper-medium giữ ${pct(PW.entity_survival.ALL.exact_rate, 1)}% thực thể (${int(PW.utterances)} câu)`, 4);
   image(s, 'fig_asr_overview.png', 0.4, 1.25, 12.5, 3.6);
   const steps = [['Audio', 'hội thoại y tế'], ['Whisper-small', 'MultiMed-ST'], ['Văn bản', 'thường, không dấu câu'], ['PhoBERT NER', 'checkpoint demo']];
   steps.forEach(([t, d], i) => {
@@ -608,15 +625,15 @@ const chartBase = {
     s.addText(d, { x, y: 5.5, w: 1.45, h: 0.4, fontFace: BODY, fontSize: 9, color: i === 3 ? C.white : C.muted, align: 'center', margin: 0, isTextBox: true });
     if (i < 3) s.addText('→', { x: x + 1.43, y: 5.3, w: 0.2, h: 0.4, fontSize: 14, color: C.muted, align: 'center', margin: 0, isTextBox: true });
   });
-  text(s, 'Pipeline demo', 0.6, 6.1, 6.3, 0.3, { size: 11, italic: true, color: C.muted });
-  table(s, ['Hệ ASR', 'Số câu', 'WER', 'Thực thể còn nguyên'], [
+  text(s, `Pipeline demo dùng **Whisper-small**: thực thể còn nguyên **${pct(WS.entity_survival.ALL.exact_rate, 1)}%** (n = ${int(WS.entity_survival.ALL.n)} thực thể, ${int(WS.utterances)} câu nói), thấp hơn PhoWhisper-medium.`, 0.6, 6.1, 6.4, 0.85, { size: 12.5, color: C.coral });
+  table(s, ['Hệ ASR', 'Số câu nói', 'WER', 'Thực thể còn nguyên'], [
     ['PhoWhisper-medium', int(PW.utterances), `${pct(PW.wer.corpus, 1)}%`, `${pct(PW.entity_survival.ALL.exact_rate, 1)}%`],
     ['PhoWhisper-medium', int(PW500.utterances), `${pct(PW500.wer.corpus, 1)}%`, `${pct(PW500.entity_survival.ALL.exact_rate, 1)}%`],
     ['Whisper-small (demo)', int(WS.utterances), `${pct(WS.wer.corpus, 1)}%`, `${pct(WS.entity_survival.ALL.exact_rate, 1)}%`],
-  ], { x: 7.2, y: 5.0, w: 5.55, colW: [2.05, 0.9, 1.0, 1.6], size: 12, rowH: 0.38, highlight: 2 });
+  ], { x: 7.2, y: 5.0, w: 5.55, colW: [2.0, 1.0, 0.95, 1.6], size: 12, rowH: 0.38, highlight: 2 });
   text(s, `Lỗi ASR: sai dấu chỉ ${pct(PW.errors.diacritic_share_of_errors, 1)}%; chèn / xoá ở hai đầu câu ${pct(PW.errors.edge_share_of_errors, 1)}% (PhoWhisper).`, 7.2, 6.55, 5.55, 0.45, { size: 11.5, italic: true, color: C.muted });
   source(s, 'asr_eda.json (systems: wer, entity_survival, errors), fig_asr_overview.png; experiments/005 README (demo = Whisper-small + PhoBERT)');
-  s.addNotes(`Hệ thống thực tế nhận transcript do ASR sinh ra. Nhóm dùng transcript có sẵn: PhoWhisper-medium trên toàn bộ ${int(PW.utterances)} câu nói test, và Whisper-small của demo trên ${int(WS.utterances)} câu đầu. PhoWhisper có WER ${pct(PW.wer.corpus, 1)}% và giữ nguyên ${pct(PW.entity_survival.ALL.exact_rate, 1)}% thực thể vàng. Trên cùng ${int(WS.utterances)} câu, Whisper-small kém hơn: WER ${pct(WS.wer.corpus, 1)}% và chỉ ${pct(WS.entity_survival.ALL.exact_rate, 1)}% thực thể còn nguyên; thiết bị – kỹ thuật và phẫu thuật mất nhiều nhất. Phân tích lỗi cho thấy sai dấu chỉ chiếm ${pct(PW.errors.diacritic_share_of_errors, 1)}% lỗi, còn hơn một nửa là chèn hoặc xoá từ ở hai đầu câu, tức lỗi cắt đoạn âm thanh, thứ mà mô hình văn bản không sửa được. Đó cũng là lý do sửa lỗi văn bản không giúp NER. Thời gian: 1 phút.`);
+  s.addNotes(`Hệ thống thực tế nhận transcript do ASR sinh ra. Nhóm dùng transcript có sẵn: PhoWhisper-medium trên toàn bộ ${int(PW.utterances)} câu nói test, và Whisper-small của demo trên ${int(WS.utterances)} câu đầu. Trên ${int(PW.utterances)} câu, PhoWhisper-medium có WER ${pct(PW.wer.corpus, 1)}% và giữ nguyên ${pct(PW.entity_survival.ALL.exact_rate, 1)}% trong ${int(PW.entity_survival.ALL.n)} thực thể vàng; đây không phải mô hình của demo. Trên cùng ${int(WS.utterances)} câu, Whisper-small kém hơn: WER ${pct(WS.wer.corpus, 1)}% và chỉ ${pct(WS.entity_survival.ALL.exact_rate, 1)}% thực thể còn nguyên; thiết bị – kỹ thuật và phẫu thuật mất nhiều nhất. Phân tích lỗi cho thấy sai dấu chỉ chiếm ${pct(PW.errors.diacritic_share_of_errors, 1)}% lỗi, còn hơn một nửa là chèn hoặc xoá từ ở hai đầu câu, tức lỗi cắt đoạn âm thanh, thứ mà mô hình văn bản không sửa được. Đó cũng là lý do sửa lỗi văn bản không giúp NER. Thời gian: 1 phút.`);
 }
 
 // ============================================================ 21. Lessons & limits
@@ -624,7 +641,7 @@ const chartBase = {
   const s = base('Bài học và giới hạn', 4);
   card(s, 0.6, 1.35, 6.0, 5.55, C.tealTint);
   heading(s, 'Bài học', 0.82, 1.45, 5.6, C.teal);
-  bullets(s, ['**Kiểm tra nhãn trước khi tin thước đo:** "0" ≠ "O" đã làm lệch mọi số Transformer', '**EDA quyết định cách đánh giá:** lệch miền ⇒ tách thực thể đã gặp / chưa gặp', '**Luôn có nhánh đối chứng:** phần tăng của sửa lỗi hoá ra là của việc bỏ dấu chấm', '**Kiểm định chênh lệch:** bootstrap và nhiều seed cho thấy PhoBERT ≈ ViHealthBERT', '**Mô hình đơn giản vẫn mạnh:** CRF thắng khi dữ liệu lặp lại thuật ngữ'], 0.82, 1.9, 5.6, 4.9, 17);
+  bullets(s, ['**Kiểm tra nhãn trước khi tin thước đo:** "0" ≠ "O" đã làm lệch mọi số Transformer', '**EDA quyết định cách đánh giá:** lệch miền ⇒ tách thực thể đã gặp / chưa gặp', '**Luôn có nhánh đối chứng:** phần tăng của sửa lỗi hoá ra là của việc bỏ dấu chấm', '**Kiểm định chênh lệch:** bootstrap và nhiều seed: PhoBERT − ViHealthBERT không phân biệt được với 0', '**Mô hình đơn giản vẫn mạnh:** CRF thắng khi dữ liệu lặp lại thuật ngữ'], 0.82, 1.9, 5.6, 4.9, 17);
   card(s, 6.85, 1.35, 5.9, 5.55, C.coralTint);
   heading(s, 'Giới hạn', 7.07, 1.45, 5.5, C.coral);
   bullets(s, [`Lớp hiếm (ORGANIZATION ${CD.ORGANIZATION.train}, TRANSPORTATION ${CD.TRANSPORTATION.train} mẫu train): F1 theo loại không đáng tin`,
@@ -644,7 +661,7 @@ const chartBase = {
   s.addText('Kết luận', { x: 0.8, y: 0.5, w: 11.7, h: 0.8, fontFace: HEAD, fontSize: 32, bold: true, color: C.white, margin: 0, isTextBox: true });
   const tiles = [
     [`${pct(M.CRF.test_f1)}%`, 'CRF: F1 test cao nhất (strict)'],
-    [`${pct(M.PhoBERT.test_f1)} ≈ ${pct(M.ViHealthBERT.test_f1)}`, 'PhoBERT ≈ ViHealthBERT (CI chứa 0)'],
+    [`${pct(M.PhoBERT.test_f1)} / ${pct(M.ViHealthBERT.test_f1)}`, 'PhoBERT vs ViHealthBERT: chênh lệch không phân biệt được với 0'],
     [`${pct(M.ViHealthBERT.recall_unseen, 1)}%`, 'ViHealthBERT: thực thể chưa gặp, cao nhất'],
     [`${sgn(corrGain, 3)}`, 'Sửa lỗi transcript trước NER: không đáng kể'],
   ];
@@ -657,7 +674,7 @@ const chartBase = {
   s.addText('Nút thắt nằm ở dữ liệu — lệch miền, lớp hiếm, ranh giới nhãn — hơn là ở việc chọn mô hình.', { x: 0.8, y: 4.05, w: 11.7, h: 0.9, fontFace: HEAD, fontSize: 21, italic: true, color: C.white, margin: 0, valign: 'middle', isTextBox: true });
   s.addText('Cảm ơn Thầy và các bạn đã lắng nghe!  ·  Hỏi & đáp', { x: 0.8, y: 5.5, w: 11.7, h: 0.8, fontFace: HEAD, fontSize: 26, bold: true, color: '9FD8CF', align: 'center', margin: 0, valign: 'middle', isTextBox: true });
   s.addText(`${slideNo} / ${TOTAL}`, { x: W - 1.6, y: 7.05, w: 1.0, h: 0.3, fontFace: BODY, fontSize: 10, color: '9FB3C2', align: 'right', margin: 0, isTextBox: true });
-  s.addNotes(`Tóm lại: trên tập test lệch miền của VietMed-NER, CRF đạt F1 strict cao nhất với ${pct(M.CRF.test_f1)}%. PhoBERT và ViHealthBERT ngang nhau sau khi sửa lỗi chấm điểm và kiểm định thống kê. Transformer, đặc biệt ViHealthBERT, nhận ra thực thể chưa gặp tốt hơn nhiều, gần ${pct(M.ViHealthBERT.recall_unseen, 0)}%. Các hướng thử thêm, học Vi-Ner trước và sửa lỗi transcript trước NER, không cải thiện F1 tổng nên không được đưa vào demo. Thông điệp chính: nút thắt nằm ở dữ liệu, gồm lệch miền, lớp hiếm và ranh giới nhãn, hơn là ở việc chọn mô hình. Cảm ơn Thầy và các bạn đã lắng nghe; nhóm sẵn sàng trả lời câu hỏi. Thời gian: 45 giây.`);
+  s.addNotes(`Tóm lại: trên tập test lệch miền của VietMed-NER, CRF đạt F1 strict cao nhất với ${pct(M.CRF.test_f1)}%. Giữa PhoBERT và ViHealthBERT, sau khi sửa lỗi chấm điểm, chênh lệch không phân biệt được với 0 theo bootstrap và ba seed. Transformer, đặc biệt ViHealthBERT, nhận ra thực thể chưa gặp tốt hơn nhiều, gần ${pct(M.ViHealthBERT.recall_unseen, 0)}%. Các hướng thử thêm, học Vi-Ner trước và sửa lỗi transcript trước NER, không cải thiện F1 tổng nên không được đưa vào demo. Thông điệp chính: nút thắt nằm ở dữ liệu, gồm lệch miền, lớp hiếm và ranh giới nhãn, hơn là ở việc chọn mô hình. Cảm ơn Thầy và các bạn đã lắng nghe; nhóm sẵn sàng trả lời câu hỏi. Thời gian: 45 giây.`);
 }
 
 if (slideNo !== TOTAL) throw new Error(`slide count ${slideNo} != TOTAL ${TOTAL}`);
