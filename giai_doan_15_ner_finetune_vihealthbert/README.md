@@ -2,7 +2,7 @@
 
 > **Đính chính (2026-09-28).** Cột "Test F1 (micro)" 60,90% (PhoBERT) và 61,28% (ViHealthBERT), cùng con số "hơn 0,37 điểm", bị sai do nhãn `"0"` được seqeval tính như entity loại `_`. Validation F1 dùng để chọn cấu hình và seed cũng bị ảnh hưởng. Đừng dùng 60,90% làm mốc so sánh.
 >
-> Số đúng khi chỉ tính entity thật, chấm lại trên checkpoint release (nguồn: `do_an_may_hoc/results/model_comparison.json`): XLM-RoBERTa **58,62%**, PhoBERT **62,42%**, ViHealthBERT **62,74%**. Chênh lệch ViHealthBERT − PhoBERT là 0,32 điểm, khoảng tin cậy 95% từ −0,41 đến +1,04, nên **hai mô hình ngang nhau**. Chạy lại 3 seed với cách chấm đúng (`experiments/004-vi-ner-intermediate-finetune/README.md`) cho PhoBERT 62,98 ± 0,33 và ViHealthBERT 62,88 ± 0,12. F1 theo từng loại entity và macro F1 không bị ảnh hưởng.
+> Số đúng khi chỉ tính entity thật, chấm lại trên checkpoint release (nguồn: `do_an_may_hoc/results/model_comparison.json`): XLM-RoBERTa **58,62%**, PhoBERT **62,42%**, ViHealthBERT **62,74%**. Chênh lệch ViHealthBERT − PhoBERT là 0,32 điểm, khoảng tin cậy 95% từ −0,41 đến +1,04, nên **hai mô hình ngang nhau**. Chạy lại 3 seed với cách chấm đúng (`experiments/004-vi-ner-intermediate-finetune/README.md`) cho PhoBERT 62,98 ± 0,33 và ViHealthBERT 62,88 ± 0,12. F1 theo từng loại entity không bị ảnh hưởng. Macro F1 cũ lệch nhẹ vì có thêm loại `_`: PhoBERT 52,27 → 51,90 và ViHealthBERT 51,97 → 51,56 (cột Entity-only macro).
 
 `NER_ViHealthBERT_RunAll.ipynb` fine-tune `demdecuong/vihealthbert-base-syllable` trên `leduckhai/VietMed-NER`. Quy trình giống hệt notebook PhoBERT ở giai đoạn 13: cùng 18 cấu hình, 3 seed, cùng cách căn nhãn và cùng evaluator. Kết quả nhờ vậy đặt được cạnh XLM-RoBERTa và PhoBERT trong cùng một bảng.
 
@@ -80,7 +80,7 @@ Cách diễn giải từng chỉ số:
 - **Entity-only F1**: dataset dùng nhãn `"0"` (số không) thay cho `"O"`. Vì vậy seqeval coi các đoạn "không phải entity" là một loại entity tên `_` và tính vào micro F1. Cột Entity-only đổi `0 → O` nên chỉ tính entity y tế thật. **Nên đưa cả hai cột vào báo cáo và ghi chú lý do.** Số có dấu `≈` là số suy ra từ report đã lưu, không có checkpoint để tính lại.
 - **Macro F1**: trung bình đều giữa các loại entity. Chỉ số này thấp hơn micro vì các loại hiếm như SURGERY, UNITCALIBRATOR, MEDDEVICETECHNIQUE kéo xuống. Bảng F1 theo loại entity cho thấy pretrain y tế giúp nhóm nào: kỳ vọng là DISEASESYMTOM, DRUGCHEMICAL, DIAGNOSTICS, TREATMENT.
 - **Retention sau ASR**: tỉ lệ entity dự đoán trên transcript chuẩn mà vẫn được dự đoán lại trên transcript Whisper. Đây là **độ nhất quán, không phải recall gold**. Cả 3 model chạy trên cùng 500 transcript nên so sánh được.
-- **Khoảng cách validation (~83%) và test (~61%)**: PhoBERT cũng bị như vậy. Nếu ViHealthBERT có khoảng cách tương tự, đó là đặc điểm của split test chứ không phải lỗi của model. Nên nêu rõ trong phần hạn chế.
+- **Khoảng cách validation (~83%) và test (~61%)**: các số này tính theo cách chấm lỗi (xem đính chính ở đầu file); với cách chấm đúng, validation khoảng 85% và test khoảng 63% (`experiments/004-vi-ner-intermediate-finetune/`). PhoBERT cũng bị như vậy. Nếu ViHealthBERT có khoảng cách tương tự, đó là đặc điểm của split test chứ không phải lỗi của model. Nên nêu rõ trong phần hạn chế.
 
 ## 4. Benchmark và đưa vào báo cáo
 

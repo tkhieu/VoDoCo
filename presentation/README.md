@@ -47,12 +47,12 @@ presentation/
 
 ### Cách 1: Mở trực tiếp (Khuyến nghị)
 
-1. **Mở file `index.html`** bằng trình duyệt web (Chrome, Edge, Firefox)
+1. **Mở file `may-hoc.html`** bằng trình duyệt web (Chrome, Edge, Firefox). `index.html` là slide cũ, không còn dùng để trình bày.
    ```bash
    # Windows
-   start index.html
+   start may-hoc.html
    
-   # hoặc double-click vào file index.html
+   # hoặc double-click vào file may-hoc.html
    ```
 
 2. **Không cần cài đặt thêm** - Tất cả dependencies (Reveal.js, Font Awesome) đều load từ CDN
