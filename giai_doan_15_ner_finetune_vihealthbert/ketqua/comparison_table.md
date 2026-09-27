@@ -1,5 +1,9 @@
 # So sánh 3 model NER trên VietMed-NER/test (n=3497)
 
+> **Đính chính (2026-09-28).** Cột "Test F1 (micro)" 60,90% (PhoBERT) và 61,28% (ViHealthBERT), cùng con số "hơn 0,37 điểm", bị sai do nhãn `"0"` được seqeval tính như entity loại `_`. Validation F1 dùng để chọn cấu hình và seed cũng bị ảnh hưởng. Đừng dùng 60,90% làm mốc so sánh.
+>
+> Số đúng khi chỉ tính entity thật, chấm lại trên checkpoint release (nguồn: `do_an_may_hoc/results/model_comparison.json`): XLM-RoBERTa **58,62%**, PhoBERT **62,42%**, ViHealthBERT **62,74%**. Chênh lệch ViHealthBERT − PhoBERT là 0,32 điểm, khoảng tin cậy 95% từ −0,41 đến +1,04, nên **hai mô hình ngang nhau**. Chạy lại 3 seed với cách chấm đúng (`experiments/004-vi-ner-intermediate-finetune/README.md`) cho PhoBERT 62,98 ± 0,33 và ViHealthBERT 62,88 ± 0,12. F1 theo từng loại entity và macro F1 không bị ảnh hưởng.
+
 | Model                                       | Pretrain                    | Cấu hình chọn                      | Val F1 (3 seed)   |   Test P |   Test R |   Test F1 (micro) |   Test F1 (macro) | Entity-only F1 (micro)   |   Entity-only F1 (macro) |   Retention sau ASR |
 |:--------------------------------------------|:----------------------------|:-----------------------------------|:------------------|---------:|---------:|------------------:|------------------:|:-------------------------|-------------------------:|--------------------:|
 | XLM-RoBERTa-base (VietMed-NER, dùng sẵn)    | Đa ngôn ngữ (~100 ngôn ngữ) | —                                  | — (dùng sẵn)      |    51.83 |    62.79 |             56.79 |             48.73 | 58.65                    |                    48.41 |               52.79 |

@@ -1,5 +1,7 @@
 # VietMed-NER Presentation
 
+> **Lưu ý (2026-09-28).** Slide dùng để trình bày đồ án môn học là [`may-hoc.html`](may-hoc.html) (bản pptx: `may-hoc-v2.pptx`). `index.html` là slide cũ, không còn dùng để trình bày. Số F1 trong `index.html` đã được sửa theo cách chấm đúng (nhãn `"0"` đổi thành `"O"`); nguồn số liệu là `do_an_may_hoc/results/model_comparison.json`.
+
 Bài thuyết trình HTML cho đồ án **VietMed-NER: Medical Spoken Named Entity Recognition** sử dụng Reveal.js.
 
 ## 📋 Mục lục
