@@ -1,0 +1,130 @@
+{
+  "condition": "baseline",
+  "seed": 123,
+  "model": "vinai/phobert-base-v2",
+  "hyperparameters": {
+    "learning_rate": 3e-05,
+    "epochs": 8,
+    "weight_decay": 0.05,
+    "warmup_ratio": 0.1,
+    "effective_batch_size": 16,
+    "precision": "bf16"
+  },
+  "validation_f1": 0.8267597659935838,
+  "test": {
+    "micro_f1": 0.6097854180441186,
+    "macro_f1": 0.5262867260834204,
+    "per_type": {
+      "AGE": {
+        "precision": 0.6356050069541029,
+        "recall": 0.7347266881028939,
+        "f1": 0.6815809097688292,
+        "support": 622
+      },
+      "DATETIME": {
+        "precision": 0.7154929577464789,
+        "recall": 0.7616191904047976,
+        "f1": 0.7378358750907771,
+        "support": 667
+      },
+      "DIAGNOSTICS": {
+        "precision": 0.6383561643835617,
+        "recall": 0.7792642140468228,
+        "f1": 0.7018072289156627,
+        "support": 299
+      },
+      "DISEASESYMTOM": {
+        "precision": 0.6018126888217523,
+        "recall": 0.6789366053169734,
+        "f1": 0.6380525304292121,
+        "support": 1467
+      },
+      "DRUGCHEMICAL": {
+        "precision": 0.7600950118764845,
+        "recall": 0.9026798307475318,
+        "f1": 0.8252740167633785,
+        "support": 709
+      },
+      "FOODDRINK": {
+        "precision": 0.7380073800738007,
+        "recall": 0.7662835249042146,
+        "f1": 0.7518796992481204,
+        "support": 261
+      },
+      "GENDER": {
+        "precision": 0.748792270531401,
+        "recall": 0.8333333333333334,
+        "f1": 0.7888040712468194,
+        "support": 558
+      },
+      "LOCATION": {
+        "precision": 0.5920502092050209,
+        "recall": 0.8601823708206687,
+        "f1": 0.701363073110285,
+        "support": 329
+      },
+      "MEDDEVICETECHNIQUE": {
+        "precision": 0.27314814814814814,
+        "recall": 0.1858267716535433,
+        "f1": 0.22118088097469538,
+        "support": 635
+      },
+      "OCCUPATION": {
+        "precision": 0.897822445561139,
+        "recall": 0.9486725663716814,
+        "f1": 0.9225473321858862,
+        "support": 565
+      },
+      "ORGAN": {
+        "precision": 0.5755627009646302,
+        "recall": 0.7103174603174603,
+        "f1": 0.635879218472469,
+        "support": 1260
+      },
+      "ORGANIZATION": {
+        "precision": 0.03125,
+        "recall": 0.01639344262295082,
+        "f1": 0.02150537634408602,
+        "support": 61
+      },
+      "PERSONALCARE": {
+        "precision": 0.16205533596837945,
+        "recall": 0.8631578947368421,
+        "f1": 0.2728785357737105,
+        "support": 95
+      },
+      "PREVENTIVEMED": {
+        "precision": 0.013921113689095127,
+        "recall": 0.3333333333333333,
+        "f1": 0.026726057906458794,
+        "support": 18
+      },
+      "SURGERY": {
+        "precision": 0.5034722222222222,
+        "recall": 0.5253623188405797,
+        "f1": 0.5141843971631206,
+        "support": 276
+      },
+      "TRANSPORTATION": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 27
+      },
+      "TREATMENT": {
+        "precision": 0.5283018867924528,
+        "recall": 0.8448275862068966,
+        "f1": 0.6500829187396351,
+        "support": 232
+      },
+      "UNITCALIBRATOR": {
+        "precision": 0.2882703777335984,
+        "recall": 0.5642023346303502,
+        "f1": 0.3815789473684211,
+        "support": 257
+      }
+    }
+  },
+  "gpu_seconds": 217.54,
+  "peak_vram_gb": 2.317
+}
