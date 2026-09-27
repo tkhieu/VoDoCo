@@ -1,5 +1,9 @@
 # Bảng kết quả cuối cùng
 
+> **Đính chính (2026-09-28).** Các số F1 micro ở mục "Thí nghiệm bổ sung — so sánh XLM-RoBERTa và PhoBERT NER" bị sai do cách chấm. VietMed-NER dùng nhãn `"0"` (số không) thay cho `"O"`, và seqeval coi mỗi đoạn `"0"` là một entity giả loại `_`, tính cả vào micro P/R/F1. Validation F1 dùng để chọn cấu hình, epoch và seed cũng bị ảnh hưởng.
+>
+> Số đúng khi chỉ tính 18 loại entity thật, chấm lại trên cùng checkpoint (nguồn: `do_an_may_hoc/results/model_comparison.json`): XLM-RoBERTa **58,62%**, PhoBERT seed 123 **62,42%** (thay cho 56,78% và 60,90%). PhoBERT vẫn hơn XLM-RoBERTa khoảng 3,8 điểm (khoảng tin cậy 95% từ 2,89 đến 4,82). Chạy lại 3 seed với cách chấm đúng cho PhoBERT 62,98 ± 0,33 (`experiments/004-vi-ner-intermediate-finetune/README.md`). Chênh lệch giữa các seed tối đa khoảng 0,7 điểm, nên checkpoint seed 123 của demo vẫn dùng được. Số cũ bên dưới được giữ nguyên để làm hồ sơ.
+
 ## Số liệu đã xác minh từ file hiện có
 
 | Thí nghiệm | Dataset/split | Số mẫu | Chỉ số | Kết quả |

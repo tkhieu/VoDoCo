@@ -1,14 +1,18 @@
 # So sánh 3 model NER trên VietMed-NER/test (n=3497)
 
+> **Đính chính (2026-09-28).** Cột "Test F1 (micro)" 60,90% (PhoBERT) và 61,28% (ViHealthBERT), cùng con số "hơn 0,37 điểm", bị sai do nhãn `"0"` được seqeval tính như entity loại `_`. Validation F1 dùng để chọn cấu hình và seed cũng bị ảnh hưởng. Đừng dùng 60,90% làm mốc so sánh.
+>
+> Số đúng khi chỉ tính entity thật, chấm lại trên checkpoint release (nguồn: `do_an_may_hoc/results/model_comparison.json`): XLM-RoBERTa **58,62%**, PhoBERT **62,42%**, ViHealthBERT **62,74%**. Chênh lệch ViHealthBERT − PhoBERT là 0,32 điểm, khoảng tin cậy 95% từ −0,41 đến +1,04, nên **hai mô hình ngang nhau**. Chạy lại 3 seed với cách chấm đúng (`experiments/004-vi-ner-intermediate-finetune/README.md`) cho PhoBERT 62,98 ± 0,33 và ViHealthBERT 62,88 ± 0,12. F1 theo từng loại entity không bị ảnh hưởng. Macro F1 cũ lệch nhẹ vì có thêm loại `_`: PhoBERT 52,27 → 51,90 và ViHealthBERT 51,97 → 51,56 (cột Entity-only macro).
+
 | Model                                       | Pretrain                    | Cấu hình chọn                      | Val F1 (3 seed)   |   Test P |   Test R |   Test F1 (micro) |   Test F1 (macro) | Entity-only F1 (micro)   |   Entity-only F1 (macro) |   Retention sau ASR |
 |:--------------------------------------------|:----------------------------|:-----------------------------------|:------------------|---------:|---------:|------------------:|------------------:|:-------------------------|-------------------------:|--------------------:|
 | XLM-RoBERTa-base (VietMed-NER, dùng sẵn)    | Đa ngôn ngữ (~100 ngôn ngữ) | —                                  | — (dùng sẵn)      |    51.83 |    62.79 |             56.79 |             48.73 | 58.65                    |                    48.41 |               52.79 |
 | PhoBERT-base-v2 (nhóm fine-tune)            | Tiếng Việt, văn bản chung   | lr=3e-05, ep=8, wd=0.05, seed=123  | 83.44 ± 0.36      |    56.2  |    66.46 |             60.9  |             52.27 | ≈62.42                   |                    51.9  |               53.27 |
 | ViHealthBERT-base-syllable (nhóm fine-tune) | Tiếng Việt, văn bản y tế    | lr=3e-05, ep=8, wd=0.01, seed=2024 | 83.16 ± 0.1       |    55.81 |    67.93 |             61.28 |             51.97 | 62.74                    |                    51.56 |               52.59 |
 
-ViHealthBERT test F1 trên 3 seed: 60.97 ± 0.23 (chỉ để đo độ dao động; seed chính thức chọn theo validation).
+*Hồ sơ cũ, tính theo cách chấm lỗi (xem đính chính ở đầu file):* ViHealthBERT test F1 trên 3 seed: 60.97 ± 0.23 (chỉ để đo độ dao động; seed chính thức chọn theo validation).
 
-Chênh lệch F1 micro ViHealthBERT − PhoBERT: +0.37 điểm phần trăm.
+*Hồ sơ cũ, tính theo cách chấm lỗi:* chênh lệch F1 micro ViHealthBERT − PhoBERT: +0.37 điểm phần trăm. Số đúng: +0.32 điểm, khoảng tin cậy 95% từ −0.41 đến +1.04, tức là hai mô hình ngang nhau.
 
 ## F1 theo loại entity
 

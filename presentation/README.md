@@ -1,5 +1,7 @@
 # VietMed-NER Presentation
 
+> **Lưu ý (2026-09-28).** Slide dùng để trình bày đồ án môn học là [`may-hoc.html`](may-hoc.html) (bản pptx: `may-hoc-v2.pptx`). `index.html` là slide cũ, không còn dùng để trình bày. Số F1 trong `index.html` đã được sửa theo cách chấm đúng (nhãn `"0"` đổi thành `"O"`); nguồn số liệu là `do_an_may_hoc/results/model_comparison.json`.
+
 Bài thuyết trình HTML cho đồ án **VietMed-NER: Medical Spoken Named Entity Recognition** sử dụng Reveal.js.
 
 ## 📋 Mục lục
@@ -45,12 +47,12 @@ presentation/
 
 ### Cách 1: Mở trực tiếp (Khuyến nghị)
 
-1. **Mở file `index.html`** bằng trình duyệt web (Chrome, Edge, Firefox)
+1. **Mở file `may-hoc.html`** bằng trình duyệt web (Chrome, Edge, Firefox). `index.html` là slide cũ, không còn dùng để trình bày.
    ```bash
    # Windows
-   start index.html
+   start may-hoc.html
    
-   # hoặc double-click vào file index.html
+   # hoặc double-click vào file may-hoc.html
    ```
 
 2. **Không cần cài đặt thêm** - Tất cả dependencies (Reveal.js, Font Awesome) đều load từ CDN
@@ -217,7 +219,7 @@ Edit `index.html` và thêm section mới:
 
 1. Thêm `?print-pdf` vào URL:
    ```
-   http://localhost:8000/index.html?print-pdf
+   http://localhost:8000/may-hoc.html?print-pdf
    ```
 
 2. Print từ browser (Ctrl+P):

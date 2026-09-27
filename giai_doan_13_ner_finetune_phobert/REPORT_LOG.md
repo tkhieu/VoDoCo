@@ -357,6 +357,13 @@ File này là nơi ghi các cấu hình, kết quả, diễn giải và quyết 
 - Kết luận thực tế: PhoBERT full-tuned vượt baseline cả gold F1 và ASR retention, nên là ứng viên NER chính hiện tại; mức tăng retention nhỏ và phải báo cáo đúng là consistency metric.
 - Artifacts: `colab/asr_ner_comparison_summary.json`, `colab/asr_ner_comparison.jsonl`, `colab/phobert-best-seed.zip`.
 
+## Đính chính 2026-09-28 — cách chấm F1 micro của NER
+
+- Mục "Thí nghiệm bổ sung — so sánh XLM-RoBERTa và PhoBERT NER" dùng seqeval trên nhãn gốc của VietMed-NER. Dataset dùng `"0"` (số không) cho nhãn ngoài entity, nên seqeval coi mỗi đoạn `"0"` là entity loại `_` và tính vào micro P/R/F1. Validation F1 dùng để chọn cấu hình, epoch và seed cũng mang lỗi này.
+- Số đúng (chỉ 18 loại entity, chấm lại cùng checkpoint, nguồn `do_an_may_hoc/results/model_comparison.json`): XLM-RoBERTa 58,62%, PhoBERT seed 123 62,42%, ViHealthBERT seed 2024 62,74%. PhoBERT và ViHealthBERT ngang nhau (chênh 0,32 điểm, khoảng tin cậy 95% chứa 0).
+- Chạy lại 3 seed với cách chấm đúng (`experiments/004-vi-ner-intermediate-finetune/`): PhoBERT 62,98 ± 0,33, ViHealthBERT 62,88 ± 0,12. Chênh lệch giữa các seed tối đa khoảng 0,7 điểm, nên không thay checkpoint của demo.
+- Quyết định: giữ nguyên notebook, JSON và các mục cũ làm hồ sơ; thêm đính chính ở `FINAL_RESULTS.md`, `giai_doan_15_ner_finetune_vihealthbert/README.md` và `ketqua/comparison_table.md`. Slide cũ `presentation/index.html` đã được sửa số; slide dùng để trình bày hiện là `presentation/may-hoc.html`.
+
 ## Quy tắc báo cáo các giai đoạn tiếp theo
 
 Mỗi lần chạy cần lưu:
