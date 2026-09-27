@@ -2,6 +2,7 @@
   "condition": "baseline",
   "seed": 42,
   "model": "vinai/phobert-base-v2",
+  "outside_tag": "O",
   "hyperparameters": {
     "learning_rate": 3e-05,
     "epochs": 8,
@@ -10,9 +11,9 @@
     "effective_batch_size": 16,
     "precision": "bf16"
   },
-  "validation_f1": 0.8357387011014051,
+  "validation_f1": 0.8550402190655485,
   "test": {
-    "micro_f1": 0.6092368753382645,
+    "micro_f1": 0.625957469602014,
     "macro_f1": 0.5207314936074651,
     "per_type": {
       "AGE": {
@@ -125,6 +126,6 @@
       }
     }
   },
-  "gpu_seconds": 212.02,
+  "gpu_seconds": 206.67,
   "peak_vram_gb": 2.317
 }

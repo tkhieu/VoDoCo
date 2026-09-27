@@ -2,6 +2,7 @@
   "condition": "baseline",
   "seed": 123,
   "model": "demdecuong/vihealthbert-base-syllable",
+  "outside_tag": "O",
   "hyperparameters": {
     "learning_rate": 3e-05,
     "epochs": 8,
@@ -10,9 +11,9 @@
     "effective_batch_size": 16,
     "precision": "bf16"
   },
-  "validation_f1": 0.8261851015801355,
+  "validation_f1": 0.8424078457896517,
   "test": {
-    "micro_f1": 0.612890729759528,
+    "micro_f1": 0.6274924631089014,
     "macro_f1": 0.507692842963143,
     "per_type": {
       "AGE": {
@@ -125,6 +126,6 @@
       }
     }
   },
-  "gpu_seconds": 206.75,
+  "gpu_seconds": 177.4,
   "peak_vram_gb": 2.317
 }
