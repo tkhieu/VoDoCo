@@ -783,30 +783,39 @@
   "cross_split_exact": {
    "validation_in_train": {
     "count": 2,
-    "examples": [
-     "rất là vui mừng vì đã mang lại một cái sản phẩm tốt và có hiệu quả cao để hỗ trợ cho hàng triệu người bị đau cơ xương",
-     "yếu tố giảm đau giảm viêm và nuôi dưỡng sụn khớp đồng thời an toàn khi sử dụng"
+    "indices": [
+     70,
+     1042
     ]
    },
    "test_in_train": {
     "count": 0,
-    "examples": []
+    "indices": []
    },
    "test_in_validation": {
     "count": 0,
-    "examples": []
+    "indices": []
    }
   },
   "near_duplicate_of_train": {
    "ngram": 8,
    "threshold": 0.5,
+   "unit": "single train sentence",
    "validation": {
     "sentences_with_ngrams": 1150,
-    "near_duplicates": 3
+    "near_duplicates": 3,
+    "indices": [
+     70,
+     567,
+     1042
+    ]
    },
    "test": {
     "sentences_with_ngrams": 3489,
-    "near_duplicates": 1
+    "near_duplicates": 1,
+    "indices": [
+     3438
+    ]
    }
   }
  },

@@ -395,11 +395,11 @@
      "ignoring_diacritics_rate": 0.9196141479099679
     },
     "ALL": {
-     "n": 8108,
-     "exact": 6368,
-     "ignoring_diacritics": 6486,
-     "exact_rate": 0.785397138628515,
-     "ignoring_diacritics_rate": 0.7999506660088801
+     "n": 8112,
+     "exact": 6371,
+     "ignoring_diacritics": 6489,
+     "exact_rate": 0.785379684418146,
+     "ignoring_diacritics_rate": 0.7999260355029586
     },
     "DATETIME": {
      "n": 653,
@@ -409,11 +409,11 @@
      "ignoring_diacritics_rate": 0.888208269525268
     },
     "DIAGNOSTICS": {
-     "n": 289,
-     "exact": 225,
-     "ignoring_diacritics": 226,
-     "exact_rate": 0.7785467128027682,
-     "ignoring_diacritics_rate": 0.7820069204152249
+     "n": 291,
+     "exact": 226,
+     "ignoring_diacritics": 227,
+     "exact_rate": 0.7766323024054983,
+     "ignoring_diacritics_rate": 0.7800687285223368
     },
     "DISEASESYMTOM": {
      "n": 1432,
@@ -465,11 +465,11 @@
      "ignoring_diacritics_rate": 0.9146567717996289
     },
     "ORGAN": {
-     "n": 1251,
-     "exact": 924,
-     "ignoring_diacritics": 953,
-     "exact_rate": 0.7386091127098321,
-     "ignoring_diacritics_rate": 0.7617905675459632
+     "n": 1253,
+     "exact": 926,
+     "ignoring_diacritics": 955,
+     "exact_rate": 0.7390263367916999,
+     "ignoring_diacritics_rate": 0.762170790103751
     },
     "ORGANIZATION": {
      "n": 60,
@@ -535,18 +535,18 @@
      "ignoring_diacritics_rate": 0.9540078843626807
     },
     "wer 10–30%": {
-     "n": 5115,
-     "exact": 4246,
-     "ignoring_diacritics": 4326,
-     "exact_rate": 0.8301075268817204,
-     "ignoring_diacritics_rate": 0.8457478005865102
+     "n": 5117,
+     "exact": 4248,
+     "ignoring_diacritics": 4328,
+     "exact_rate": 0.8301739300371311,
+     "ignoring_diacritics_rate": 0.8458080906781317
     },
     "wer >30%": {
-     "n": 2117,
-     "exact": 1285,
-     "ignoring_diacritics": 1319,
-     "exact_rate": 0.6069910250354275,
-     "ignoring_diacritics_rate": 0.6230514879546528
+     "n": 2119,
+     "exact": 1286,
+     "ignoring_diacritics": 1320,
+     "exact_rate": 0.6068900424728646,
+     "ignoring_diacritics_rate": 0.6229353468617272
     }
    }
   },
