@@ -1,0 +1,18 @@
+{
+  "validation": {
+    "input": 2407,
+    "empty": 0,
+    "duplicate": 3,
+    "vi_ner_test_overlap": 25,
+    "vietmed_heldout_overlap": 0,
+    "kept": 2379
+  },
+  "train": {
+    "input": 19255,
+    "empty": 3,
+    "duplicate": 118,
+    "vi_ner_test_overlap": 15,
+    "vietmed_heldout_overlap": 0,
+    "kept": 19119
+  }
+}

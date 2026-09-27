@@ -1,0 +1,25 @@
+[project]
+name = "vi-ner-intermediate-finetune"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "torch==2.8.0+cu128",
+  "transformers==4.57.6",
+  "datasets==3.6.0",
+  "accelerate==1.10.1",
+  "seqeval==1.2.2",
+  "numpy==2.2.6",
+  "sentencepiece==0.2.1",
+  "pytest==8.4.2",
+]
+
+[tool.uv]
+environments = ["sys_platform == 'linux' and platform_machine == 'x86_64'"]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
