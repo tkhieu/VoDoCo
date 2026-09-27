@@ -1,0 +1,1628 @@
+{
+ "class_distribution": {
+  "per_type": {
+   "DISEASESYMTOM": {
+    "train": 2975,
+    "validation": 746,
+    "test": 1467,
+    "rare": false,
+    "test_points_per_entity": 0.0681663258350375
+   },
+   "ORGAN": {
+    "train": 1972,
+    "validation": 485,
+    "test": 1260,
+    "rare": false,
+    "test_points_per_entity": 0.07936507936507936
+   },
+   "DRUGCHEMICAL": {
+    "train": 1127,
+    "validation": 278,
+    "test": 709,
+    "rare": false,
+    "test_points_per_entity": 0.14104372355430184
+   },
+   "UNITCALIBRATOR": {
+    "train": 822,
+    "validation": 220,
+    "test": 257,
+    "rare": false,
+    "test_points_per_entity": 0.38910505836575876
+   },
+   "TREATMENT": {
+    "train": 740,
+    "validation": 178,
+    "test": 232,
+    "rare": false,
+    "test_points_per_entity": 0.43103448275862066
+   },
+   "DATETIME": {
+    "train": 698,
+    "validation": 166,
+    "test": 667,
+    "rare": false,
+    "test_points_per_entity": 0.14992503748125938
+   },
+   "OCCUPATION": {
+    "train": 547,
+    "validation": 134,
+    "test": 565,
+    "rare": false,
+    "test_points_per_entity": 0.17699115044247787
+   },
+   "AGE": {
+    "train": 456,
+    "validation": 109,
+    "test": 622,
+    "rare": false,
+    "test_points_per_entity": 0.1607717041800643
+   },
+   "PERSONALCARE": {
+    "train": 384,
+    "validation": 89,
+    "test": 95,
+    "rare": false,
+    "test_points_per_entity": 1.0526315789473684
+   },
+   "DIAGNOSTICS": {
+    "train": 373,
+    "validation": 91,
+    "test": 299,
+    "rare": false,
+    "test_points_per_entity": 0.33444816053511706
+   },
+   "PREVENTIVEMED": {
+    "train": 343,
+    "validation": 80,
+    "test": 18,
+    "rare": false,
+    "test_points_per_entity": 5.555555555555555
+   },
+   "MEDDEVICETECHNIQUE": {
+    "train": 327,
+    "validation": 68,
+    "test": 635,
+    "rare": false,
+    "test_points_per_entity": 0.15748031496062992
+   },
+   "LOCATION": {
+    "train": 292,
+    "validation": 77,
+    "test": 329,
+    "rare": false,
+    "test_points_per_entity": 0.303951367781155
+   },
+   "FOODDRINK": {
+    "train": 257,
+    "validation": 56,
+    "test": 261,
+    "rare": false,
+    "test_points_per_entity": 0.3831417624521073
+   },
+   "GENDER": {
+    "train": 210,
+    "validation": 51,
+    "test": 558,
+    "rare": false,
+    "test_points_per_entity": 0.17921146953405018
+   },
+   "SURGERY": {
+    "train": 200,
+    "validation": 56,
+    "test": 276,
+    "rare": false,
+    "test_points_per_entity": 0.36231884057971014
+   },
+   "ORGANIZATION": {
+    "train": 19,
+    "validation": 2,
+    "test": 61,
+    "rare": true,
+    "test_points_per_entity": 1.639344262295082
+   },
+   "TRANSPORTATION": {
+    "train": 5,
+    "validation": 3,
+    "test": 27,
+    "rare": true,
+    "test_points_per_entity": 3.7037037037037037
+   }
+  },
+  "rare_threshold": 50,
+  "rare_types": [
+   "ORGANIZATION",
+   "TRANSPORTATION"
+  ],
+  "largest": "DISEASESYMTOM",
+  "smallest": "TRANSPORTATION",
+  "imbalance_ratio": 595.0
+ },
+ "per_type_shift": {
+  "per_type": {
+   "AGE": {
+    "train_share": 0.03881842172469567,
+    "validation_share": 0.03772931810314988,
+    "validation_unseen_rate": 0.07339449541284404,
+    "validation_n": 109,
+    "test_share": 0.07459822499400336,
+    "test_unseen_rate": 0.24437299035369775,
+    "test_n": 622,
+    "test_over_train_share": 1.9217222565889416
+   },
+   "DATETIME": {
+    "train_share": 0.05941942623648591,
+    "validation_share": 0.057459328487365874,
+    "validation_unseen_rate": 0.10240963855421686,
+    "validation_n": 166,
+    "test_share": 0.07999520268649556,
+    "test_unseen_rate": 0.25337331334332835,
+    "test_n": 667,
+    "test_over_train_share": 1.346280295069145
+   },
+   "DIAGNOSTICS": {
+    "train_share": 0.031752787945858514,
+    "validation_share": 0.031498788508134305,
+    "validation_unseen_rate": 0.07692307692307693,
+    "validation_n": 91,
+    "test_share": 0.03585991844567042,
+    "test_unseen_rate": 0.13043478260869565,
+    "test_n": 299,
+    "test_over_train_share": 1.12934708305976
+   },
+   "DISEASESYMTOM": {
+    "train_share": 0.2532561505065123,
+    "validation_share": 0.25822083766009,
+    "validation_unseen_rate": 0.04691689008042895,
+    "validation_n": 746,
+    "test_share": 0.17594147277524586,
+    "test_unseen_rate": 0.4342194955691888,
+    "test_n": 1467,
+    "test_over_train_share": 0.6947174725011137
+   },
+   "DRUGCHEMICAL": {
+    "train_share": 0.09593938878011407,
+    "validation_share": 0.09622706818968502,
+    "validation_unseen_rate": 0.09712230215827339,
+    "validation_n": 278,
+    "test_share": 0.08503238186615496,
+    "test_unseen_rate": 0.32863187588152326,
+    "test_n": 709,
+    "test_over_train_share": 0.8863135667983338
+   },
+   "FOODDRINK": {
+    "train_share": 0.02187792627904997,
+    "validation_share": 0.01938386985115957,
+    "validation_unseen_rate": 0.16071428571428573,
+    "validation_n": 56,
+    "test_share": 0.03130247061645478,
+    "test_unseen_rate": 0.17624521072796934,
+    "test_n": 261,
+    "test_over_train_share": 1.430778686114764
+   },
+   "GENDER": {
+    "train_share": 0.01787690474163616,
+    "validation_share": 0.017653167185877467,
+    "validation_unseen_rate": 0.0196078431372549,
+    "validation_n": 51,
+    "test_share": 0.06692252338690334,
+    "test_unseen_rate": 0.06272401433691756,
+    "test_n": 558,
+    "test_over_train_share": 3.743518486790255
+   },
+   "LOCATION": {
+    "train_share": 0.024857410402656,
+    "validation_share": 0.02665282104534441,
+    "validation_unseen_rate": 0.09090909090909091,
+    "validation_n": 77,
+    "test_share": 0.03945790357399856,
+    "test_unseen_rate": 0.2006079027355623,
+    "test_n": 329,
+    "test_over_train_share": 1.5873698400128804
+   },
+   "MEDDEVICETECHNIQUE": {
+    "train_share": 0.027836894526262024,
+    "validation_share": 0.02353755624783662,
+    "validation_unseen_rate": 0.11764705882352941,
+    "validation_n": 68,
+    "test_share": 0.07615735188294555,
+    "test_unseen_rate": 0.7401574803149606,
+    "test_n": 635,
+    "test_over_train_share": 2.7358422402720532
+   },
+   "OCCUPATION": {
+    "train_share": 0.046565080446071334,
+    "validation_share": 0.0463828314295604,
+    "validation_unseen_rate": 0.022388059701492536,
+    "validation_n": 134,
+    "test_share": 0.0677620532501799,
+    "test_unseen_rate": 0.06725663716814159,
+    "test_n": 565,
+    "test_over_train_share": 1.4552117724494757
+   },
+   "ORGAN": {
+    "train_share": 0.1678726483357453,
+    "validation_share": 0.16787815853236415,
+    "validation_unseen_rate": 0.030927835051546393,
+    "validation_n": 485,
+    "test_share": 0.15111537538978173,
+    "test_unseen_rate": 0.21349206349206348,
+    "test_n": 1260,
+    "test_over_train_share": 0.9001786585718894
+   },
+   "ORGANIZATION": {
+    "train_share": 0.0016174342385289861,
+    "validation_share": 0.0006922810661128419,
+    "validation_unseen_rate": 1.0,
+    "validation_n": 2,
+    "test_share": 0.007315903094267211,
+    "test_unseen_rate": 0.4262295081967213,
+    "test_n": 61,
+    "test_over_train_share": 4.523153349913522
+   },
+   "PERSONALCARE": {
+    "train_share": 0.03268919724184898,
+    "validation_share": 0.03080650744202146,
+    "validation_unseen_rate": 0.12359550561797752,
+    "validation_n": 89,
+    "test_share": 0.011393619573039098,
+    "test_unseen_rate": 0.1368421052631579,
+    "test_n": 95,
+    "test_over_train_share": 0.3485438779283601
+   },
+   "PREVENTIVEMED": {
+    "train_share": 0.029198944411339064,
+    "validation_share": 0.027691242644513673,
+    "validation_unseen_rate": 0.0375,
+    "validation_n": 80,
+    "test_share": 0.0021587910769968817,
+    "test_unseen_rate": 0.5,
+    "test_n": 18,
+    "test_over_train_share": 0.07393387399849087
+   },
+   "SURGERY": {
+    "train_share": 0.017025623563463013,
+    "validation_share": 0.01938386985115957,
+    "validation_unseen_rate": 0.03571428571428571,
+    "validation_n": 56,
+    "test_share": 0.03310146318061885,
+    "test_unseen_rate": 0.7246376811594203,
+    "test_n": 276,
+    "test_over_train_share": 1.944214439913648
+   },
+   "TRANSPORTATION": {
+    "train_share": 0.0004256405890865753,
+    "validation_share": 0.0010384215991692627,
+    "validation_unseen_rate": 0.3333333333333333,
+    "validation_n": 3,
+    "test_share": 0.0032381866154953228,
+    "test_unseen_rate": 0.7037037037037037,
+    "test_n": 27,
+    "test_over_train_share": 7.607795634444711
+   },
+   "TREATMENT": {
+    "train_share": 0.06299480718481314,
+    "validation_share": 0.06161301488404292,
+    "validation_unseen_rate": 0.016853932584269662,
+    "validation_n": 178,
+    "test_share": 0.027824418325737586,
+    "test_unseen_rate": 0.09051724137931035,
+    "test_n": 232,
+    "test_over_train_share": 0.4416938406384317
+   },
+   "UNITCALIBRATOR": {
+    "train_share": 0.06997531284583298,
+    "validation_share": 0.0761509172724126,
+    "validation_unseen_rate": 0.15454545454545454,
+    "validation_n": 220,
+    "test_share": 0.030822739266011034,
+    "test_unseen_rate": 0.44357976653696496,
+    "test_n": 257,
+    "test_over_train_share": 0.44048019240612113
+   }
+  },
+  "overall_unseen_rate": {
+   "validation": 0.06680512287988924,
+   "test": 0.3065483329335572
+  }
+ },
+ "entity_length": {
+  "train": {
+   "overall": {
+    "mean": 2.038563037371244,
+    "median": 2.0,
+    "p95": 4.0,
+    "max": 11.0,
+    "histogram": {
+     "1": 2856,
+     "2": 6875,
+     "3": 1116,
+     "4": 655,
+     "5": 137,
+     "6": 86,
+     "7": 11,
+     "8": 6,
+     "9": 4,
+     "11": 1
+    },
+    "share_ge5": 0.02085638886524219
+   },
+   "per_type": {
+    "AGE": {
+     "mean": 1.3574561403508771,
+     "median": 1.0,
+     "p95": 3.0,
+     "max": 4.0,
+     "n": 456
+    },
+    "DATETIME": {
+     "mean": 2.3008595988538683,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 9.0,
+     "n": 698
+    },
+    "DIAGNOSTICS": {
+     "mean": 2.040214477211796,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 5.0,
+     "n": 373
+    },
+    "DISEASESYMTOM": {
+     "mean": 2.219831932773109,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 8.0,
+     "n": 2975
+    },
+    "DRUGCHEMICAL": {
+     "mean": 1.7941437444543034,
+     "median": 1.0,
+     "p95": 4.0,
+     "max": 7.0,
+     "n": 1127
+    },
+    "FOODDRINK": {
+     "mean": 1.9105058365758756,
+     "median": 2.0,
+     "p95": 3.0,
+     "max": 5.0,
+     "n": 257
+    },
+    "GENDER": {
+     "mean": 1.2285714285714286,
+     "median": 1.0,
+     "p95": 2.0,
+     "max": 3.0,
+     "n": 210
+    },
+    "LOCATION": {
+     "mean": 2.0,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 5.0,
+     "n": 292
+    },
+    "MEDDEVICETECHNIQUE": {
+     "mean": 2.2110091743119265,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 8.0,
+     "n": 327
+    },
+    "OCCUPATION": {
+     "mean": 2.1608775137111516,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 6.0,
+     "n": 547
+    },
+    "ORGAN": {
+     "mean": 1.7033468559837728,
+     "median": 2.0,
+     "p95": 3.0,
+     "max": 6.0,
+     "n": 1972
+    },
+    "ORGANIZATION": {
+     "mean": 4.368421052631579,
+     "median": 4.0,
+     "p95": 9.199999999999996,
+     "max": 11.0,
+     "n": 19
+    },
+    "PERSONALCARE": {
+     "mean": 2.5833333333333335,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 7.0,
+     "n": 384
+    },
+    "PREVENTIVEMED": {
+     "mean": 2.131195335276968,
+     "median": 2.0,
+     "p95": 3.0,
+     "max": 7.0,
+     "n": 343
+    },
+    "SURGERY": {
+     "mean": 2.725,
+     "median": 2.0,
+     "p95": 6.0,
+     "max": 6.0,
+     "n": 200
+    },
+    "TRANSPORTATION": {
+     "mean": 2.0,
+     "median": 2.0,
+     "p95": 2.0,
+     "max": 2.0,
+     "n": 5
+    },
+    "TREATMENT": {
+     "mean": 2.152702702702703,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 7.0,
+     "n": 740
+    },
+    "UNITCALIBRATOR": {
+     "mean": 2.170316301703163,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 9.0,
+     "n": 822
+    }
+   }
+  },
+  "validation": {
+   "overall": {
+    "mean": 2.0384215991692627,
+    "median": 2.0,
+    "p95": 4.0,
+    "max": 14.0,
+    "histogram": {
+     "1": 754,
+     "2": 1635,
+     "3": 270,
+     "4": 152,
+     "5": 40,
+     "6": 30,
+     "7": 5,
+     "8": 1,
+     "10": 1,
+     "14": 1
+    },
+    "share_ge5": 0.02699896157840083
+   },
+   "per_type": {
+    "AGE": {
+     "mean": 1.348623853211009,
+     "median": 1.0,
+     "p95": 3.0,
+     "max": 5.0,
+     "n": 109
+    },
+    "DATETIME": {
+     "mean": 2.3313253012048194,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 5.0,
+     "n": 166
+    },
+    "DIAGNOSTICS": {
+     "mean": 1.8461538461538463,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 5.0,
+     "n": 91
+    },
+    "DISEASESYMTOM": {
+     "mean": 2.1568364611260056,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 6.0,
+     "n": 746
+    },
+    "DRUGCHEMICAL": {
+     "mean": 1.7841726618705036,
+     "median": 1.0,
+     "p95": 4.0,
+     "max": 6.0,
+     "n": 278
+    },
+    "FOODDRINK": {
+     "mean": 1.8035714285714286,
+     "median": 2.0,
+     "p95": 3.0,
+     "max": 3.0,
+     "n": 56
+    },
+    "GENDER": {
+     "mean": 1.196078431372549,
+     "median": 1.0,
+     "p95": 2.0,
+     "max": 2.0,
+     "n": 51
+    },
+    "LOCATION": {
+     "mean": 1.896103896103896,
+     "median": 2.0,
+     "p95": 2.200000000000003,
+     "max": 4.0,
+     "n": 77
+    },
+    "MEDDEVICETECHNIQUE": {
+     "mean": 2.5441176470588234,
+     "median": 2.0,
+     "p95": 5.649999999999999,
+     "max": 14.0,
+     "n": 68
+    },
+    "OCCUPATION": {
+     "mean": 2.253731343283582,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 10.0,
+     "n": 134
+    },
+    "ORGAN": {
+     "mean": 1.7030927835051546,
+     "median": 2.0,
+     "p95": 3.0,
+     "max": 5.0,
+     "n": 485
+    },
+    "ORGANIZATION": {
+     "mean": 5.0,
+     "median": 5.0,
+     "p95": 5.9,
+     "max": 6.0,
+     "n": 2
+    },
+    "PERSONALCARE": {
+     "mean": 2.6741573033707864,
+     "median": 2.0,
+     "p95": 4.599999999999994,
+     "max": 6.0,
+     "n": 89
+    },
+    "PREVENTIVEMED": {
+     "mean": 2.0875,
+     "median": 2.0,
+     "p95": 2.0,
+     "max": 5.0,
+     "n": 80
+    },
+    "SURGERY": {
+     "mean": 3.0,
+     "median": 2.0,
+     "p95": 6.0,
+     "max": 6.0,
+     "n": 56
+    },
+    "TRANSPORTATION": {
+     "mean": 2.3333333333333335,
+     "median": 2.0,
+     "p95": 2.9,
+     "max": 3.0,
+     "n": 3
+    },
+    "TREATMENT": {
+     "mean": 2.168539325842697,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 7.0,
+     "n": 178
+    },
+    "UNITCALIBRATOR": {
+     "mean": 2.2590909090909093,
+     "median": 2.0,
+     "p95": 5.0,
+     "max": 8.0,
+     "n": 220
+    }
+   }
+  },
+  "test": {
+   "overall": {
+    "mean": 1.9779323578795873,
+    "median": 2.0,
+    "p95": 4.0,
+    "max": 10.0,
+    "histogram": {
+     "1": 2537,
+     "2": 4420,
+     "3": 736,
+     "4": 427,
+     "5": 130,
+     "6": 74,
+     "7": 10,
+     "8": 2,
+     "9": 1,
+     "10": 1
+    },
+    "share_ge5": 0.026145358599184456
+   },
+   "per_type": {
+    "AGE": {
+     "mean": 1.5610932475884245,
+     "median": 1.0,
+     "p95": 3.0,
+     "max": 6.0,
+     "n": 622
+    },
+    "DATETIME": {
+     "mean": 2.266866566716642,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 9.0,
+     "n": 667
+    },
+    "DIAGNOSTICS": {
+     "mean": 1.705685618729097,
+     "median": 2.0,
+     "p95": 3.0,
+     "max": 6.0,
+     "n": 299
+    },
+    "DISEASESYMTOM": {
+     "mean": 2.3244717109747786,
+     "median": 2.0,
+     "p95": 5.0,
+     "max": 7.0,
+     "n": 1467
+    },
+    "DRUGCHEMICAL": {
+     "mean": 1.6657263751763047,
+     "median": 1.0,
+     "p95": 3.0,
+     "max": 5.0,
+     "n": 709
+    },
+    "FOODDRINK": {
+     "mean": 1.6206896551724137,
+     "median": 2.0,
+     "p95": 3.0,
+     "max": 6.0,
+     "n": 261
+    },
+    "GENDER": {
+     "mean": 1.2544802867383513,
+     "median": 1.0,
+     "p95": 2.0,
+     "max": 3.0,
+     "n": 558
+    },
+    "LOCATION": {
+     "mean": 2.161094224924012,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 6.0,
+     "n": 329
+    },
+    "MEDDEVICETECHNIQUE": {
+     "mean": 2.4929133858267716,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 6.0,
+     "n": 635
+    },
+    "OCCUPATION": {
+     "mean": 2.1380530973451326,
+     "median": 2.0,
+     "p95": 3.7999999999999545,
+     "max": 6.0,
+     "n": 565
+    },
+    "ORGAN": {
+     "mean": 1.6095238095238096,
+     "median": 1.0,
+     "p95": 3.0,
+     "max": 5.0,
+     "n": 1260
+    },
+    "ORGANIZATION": {
+     "mean": 3.3934426229508197,
+     "median": 3.0,
+     "p95": 6.0,
+     "max": 10.0,
+     "n": 61
+    },
+    "PERSONALCARE": {
+     "mean": 1.9578947368421054,
+     "median": 2.0,
+     "p95": 2.299999999999997,
+     "max": 6.0,
+     "n": 95
+    },
+    "PREVENTIVEMED": {
+     "mean": 2.0,
+     "median": 2.0,
+     "p95": 3.1499999999999986,
+     "max": 4.0,
+     "n": 18
+    },
+    "SURGERY": {
+     "mean": 2.1557971014492754,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 7.0,
+     "n": 276
+    },
+    "TRANSPORTATION": {
+     "mean": 2.1481481481481484,
+     "median": 2.0,
+     "p95": 3.0,
+     "max": 3.0,
+     "n": 27
+    },
+    "TREATMENT": {
+     "mean": 2.189655172413793,
+     "median": 2.0,
+     "p95": 4.0,
+     "max": 5.0,
+     "n": 232
+    },
+    "UNITCALIBRATOR": {
+     "mean": 2.587548638132296,
+     "median": 2.0,
+     "p95": 5.0,
+     "max": 8.0,
+     "n": 257
+    }
+   }
+  }
+ },
+ "split_overlap": {
+  "within_split_duplicates": {
+   "train": 0,
+   "validation": 0,
+   "test": 1
+  },
+  "cross_split_exact": {
+   "validation_in_train": {
+    "count": 2,
+    "indices": [
+     70,
+     1042
+    ]
+   },
+   "test_in_train": {
+    "count": 0,
+    "indices": []
+   },
+   "test_in_validation": {
+    "count": 0,
+    "indices": []
+   }
+  },
+  "near_duplicate_of_train": {
+   "ngram": 8,
+   "threshold": 0.5,
+   "unit": "single train sentence",
+   "validation": {
+    "sentences_with_ngrams": 1150,
+    "near_duplicates": 3,
+    "indices": [
+     70,
+     567,
+     1042
+    ]
+   },
+   "test": {
+    "sentences_with_ngrams": 3489,
+    "near_duplicates": 1,
+    "indices": [
+     3438
+    ]
+   }
+  }
+ },
+ "vietmed_splits": {
+  "train": {
+   "utterances": 2773,
+   "hours": 4.7988888888888885,
+   "duration": {
+    "mean": 6.230075730256041,
+    "median": 6.0,
+    "p95": 8.0,
+    "max": 13.0
+   },
+   "words": {
+    "mean": 24.48647673999279,
+    "median": 26.0,
+    "max": 40
+   },
+   "words_per_second": 3.9303658254225513,
+   "icd10_top": [
+    [
+     "M00-M99",
+     0.23151821132347639
+    ],
+    [
+     "E00-E89",
+     0.22033898305084745
+    ],
+    [
+     "C00-D49",
+     0.21781464118283447
+    ],
+    [
+     "G00-G99",
+     0.19689866570501263
+    ],
+    [
+     "I00-I99",
+     0.13342949873782906
+    ]
+   ],
+   "rec_condition_top": [
+    [
+     "Consultation",
+     0.571583122971511
+    ],
+    [
+     "Tel",
+     0.428416877028489
+    ]
+   ]
+  },
+  "dev": {
+   "utterances": 2912,
+   "hours": 4.958333333333333,
+   "duration": {
+    "mean": 6.1298076923076925,
+    "median": 6.0,
+    "p95": 8.0,
+    "max": 10.0
+   },
+   "words": {
+    "mean": 23.667582417582416,
+    "median": 26.0,
+    "max": 39
+   },
+   "words_per_second": 3.861064425770308,
+   "icd10_top": [
+    [
+     "Z00-Z99",
+     0.26270604395604397
+    ],
+    [
+     "I00-I99",
+     0.23076923076923078
+    ],
+    [
+     "F01-F99",
+     0.17651098901098902
+    ],
+    [
+     "R00-R99",
+     0.11744505494505494
+    ],
+    [
+     "D50-D89",
+     0.1092032967032967
+    ]
+   ],
+   "rec_condition_top": [
+    [
+     "Tel",
+     0.5078983516483516
+    ],
+    [
+     "Book",
+     0.2857142857142857
+    ],
+    [
+     "Consultation",
+     0.15728021978021978
+    ],
+    [
+     "Talkshow",
+     0.049107142857142856
+    ]
+   ]
+  },
+  "cv": {
+   "utterances": 85,
+   "hours": 0.14944444444444444,
+   "duration": {
+    "mean": 6.329411764705882,
+    "median": 6.0,
+    "p95": 8.0,
+    "max": 8.0
+   },
+   "words": {
+    "mean": 24.741176470588236,
+    "median": 26.0,
+    "max": 36
+   },
+   "words_per_second": 3.908921933085502,
+   "icd10_top": [
+    [
+     "M00-M99",
+     0.29411764705882354
+    ],
+    [
+     "G00-G99",
+     0.23529411764705882
+    ],
+    [
+     "C00-D49",
+     0.18823529411764706
+    ],
+    [
+     "E00-E89",
+     0.16470588235294117
+    ],
+    [
+     "I00-I99",
+     0.11764705882352941
+    ]
+   ],
+   "rec_condition_top": [
+    [
+     "Tel",
+     0.5294117647058824
+    ],
+    [
+     "Consultation",
+     0.47058823529411764
+    ]
+   ]
+  },
+  "test": {
+   "utterances": 3437,
+   "hours": 6.022222222222222,
+   "duration": {
+    "mean": 6.307826592958976,
+    "median": 6.0,
+    "p95": 8.0,
+    "max": 49.0
+   },
+   "words": {
+    "mean": 22.15187663660169,
+    "median": 20.0,
+    "max": 38
+   },
+   "words_per_second": 3.5118081180811807,
+   "icd10_top": [
+    [
+     "K00-K95",
+     0.17602560372417805
+    ],
+    [
+     "M00-M99",
+     0.1297643293569974
+    ],
+    [
+     "O00-O9A",
+     0.12365434972359617
+    ],
+    [
+     "P00-P96",
+     0.11347105033459412
+    ],
+    [
+     "O00_O99",
+     0.10939773057899331
+    ]
+   ],
+   "rec_condition_top": [
+    [
+     "Podcast",
+     0.22286878091358744
+    ],
+    [
+     "Talkshow",
+     0.21239453011347106
+    ],
+    [
+     "Tel",
+     0.17660750654640675
+    ],
+    [
+     "Consultation",
+     0.1297643293569974
+    ]
+   ]
+  }
+ },
+ "label_consistency": {
+  "train": {
+   "distinct_surfaces": 1768,
+   "type_conflict": {
+    "surfaces": 4,
+    "share_of_surfaces": 0.0022624434389140274,
+    "occurrences": 381,
+    "examples": [
+     {
+      "surface": "điều trị",
+      "types": {
+       "TREATMENT": 347,
+       "PREVENTIVEMED": 1
+      }
+     },
+     {
+      "surface": "phục hồi",
+      "types": {
+       "MEDDEVICETECHNIQUE": 18,
+       "TREATMENT": 1
+      }
+     },
+     {
+      "surface": "hormone",
+      "types": {
+       "DRUGCHEMICAL": 10,
+       "DISEASESYMTOM": 1
+      }
+     },
+     {
+      "surface": "cậu",
+      "types": {
+       "GENDER": 2,
+       "AGE": 1
+      }
+     }
+    ]
+   },
+   "tagged_vs_untagged": {
+    "surfaces": 64,
+    "untagged_occurrences": 4863,
+    "stray": {
+     "surfaces": 6,
+     "tagged_occurrences": 7,
+     "examples": [
+      {
+       "surface": "thành phần",
+       "tagged": 2,
+       "untagged": 70,
+       "types": {
+        "DRUGCHEMICAL": 2
+       }
+      },
+      {
+       "surface": "giai đoạn",
+       "tagged": 1,
+       "untagged": 55,
+       "types": {
+        "UNITCALIBRATOR": 1
+       }
+      },
+      {
+       "surface": "không nên",
+       "tagged": 1,
+       "untagged": 29,
+       "types": {
+        "PERSONALCARE": 1
+       }
+      },
+      {
+       "surface": "cảm giác",
+       "tagged": 1,
+       "untagged": 23,
+       "types": {
+        "DISEASESYMTOM": 1
+       }
+      },
+      {
+       "surface": "biện pháp",
+       "tagged": 1,
+       "untagged": 23,
+       "types": {
+        "PREVENTIVEMED": 1
+       }
+      },
+      {
+       "surface": "cơ quan",
+       "tagged": 1,
+       "untagged": 23,
+       "types": {
+        "ORGAN": 1
+       }
+      }
+     ]
+    },
+    "ambiguous": {
+     "surfaces": 3,
+     "tagged_occurrences": 70,
+     "untagged_occurrences": 113,
+     "examples": [
+      {
+       "surface": "bệnh lý",
+       "tagged": 57,
+       "untagged": 95,
+       "types": {
+        "DISEASESYMTOM": 57
+       }
+      },
+      {
+       "surface": "chế độ",
+       "tagged": 10,
+       "untagged": 13,
+       "types": {
+        "PERSONALCARE": 10
+       }
+      },
+      {
+       "surface": "tắc nghẽn",
+       "tagged": 3,
+       "untagged": 5,
+       "types": {
+        "DISEASESYMTOM": 3
+       }
+      }
+     ]
+    },
+    "single_syllable_upper_bound": {
+     "surfaces": 15,
+     "examples": [
+      {
+       "surface": "cơ",
+       "tagged": 34,
+       "untagged": 140,
+       "types": {
+        "ORGAN": 34
+       }
+      },
+      {
+       "surface": "anh",
+       "tagged": 21,
+       "untagged": 19,
+       "types": {
+        "GENDER": 21
+       }
+      },
+      {
+       "surface": "môi",
+       "tagged": 16,
+       "untagged": 13,
+       "types": {
+        "ORGAN": 16
+       }
+      },
+      {
+       "surface": "tối",
+       "tagged": 13,
+       "untagged": 10,
+       "types": {
+        "DATETIME": 13
+       }
+      },
+      {
+       "surface": "hệ",
+       "tagged": 9,
+       "untagged": 87,
+       "types": {
+        "ORGAN": 9
+       }
+      },
+      {
+       "surface": "chú",
+       "tagged": 9,
+       "untagged": 23,
+       "types": {
+        "GENDER": 9
+       }
+      },
+      {
+       "surface": "bị",
+       "tagged": 8,
+       "untagged": 462,
+       "types": {
+        "DISEASESYMTOM": 8
+       }
+      },
+      {
+       "surface": "cụ",
+       "tagged": 8,
+       "untagged": 49,
+       "types": {
+        "AGE": 8
+       }
+      },
+      {
+       "surface": "chân",
+       "tagged": 9,
+       "untagged": 8,
+       "types": {
+        "ORGAN": 9
+       }
+      },
+      {
+       "surface": "tay",
+       "tagged": 6,
+       "untagged": 8,
+       "types": {
+        "ORGAN": 6
+       }
+      }
+     ]
+    }
+   }
+  },
+  "test": {
+   "distinct_surfaces": 1323,
+   "type_conflict": {
+    "surfaces": 0,
+    "share_of_surfaces": 0.0,
+    "occurrences": 0,
+    "examples": []
+   },
+   "tagged_vs_untagged": {
+    "surfaces": 38,
+    "untagged_occurrences": 1519,
+    "stray": {
+     "surfaces": 0,
+     "tagged_occurrences": 0,
+     "examples": []
+    },
+    "ambiguous": {
+     "surfaces": 1,
+     "tagged_occurrences": 17,
+     "untagged_occurrences": 50,
+     "examples": [
+      {
+       "surface": "thứ hai",
+       "tagged": 17,
+       "untagged": 50,
+       "types": {
+        "DATETIME": 17
+       }
+      }
+     ]
+    },
+    "single_syllable_upper_bound": {
+     "surfaces": 11,
+     "examples": [
+      {
+       "surface": "ba",
+       "tagged": 47,
+       "untagged": 75,
+       "types": {
+        "GENDER": 47
+       }
+      },
+      {
+       "surface": "ông",
+       "tagged": 16,
+       "untagged": 19,
+       "types": {
+        "GENDER": 16
+       }
+      },
+      {
+       "surface": "cao",
+       "tagged": 51,
+       "untagged": 15,
+       "types": {
+        "UNITCALIBRATOR": 51
+       }
+      },
+      {
+       "surface": "cơ",
+       "tagged": 12,
+       "untagged": 133,
+       "types": {
+        "ORGAN": 12
+       }
+      },
+      {
+       "surface": "tối",
+       "tagged": 13,
+       "untagged": 10,
+       "types": {
+        "DATETIME": 13
+       }
+      },
+      {
+       "surface": "nhà",
+       "tagged": 44,
+       "untagged": 7,
+       "types": {
+        "LOCATION": 44
+       }
+      },
+      {
+       "surface": "môi",
+       "tagged": 5,
+       "untagged": 16,
+       "types": {
+        "ORGAN": 5
+       }
+      },
+      {
+       "surface": "chú",
+       "tagged": 24,
+       "untagged": 5,
+       "types": {
+        "GENDER": 24
+       }
+      },
+      {
+       "surface": "mỹ",
+       "tagged": 5,
+       "untagged": 25,
+       "types": {
+        "LOCATION": 5
+       }
+      },
+      {
+       "surface": "mô",
+       "tagged": 7,
+       "untagged": 3,
+       "types": {
+        "ORGAN": 7
+       }
+      }
+     ]
+    }
+   }
+  }
+ },
+ "text_noise": {
+  "train": {
+   "filler": {
+    "sentence_share": 0.07344020797227037,
+    "token_share": 0.003990401466742161,
+    "top": {
+     "ạ": 203,
+     "vâng": 111,
+     "dạ": 52,
+     "à": 34,
+     "nhé": 31,
+     "nha": 8,
+     "hen": 3,
+     "nhỉ": 1,
+     "ừ": 1
+    }
+   },
+   "number_words": {
+    "spans": 186,
+    "spans_per_100_sentences": 4.02946273830156,
+    "span_share_inside_entity": 0.7526881720430108,
+    "digit_tokens": 56
+   },
+   "foreign": {
+    "distinct": 164,
+    "occurrences": 677,
+    "token_share": 0.006084463497712709,
+    "share_inside_entity": 0.9054652880354506,
+    "by_tag": {
+     "DRUGCHEMICAL": 347,
+     "DISEASESYMTOM": 189,
+     "O": 64,
+     "ORGAN": 23,
+     "UNITCALIBRATOR": 18,
+     "DIAGNOSTICS": 13,
+     "MEDDEVICETECHNIQUE": 12,
+     "SURGERY": 4,
+     "ORGANIZATION": 3,
+     "FOODDRINK": 2,
+     "PERSONALCARE": 2
+    },
+    "top": {
+     "parkinson": 66,
+     "vitamin": 46,
+     "virus": 31,
+     "stress": 26,
+     "covid": 23,
+     "oxy": 20,
+     "alzheimer": 18,
+     "selen": 15,
+     "axit": 14,
+     "k": 14,
+     "immunesoyz": 12,
+     "hormone": 12,
+     "ph": 12,
+     "cholesterol": 11,
+     "fumarate": 11
+    }
+   }
+  },
+  "validation": {
+   "filler": {
+    "sentence_share": 0.07972270363951472,
+    "token_share": 0.004411179809813068,
+    "top": {
+     "ạ": 57,
+     "vâng": 27,
+     "dạ": 13,
+     "nhé": 12,
+     "à": 5,
+     "nha": 3,
+     "hen": 3,
+     "ừ": 1,
+     "nhỉ": 1
+    }
+   },
+   "number_words": {
+    "spans": 49,
+    "spans_per_100_sentences": 4.246100519930676,
+    "span_share_inside_entity": 0.7346938775510204,
+    "digit_tokens": 17
+   },
+   "foreign": {
+    "distinct": 75,
+    "occurrences": 178,
+    "token_share": 0.006435983656940376,
+    "share_inside_entity": 0.9157303370786517,
+    "by_tag": {
+     "DRUGCHEMICAL": 93,
+     "DISEASESYMTOM": 48,
+     "O": 15,
+     "DIAGNOSTICS": 6,
+     "ORGAN": 5,
+     "UNITCALIBRATOR": 5,
+     "MEDDEVICETECHNIQUE": 4,
+     "ORGANIZATION": 1,
+     "FOODDRINK": 1
+    },
+    "top": {
+     "parkinson": 20,
+     "vitamin": 16,
+     "stress": 13,
+     "virus": 7,
+     "b": 5,
+     "oxy": 5,
+     "selen": 5,
+     "mri": 4,
+     "protein": 4,
+     "cholesterol": 4,
+     "corticoid": 4,
+     "canxi": 4,
+     "axit": 3,
+     "c": 3,
+     "serum": 3
+    }
+   }
+  },
+  "test": {
+   "filler": {
+    "sentence_share": 0.05661995996568487,
+    "token_share": 0.0032056646282587705,
+    "top": {
+     "ạ": 78,
+     "vâng": 53,
+     "nha": 33,
+     "dạ": 29,
+     "nhé": 27,
+     "ừ": 9,
+     "à": 9,
+     "hả": 5,
+     "nhỉ": 5,
+     "ờ": 1
+    }
+   },
+   "number_words": {
+    "spans": 197,
+    "spans_per_100_sentences": 5.633400057191879,
+    "span_share_inside_entity": 0.7309644670050761,
+    "digit_tokens": 33
+   },
+   "foreign": {
+    "distinct": 118,
+    "occurrences": 695,
+    "token_share": 0.008947537817830704,
+    "share_inside_entity": 0.9266187050359712,
+    "by_tag": {
+     "DRUGCHEMICAL": 415,
+     "SURGERY": 78,
+     "O": 51,
+     "DISEASESYMTOM": 42,
+     "DIAGNOSTICS": 22,
+     "UNITCALIBRATOR": 21,
+     "MEDDEVICETECHNIQUE": 20,
+     "ORGAN": 15,
+     "PERSONALCARE": 13,
+     "LOCATION": 5,
+     "FOODDRINK": 4,
+     "TREATMENT": 3,
+     "ORGANIZATION": 3,
+     "TRANSPORTATION": 3
+    },
+    "top": {
+     "vitamin": 98,
+     "canxi": 93,
+     "implant": 78,
+     "d": 72,
+     "progesterone": 23,
+     "estrogen": 19,
+     "milimet": 17,
+     "polyp": 13,
+     "collagen": 11,
+     "yoga": 11,
+     "ct": 8,
+     "covid": 8,
+     "hormone": 8,
+     "xquang": 8,
+     "c": 7
+    }
+   }
+  }
+ },
+ "subword_length": {
+  "max_length": 256,
+  "models": {
+   "PhoBERT": {
+    "train": {
+     "mean": 26.46858752166378,
+     "p99": 38.0,
+     "max": 44,
+     "over_128": 0,
+     "over_256": 0,
+     "max_subwords_per_syllable": 6
+    },
+    "validation": {
+     "mean": 26.322357019064125,
+     "p99": 37.47000000000003,
+     "max": 41,
+     "over_128": 0,
+     "over_256": 0,
+     "max_subwords_per_syllable": 6
+    },
+    "test": {
+     "mean": 24.494137832427796,
+     "p99": 37.0,
+     "max": 45,
+     "over_128": 0,
+     "over_256": 0,
+     "max_subwords_per_syllable": 5
+    }
+   },
+   "ViHealthBERT": {
+    "train": {
+     "mean": 26.46858752166378,
+     "p99": 38.0,
+     "max": 44,
+     "over_128": 0,
+     "over_256": 0,
+     "max_subwords_per_syllable": 6
+    },
+    "validation": {
+     "mean": 26.322357019064125,
+     "p99": 37.47000000000003,
+     "max": 41,
+     "over_128": 0,
+     "over_256": 0,
+     "max_subwords_per_syllable": 6
+    },
+    "test": {
+     "mean": 24.494137832427796,
+     "p99": 37.0,
+     "max": 45,
+     "over_128": 0,
+     "over_256": 0,
+     "max_subwords_per_syllable": 5
+    }
+   },
+   "XLM-R": {
+    "train": {
+     "mean": 27.054809358752166,
+     "p99": 39.0,
+     "max": 47,
+     "over_128": 0,
+     "over_256": 0,
+     "max_subwords_per_syllable": 6
+    },
+    "validation": {
+     "mean": 26.87694974003466,
+     "p99": 38.0,
+     "max": 44,
+     "over_128": 0,
+     "over_256": 0,
+     "max_subwords_per_syllable": 5
+    },
+    "test": {
+     "mean": 25.212181870174437,
+     "p99": 38.0,
+     "max": 45,
+     "over_128": 0,
+     "over_256": 0,
+     "max_subwords_per_syllable": 4
+    }
+   }
+  }
+ }
+}

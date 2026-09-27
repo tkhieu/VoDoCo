@@ -14,9 +14,9 @@ mkdir -p nop_bai
 archive="nop_bai/DoAn_MayHoc_VietMedNER.zip"
 rm -f "$archive"
 zip -r -q "$archive" \
-  VietMed_NER_MayHoc.ipynb requirements.txt \
+  VietMed_NER_MayHoc.ipynb requirements.txt eda \
   ket_qua_goc results notebooks_huan_luyen \
   bao_cao/BaoCao_DoAn_MayHoc_VietMedNER.docx bao_cao/build_docx.js \
   checkpoints/phobert checkpoints/vihealthbert \
-  -x '*/.ipynb_checkpoints/*'
+  -x '*/.ipynb_checkpoints/*' '*/__pycache__/*'
 ls -lh "$archive"
